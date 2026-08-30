@@ -16,7 +16,7 @@
   "dependencies": {
     "@nuxt/content": "^3.15.2",
     "@nuxtjs/i18n": "^10.6.0",
-    "better-sqlite3": "^13.0.3",
+    "better-sqlite3": "^12.5.0",
     "nuxt": "^4.0.0",
     "nuxt-gtag": "^5.0.0",
     "remark-cjk-friendly": "^2.3.1",
