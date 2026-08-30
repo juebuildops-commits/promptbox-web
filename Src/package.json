@@ -1,0 +1,30 @@
+{
+  "name": "promptbox-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "node scripts/check-content.mjs && node scripts/check-i18n.mjs && node scripts/check-docs.mjs && nuxt build",
+    "generate": "node scripts/check-content.mjs && node scripts/check-i18n.mjs && node scripts/check-docs.mjs && nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "check:content": "node scripts/check-content.mjs",
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "check:docs": "node scripts/check-docs.mjs",
+    "i18n:sync": "node scripts/check-i18n.mjs --sync"
+  },
+  "dependencies": {
+    "@nuxt/content": "^3.15.2",
+    "@nuxtjs/i18n": "^10.6.0",
+    "better-sqlite3": "^13.0.3",
+    "nuxt": "^4.0.0",
+    "nuxt-gtag": "^5.0.0",
+    "remark-cjk-friendly": "^2.3.1",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.polar.sh)",
+      "WebFetch(domain:polar.sh)",
+      "Bash(sed 's/class=\"[^\"]*\"//g')",
+      "Bash(npm --version)",
+      "Bash(npm ls *)",
+      "PowerShell(Get-ChildItem -Recurse \"j:\\\\desktopp\\\\promptbox-web\\\\Src\\\\public\" -File | Sort-Object LastWriteTime -Descending | Select-Object LastWriteTime, @{n='MB';e={[math]::Round\\($_.Length/1MB,2\\)}}, FullName | Format-Table -AutoSize)",
+      "Bash(grep -v \"^total\\\\|^d.*\\\\s\\\\.\\\\.\\\\?$\")",
+      "Bash(cd \"j:/desktopp/promptbox-web\" && find Docs -type f | sort && echo \"=== Src/docs ===\" && find Src/docs -type f 2>/dev/null && echo \"=== 有沒有 archive ===\" && ls .. 2>/dev/null | head -20)",
+      "Read(//j/desktopp/**)",
+      "Bash(python3 -)",
+      "Bash(node -e ' *)"
+    ]
+  }
+}

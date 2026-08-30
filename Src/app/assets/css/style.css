@@ -1,0 +1,373 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-sans: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --font-ui: 'Inter', 'Noto Sans TC', sans-serif;
+  --font-accent: 'Big Shoulders', 'Big Shoulders Display', 'Noto Sans TC', sans-serif;
+
+  /* Colors */
+  --color-brand: #009fb7;
+  --color-brand-hover: rgba(0, 159, 183, 0.8);
+  --color-brand-surface: rgba(0, 159, 183, 0.1);
+  --color-brand-surface-hover: rgba(0, 159, 183, 0.16);
+  --color-brand-border: rgba(0, 159, 183, 0.2);
+  --color-brand-border-strong: rgba(0, 159, 183, 0.5);
+
+  --color-teal-500: #009fb7;
+  --color-teal-900: #004651;
+
+  --color-ink-900: #05060f;
+  --color-ink-800: #1f2933;
+  --color-ink-700: #353535;
+  --color-ink-600: #5e5e5e;
+  --color-ink-500: #6b7280;
+  --color-ink-400: #9ca3af;
+  --color-ink-300: #bababa;
+
+  --color-surface-page: #f4f4f8;
+  --color-surface-tint: #f1fdff;
+  --color-surface-card: #ffffff;
+  --color-surface-subtle: #f8f8f9;
+  --color-surface-faint: #f9f9f9;
+  --color-surface-muted: #e9e9ec;
+
+  --color-line-200: #e6e6ea;
+  --color-line-300: #d9d9d9;
+  --color-line-400: #d4d4d3;
+
+  /* Radius */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-2xl: 50px;
+  --radius-nav: 60px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-btn: 0 5px 8px -5px rgba(0, 159, 183, 0.2), 0 13px 20px -4px rgba(0, 159, 183, 0.2);
+}
+
+/* 毛玻璃底色。刻意放 :root 而不是 @theme —— @theme 的變數若沒有對應 utility
+   被使用就會被 tree-shake，而這幾個只被 bg-[var(--glass-*)] 這種任意值語法消費，
+   Tailwind 掃不到；放 :root 是原生 CSS，保證進得了產物，深色覆寫才跟著生效。 */
+:root {
+  --glass-nav: rgba(255, 255, 255, 0.7);
+  --glass-raised: rgba(255, 255, 255, 0.85);
+  --glass-raised-soft: rgba(255, 255, 255, 0.75);
+}
+
+/* Base resets & styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface-page, #f4f4f8);
+  color: var(--color-ink-800, #1f2933);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 🔴 不可改寫回 nuxt.config.ts 的 bodyAttrs 的 selection:* class ——
+   Tailwind 的來源掃描不含 nuxt.config.ts，寫在那裡的 class 會輸出到 HTML，
+   但永遠不會被編譯成規則。 */
+::selection {
+  background-color: rgba(0, 159, 183, 0.2);
+  color: var(--color-brand);
+}
+
+/* Icons via CSS Mask */
+.icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--icon-size, 24px);
+  height: var(--icon-size, 24px);
+  background-color: currentColor;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+.icon--lang    { --icon: url('/assets/icon-lang.svg'); }
+.icon--theme   { --icon: url('/assets/icon-theme.svg'); }
+.icon--apple   { --icon: url('/assets/icon-apple.svg'); }
+.icon--chevron { --icon: url('/assets/icon-chevron-up.svg'); }
+
+.icon--storage { --icon: url('/assets/icon-storage.svg'); }
+.icon--lock    { --icon: url('/assets/icon-lock.svg'); }
+.icon--gift    { --icon: url('/assets/icon-gift.svg'); }
+.icon--devices { --icon: url('/assets/icon-devices.svg'); }
+
+.icon--check   { --icon: url('/assets/icon-check.svg'); }
+.icon--computer{ --icon: url('/assets/icon-computer.svg'); }
+.icon--flow    { --icon: url('/assets/icon-flow-arrow.svg'); }
+
+.icon--openai  { --icon: url('/assets/logo-openai.svg'); }
+.icon--claude  { --icon: url('/assets/logo-claude.svg'); }
+.icon--gemini  { --icon: url('/assets/logo-gemini.svg'); }
+
+/* Gradient Borders via CSS Mask */
+.gradient-border-card {
+  position: relative;
+}
+
+.gradient-border-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: linear-gradient(180deg, #009fb7 0%, #3a3afd 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.gradient-border-card-reverse::before {
+  background: linear-gradient(180deg, #3a3afd 0%, #009fb7 100%);
+}
+
+.gradient-border-faq {
+  position: relative;
+}
+
+.gradient-border-faq[open] {
+  border-color: transparent;
+}
+
+.gradient-border-faq[open]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(180deg, #009fb7 0%, #3a3afd 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Empty states */
+.price-amount:empty,
+.price-period:empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #bababa;
+  color: #bababa;
+}
+
+.price-amount:empty { min-height: 44px; width: 60%; }
+.price-period:empty { min-height: 28px; width: 40%; }
+
+.price-amount:empty::before { content: '金額待補'; font-size: 16px; font-weight: 400; }
+.price-period:empty::before { content: '計費方式待補'; font-size: 14px; }
+
+.faq-answer-body:empty {
+  display: flex;
+  align-items: center;
+  min-height: 72px;
+  border: 1px dashed #bababa;
+  background: none;
+}
+
+.faq-answer-body:empty::before {
+  content: '答案待補';
+  color: #bababa;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* Dark Mode Overrides */
+html.dark {
+  --color-surface-page: #0d1117;
+  --color-surface-tint: #161b22;
+  --color-surface-card: #161b22;
+  --color-surface-subtle: #21262d;
+  --color-surface-faint: #1c2128;
+  --color-surface-muted: #30363d;
+
+  --color-line-200: #30363d;
+  --color-line-300: #30363d;
+  --color-line-400: #484f58;
+
+  --color-ink-900: #f0f6fc;
+  --color-ink-800: #e6edf3;
+  --color-ink-700: #c9d1d9;
+  --color-ink-600: #8b949e;
+  --color-ink-500: #8b949e;
+  --color-ink-400: #6e7681;
+  --color-ink-300: #484f58;
+
+  --glass-nav: rgba(22, 27, 34, 0.85);
+  --glass-raised: rgba(22, 27, 34, 0.9);
+  --glass-raised-soft: rgba(22, 27, 34, 0.88);
+}
+
+html.dark body {
+  background-color: var(--color-surface-page);
+  color: var(--color-ink-800);
+}
+
+html.dark .bg-surface-card {
+  background-color: var(--color-surface-card);
+}
+
+html.dark .bg-surface-page {
+  background-color: var(--color-surface-page);
+}
+
+html.dark .bg-surface-subtle {
+  background-color: var(--color-surface-subtle);
+}
+
+html.dark .bg-surface-faint {
+  background-color: var(--color-surface-faint);
+}
+
+/* Notice / Callouts */
+.notice {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.125rem 1.25rem;
+  border-radius: var(--radius-md, 16px);
+  border: 1px solid;
+  margin: 1.5rem 0;
+}
+.notice p {
+  margin: 0;
+  line-height: 1.6;
+}
+.notice-info {
+  background-color: rgba(0, 159, 183, 0.08);
+  border-color: rgba(0, 159, 183, 0.35);
+  color: var(--color-ink-800);
+}
+.notice-warning {
+  background-color: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: var(--color-ink-800);
+}
+.notice-danger {
+  background-color: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: var(--color-ink-800);
+}
+
+/* Code & Pre */
+pre {
+  background-color: #1a1e29;
+  color: #e2e8f0;
+  padding: 1.25rem;
+  border-radius: var(--radius-md, 16px);
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 1.25rem 0;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+:not(pre) > code {
+  background-color: var(--color-brand-surface);
+  color: var(--color-brand);
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  font-size: 0.875em;
+}
+
+/* Docs Sidebar Scrollspy Active */
+.docs-sidebar a.active {
+  background-color: var(--color-brand-surface);
+  color: var(--color-brand);
+  font-weight: 700;
+}
+
+
+/* ==========================================================================
+   階段二：Nuxt Content 內文樣式
+   還原原稿的手刻 Tailwind class。刻意不引入 @tailwindcss/typography ——
+   原稿的 class 字彙很小，逐條還原比引入一套預設值再全部覆寫更可控。
+   ========================================================================== */
+
+/* ---------- changelog 版本卡內文 ---------- */
+/* 原稿：<ul class="space-y-3 text-sm text-ink-800 border-t border-line-200 pt-6"> */
+.changelog-body ul {
+  margin: 0;
+  padding: 1.5rem 0 0;
+  list-style: none;
+  border-top: 1px solid var(--color-line-200);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--color-ink-800);
+}
+.changelog-body li + li {
+  margin-top: 0.75rem;
+}
+/* 原稿：<li class="flex items-start gap-3">，emoji 在獨立的 text-lg span 內 */
+.changelog-body li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+.changelog-body li > .text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+/* ---------- docs 章節內文 ---------- */
+/* 原稿：<h3 class="font-bold text-lg text-ink-900 mt-6">（首個 h3 無 mt-6） */
+.docs-prose h3 {
+  margin: 1.5rem 0 0;
+  font-weight: 700;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--color-ink-900);
+}
+.docs-prose > *:first-child {
+  margin-top: 0;
+}
+
+.docs-prose p {
+  margin: 0;
+}
+
+/* 原稿：list-disc / list-decimal + list-inside + space-y-2 + pl-2 */
+.docs-prose ul,
+.docs-prose ol {
+  margin: 0;
+  padding-left: 0.5rem;
+  list-style-position: inside;
+}
+.docs-prose ul { list-style-type: disc; }
+.docs-prose ol { list-style-type: decimal; }
+.docs-prose li + li { margin-top: 0.5rem; }
+
+/* 原稿：<a class="text-brand underline font-medium"> */
+.docs-prose a {
+  color: var(--color-brand);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+/* notice 內文（.notice 本體樣式已定義於上方） */
+.notice-body strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--color-ink-900);
+  font-weight: 700;
+}
+.notice-body p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}

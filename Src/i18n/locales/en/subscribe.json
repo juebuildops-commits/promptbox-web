@@ -1,0 +1,34 @@
+{
+  "subscribe": {
+    "updates": {
+      "title": "We'll email you when there's a new release",
+      "body": "PromptBox has been fully offline since v3.3.0 — the app does not, and never will, check for updates on its own. Email is therefore the only channel we have to tell you a new version exists.",
+      "placeholder": "you{'@'}example.com",
+      "cta": "Get release notifications"
+    },
+    "earlyBird": {
+      "title": "Claim early-bird pricing",
+      "body": "No payment now — just your email. Places are ordered by the timestamp of your sign-up, and the first {earlyBirdSeats} take the early-bird price. When we go on sale we email you in that order, and your place is held for one week from that email. This is also the address your licence will be issued to.",
+      "placeholder": "you{'@'}example.com",
+      "cta": "Claim early-bird (${proEarly}/year)"
+    },
+    "commercial": {
+      "title": "Commercial licensing enquiry",
+      "body": "Commercial licences are not on sale yet. Leave a company address and we will get in touch about licensing and the buy-4-get-1 bundle when they open.",
+      "placeholder": "you{'@'}company.com",
+      "cta": "Send enquiry"
+    },
+    "privacyNote": "We use this address only for release notifications and early-bird news. We don't track opens, don't resell, and don't share it. One-click unsubscribe, any time.",
+    "state": {
+      "loading": "Sending…",
+      "ok": "You're subscribed — thank you. The next release will land in this inbox.",
+      "okEarlyBird": "You are on the list. Places are ordered by this sign-up’s timestamp; when we go on sale we will email you, and your place is held for one week from that email.",
+      "already": "This address is already on the list — no need to sign up again.",
+      "invalid": "That email address doesn't look right. Could you check it?",
+      "blocked": "Our email provider blocked this address (aliases containing + are a common cause). Please use a different one — resending the same address won’t help.",
+      "disabled": "Subscriptions aren't live yet (no mail service configured).",
+      "error": "That didn't go through. Please try again in a moment."
+    },
+    "emailLabel": "Email address"
+  }
+}

@@ -1,0 +1,12 @@
+# 統一以 LF 存進版控。Windows 上工作目錄仍是 CRLF，
+# 但 repo 裡不會因為換機器或在 Vercel（Linux）建置而產生整片假 diff。
+* text=auto eol=lf
+
+# 二進位：不要做任何換行轉換
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
+*.woff2 binary
+*.exe binary
+*.zip binary

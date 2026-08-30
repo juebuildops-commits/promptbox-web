@@ -1,0 +1,89 @@
+{
+  "privacy": {
+    "meta": {
+      "title": "",
+      "description": ""
+    },
+    "hero": {
+      "badge": "",
+      "titleLead": "",
+      "titleAccent": "",
+      "updated": ""
+    },
+    "appVsSite": {
+      "title": "",
+      "bodyPre": "",
+      "bodyStrong": "",
+      "bodyPost": "",
+      "notePre": "",
+      "noteStrong": "",
+      "notePost": ""
+    },
+    "collect": {
+      "title": "",
+      "analytics": {
+        "title": "",
+        "body": "",
+        "measures": "",
+        "disabledNotice": "",
+        "optoutPre": "",
+        "optoutStrong": "",
+        "optoutPost": ""
+      },
+      "email": {
+        "title": "",
+        "body": "",
+        "unsubscribe": "",
+        "noTrackingPre": "",
+        "noTrackingStrong": "",
+        "noTrackingPost": ""
+      },
+      "none": {
+        "title": "",
+        "i1": "",
+        "i2": "",
+        "i3": "",
+        "i4": ""
+      }
+    },
+    "storage": {
+      "title": "",
+      "body": "",
+      "themeKey": "",
+      "analyticsKey": "",
+      "clear": ""
+    },
+    "processors": {
+      "title": "",
+      "colName": "",
+      "colPurpose": "",
+      "colData": "",
+      "vercel": "",
+      "vercelData": "",
+      "ga": "",
+      "gaData": "",
+      "buttondown": "",
+      "buttondownData": ""
+    },
+    "rights": {
+      "title": "",
+      "i1": "",
+      "i2": "",
+      "i3": ""
+    },
+    "toggle": {
+      "label": "",
+      "on": "",
+      "off": "",
+      "unavailable": ""
+    },
+    "contact": {
+      "title": "",
+      "body": ""
+    },
+    "changes": {
+      "title": "",
+      "body": ""
+    }
+  }
+}

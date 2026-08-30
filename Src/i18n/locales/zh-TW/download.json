@@ -1,0 +1,94 @@
+{
+  "download": {
+    "meta": {
+      "title": "下載 PromptBox — Windows",
+      "description": "免費下載 PromptBox v3.7.1，支援 Windows 10 / 11；macOS 版即將推出。提供安裝版與免安裝便攜版，本地加密儲存、100% 不連網。"
+    },
+    "hero": {
+      "badge": "✨ 最新版本 v3.7.1",
+      "titleLead": "下載",
+      "lead": "免費開始使用。安裝檔由官網直接發布並附 SHA-256 校驗碼，本地安全加密、100% 完全不連網。"
+    },
+    "trust": {
+      "aria": "產品保證",
+      "t1": "官網直接發布・附校驗碼",
+      "t2": "首次啟動即加密保護",
+      "t3": "無需註冊帳號即可用",
+      "t4": "手動更新・完全掌控"
+    },
+    "platforms": {
+      "title": "選擇您的作業系統",
+      "lead": "目前提供 Windows 安裝版與免安裝便攜版，支援離線環境與自訂目錄；macOS 版即將推出。",
+      "recommendedBadge": "推薦目前系統",
+      "win": {
+        "requirement": "Windows 10 / 11 (64-bit)",
+        "body": "支援標準安裝精靈（可自選安裝磁區）與綠色免安裝便攜版，設定檔存於本機隔離空間。",
+        "f1pre": "安裝版（",
+        "f1post": "）— 支援自訂安裝路徑",
+        "f2pre": "免安裝便攜版（",
+        "f2post": "）— 解壓即用",
+        "f3": "金鑰由 Windows DPAPI 加密保護",
+        "cta": "下載 Windows 版",
+        "ctaPortable": "免安裝便攜版（.zip）"
+      },
+      "mac": {
+        "requirement": "macOS 10.15 (Catalina)+",
+        "body": "原生整合 macOS Keychain 金鑰庫，支援 Apple Silicon (M1/M2/M3/M4) 與 Intel 晶片架構。",
+        "f1pre": "macOS 原生安裝映像檔（",
+        "f1post": "）",
+        "f2": "支援 Apple Silicon 與 Intel 雙架構",
+        "f3": "金鑰自動儲存於 macOS Keychain 保險庫",
+        "soonBadge": "即將推出",
+        "ctaSoon": "macOS 版釋出時通知我",
+        "soonNote": "macOS 版正在準備中。留下 email，釋出當天第一時間通知你。"
+      }
+    },
+    "checksum": {
+      "title": "檔案校驗碼（SHA-256）",
+      "lead": "下載後可自行核對，確認拿到的檔案與我們發布的完全一致。",
+      "exeLabel": "安裝版 .exe",
+      "zipLabel": "便攜版 .zip",
+      "verifyWin": "Windows PowerShell",
+      "verifyUnix": "macOS / Linux"
+    },
+    "quickstart": {
+      "eyebrow": "Quick Start",
+      "title": "3 步驟，1 分鐘開始升級",
+      "s1": {
+        "title": "下載並安裝",
+        "body": "從本頁取得您作業系統對應的安裝檔，按精靈指示 30 秒快速完成。"
+      },
+      "s2": {
+        "title": "首次啟動",
+        "body": "PromptBox 自動建立 SQLCipher 加密資料庫並載入內建範例教學卡片，安全摸索不怕出錯。"
+      },
+      "s3": {
+        "title": "複製第一條 Prompt",
+        "body": "點擊卡片一鍵複製，秒貼至 ChatGPT / Claude / IDE，立即解放你的大腦記憶負擔。"
+      }
+    },
+    "notes": {
+      "eyebrow": "Notes",
+      "title": "安裝小提示",
+      "n1": {
+        "title": "更新方式與零連網保證",
+        "body": "v3.3.0 起完全不連網。App 內移除所有自動更新檢查與背景連線，新版本以 email 通知，至官網手動下載安裝覆蓋（安裝路徑不變，資料原地完整保留）。唯一的網路元件是內建的 MCP 伺服器：它只監聽 127.0.0.1，供你自己電腦上的 IDE 連進來，不對外連線。"
+      },
+      "n2": {
+        "title": "本機資料加密",
+        "body": "首次啟動即建立 SQLCipher 頁級加密資料庫，金鑰由作業系統安全金鑰庫（Windows DPAPI / macOS Keychain）保護，不以明文存盤。"
+      },
+      "n3": {
+        "title": "從 v2.x 升級",
+        "bodyPre": "首次啟動 v3 會將舊版明文資料庫自動備份為 ",
+        "bodyPost": " 並建立全新加密資料庫，舊資料不自動混入，可隨時手動匯入。"
+      },
+      "n4": {
+        "title": "Windows 可能顯示「無法辨識的應用程式」",
+        "bodyPre": "這個提示是準確的：我們尚未購買程式碼簽章憑證，Windows 因此無法把安裝檔對應到一個已驗證的發行者。我們不會請您忽略它 —— 請用上方的 SHA-256 校驗碼核對檔案，並參閱",
+        "linkLabel": "為什麼還沒有數位簽章",
+        "bodyPost": "了解原因、自行查證的方法，以及它什麼時候會消失。"
+      }
+    }
+  }
+}

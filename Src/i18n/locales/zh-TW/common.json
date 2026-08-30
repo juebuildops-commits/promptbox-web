@@ -1,0 +1,63 @@
+{
+  "common": {
+    "nav": {
+      "home": "首頁",
+      "download": "下載",
+      "pricing": "收費機制",
+      "docs": "操作手冊",
+      "changelog": "更新日誌",
+      "ariaMain": "主導覽",
+      "ariaFooter": "頁尾導覽"
+    },
+    "a11y": {
+      "homeLink": "PromptBox 首頁",
+      "logoAlt": "PromptBox Logo",
+      "switchLang": "切換語言",
+      "toggleTheme": "切換日夜間模式",
+      "openMenu": "開啟選單"
+    },
+    "cta": {
+      "download": "下載",
+      "downloadWin": "免費下載 Windows 版",
+      "macSoon": "macOS 版即將推出",
+      "downloadFree": "免費下載",
+      "startTrial": "開始試用",
+      "preorderEarlyBird": "搶先預購早鳥",
+      "buyLifetime": "終身買斷",
+      "learnLicense": "了解授權",
+      "goDownloadLatest": "前往下載最新版",
+      "downloadAndStart": "免費下載開始使用"
+    },
+    "menu": {
+      "theme": "深淺模式"
+    },
+    "footer": {
+      "download": "下載",
+      "buy": "購買",
+      "docs": "操作手冊",
+      "changelog": "更新日誌",
+      "contact": "聯絡我們",
+      "privacy": "隱私權",
+      "copyright": "© 2026 PromptBox. All rights reserved.",
+      "tagline": "本地儲存 ・ 加密保護 ・ 你的 Prompt 只屬於你",
+      "notDoing": "我們不做什麼"
+    },
+    "os": {
+      "ctaDefault": "免費下載",
+      "ctaWin": "免費下載 Windows 版",
+      "ctaMac": "免費下載 macOS 版",
+      "noteDefault": "目前提供 Windows 10 / 11 版・macOS 版即將推出",
+      "noteWin": "適用 Windows 10 / 11・macOS 版即將推出",
+      "noteMac": "macOS 版即將推出・目前可下載 Windows 版"
+    },
+    "lang": {
+      "zh-TW": "繁體中文",
+      "en": "English",
+      "ja": "日本語"
+    },
+    "contentZhOnly": {
+      "title": "本頁內容目前僅有繁體中文",
+      "body": "版面與導覽已翻譯，內文尚未。翻譯完成前顯示原文，以免內容缺漏。"
+    }
+  }
+}

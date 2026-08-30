@@ -1,0 +1,94 @@
+{
+  "download": {
+    "meta": {
+      "title": "",
+      "description": ""
+    },
+    "hero": {
+      "badge": "",
+      "titleLead": "",
+      "lead": ""
+    },
+    "trust": {
+      "aria": "",
+      "t1": "",
+      "t2": "",
+      "t3": "",
+      "t4": ""
+    },
+    "platforms": {
+      "title": "",
+      "lead": "",
+      "recommendedBadge": "",
+      "win": {
+        "requirement": "",
+        "body": "",
+        "f1pre": "",
+        "f1post": "",
+        "f2pre": "",
+        "f2post": "",
+        "f3": "",
+        "cta": "",
+        "ctaPortable": ""
+      },
+      "mac": {
+        "requirement": "",
+        "body": "",
+        "f1pre": "",
+        "f1post": "",
+        "f2": "",
+        "f3": "",
+        "soonBadge": "",
+        "ctaSoon": "",
+        "soonNote": ""
+      }
+    },
+    "quickstart": {
+      "eyebrow": "",
+      "title": "",
+      "s1": {
+        "title": "",
+        "body": ""
+      },
+      "s2": {
+        "title": "",
+        "body": ""
+      },
+      "s3": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "notes": {
+      "eyebrow": "",
+      "title": "",
+      "n1": {
+        "title": "",
+        "body": ""
+      },
+      "n2": {
+        "title": "",
+        "body": ""
+      },
+      "n3": {
+        "title": "",
+        "bodyPre": "",
+        "bodyPost": ""
+      },
+      "n4": {
+        "title": "",
+        "bodyPre": "",
+        "linkLabel": "",
+        "bodyPost": ""
+      }
+    },
+    "checksum": {
+      "title": "",
+      "lead": "",
+      "exeLabel": "",
+      "zipLabel": "",
+      "verifyWin": "",
+      "verifyUnix": ""
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "common": {
+    "nav": {
+      "home": "Home",
+      "download": "Download",
+      "pricing": "Pricing",
+      "docs": "Manual",
+      "changelog": "Changelog",
+      "ariaMain": "Main navigation",
+      "ariaFooter": "Footer navigation"
+    },
+    "a11y": {
+      "homeLink": "PromptBox home",
+      "logoAlt": "PromptBox logo",
+      "switchLang": "Switch language",
+      "toggleTheme": "Toggle light/dark mode",
+      "openMenu": "Open menu"
+    },
+    "cta": {
+      "download": "Download",
+      "downloadWin": "Free download for Windows",
+      "macSoon": "macOS coming soon",
+      "downloadFree": "Download free",
+      "startTrial": "Get started",
+      "preorderEarlyBird": "Reserve early-bird",
+      "buyLifetime": "Buy lifetime",
+      "learnLicense": "About licensing",
+      "goDownloadLatest": "Get the latest version",
+      "downloadAndStart": "Download free and get started"
+    },
+    "menu": {
+      "theme": "Theme"
+    },
+    "footer": {
+      "download": "Download",
+      "buy": "Buy",
+      "docs": "Manual",
+      "changelog": "Changelog",
+      "contact": "Contact",
+      "privacy": "Privacy",
+      "copyright": "© 2026 PromptBox. All rights reserved.",
+      "tagline": "Stored locally · Encrypted at rest · Your prompts belong to you",
+      "notDoing": "What we don't do"
+    },
+    "os": {
+      "ctaDefault": "Download free",
+      "ctaWin": "Free download for Windows",
+      "ctaMac": "Free download for macOS",
+      "noteDefault": "Windows 10/11 available now · macOS coming soon",
+      "noteWin": "For Windows 10 / 11 · macOS coming soon",
+      "noteMac": "macOS coming soon · the Windows build is available now"
+    },
+    "lang": {
+      "zh-TW": "繁體中文",
+      "en": "English",
+      "ja": "日本語"
+    },
+    "contentZhOnly": {
+      "title": "This page is currently only available in Traditional Chinese",
+      "body": "The layout and navigation are translated; the body text is not yet. The original is shown until the translation is ready, so that nothing is missing."
+    }
+  }
+}

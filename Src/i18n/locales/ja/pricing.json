@@ -1,0 +1,167 @@
+{
+  "pricing": {
+    "meta": {
+      "title": "",
+      "description": ""
+    },
+    "hero": {
+      "badge": "",
+      "titleLead": "",
+      "titleAccent": "",
+      "lead": ""
+    },
+    "trust": {
+      "aria": "",
+      "t1": "",
+      "t2": "",
+      "t3": "",
+      "t4": ""
+    },
+    "free": {
+      "name": "",
+      "tagline": "",
+      "period": "",
+      "f1": "",
+      "f2": "",
+      "f3": "",
+      "f4": "",
+      "f5": "",
+      "f6": "",
+      "f7": "",
+      "f8": "",
+      "f9": "",
+      "f10": ""
+    },
+    "pro": {
+      "badge": "",
+      "name": "",
+      "tagline": "",
+      "period": "",
+      "f1": "",
+      "f2": "",
+      "f3": "",
+      "f4": "",
+      "f5": "",
+      "f6": "",
+      "f7": "",
+      "cta": ""
+    },
+    "lifetime": {
+      "name": "",
+      "tagline": "",
+      "period": "",
+      "f1": "",
+      "f2": "",
+      "f3": "",
+      "f4": "",
+      "f5": "",
+      "f6": "",
+      "f7": "",
+      "cta": ""
+    },
+    "commercial": {
+      "name": "",
+      "tagline": "",
+      "period": "",
+      "f1": "",
+      "f2": "",
+      "f3": "",
+      "f4": "",
+      "f5": "",
+      "cta": "",
+      "soonBadge": "",
+      "f6": ""
+    },
+    "promo": {
+      "twoYear": {
+        "title": "",
+        "bodyPre": "",
+        "bodyStrong": "",
+        "bodyPost": ""
+      },
+      "bundle": {
+        "title": "",
+        "bodyPre": "",
+        "bodyStrong": "",
+        "bodyPost": ""
+      },
+      "earlyBird": {
+        "title": "",
+        "bodyPre": "",
+        "bodyStrong": "",
+        "bodyPost": ""
+      }
+    },
+    "compare": {
+      "eyebrow": "",
+      "title": "",
+      "colFeature": "",
+      "colFree": "",
+      "colPro": "",
+      "colLifetime": "",
+      "colCommercial": "",
+      "unlimited": "",
+      "dash": "",
+      "r1": "",
+      "r2": "",
+      "r2free": "",
+      "r3": "",
+      "r3free": "",
+      "r4": "",
+      "r4free": "",
+      "r5": "",
+      "r5free": "",
+      "r6": "",
+      "r7pre": "",
+      "r7post": "",
+      "r8": "",
+      "r9": "",
+      "r9forever": "",
+      "r10": "",
+      "r10free": "",
+      "r10pro": "",
+      "r10lifetime": "",
+      "r10commercial": "",
+      "r11": "",
+      "r11commercial": "",
+      "r12": "",
+      "r8free": "",
+      "r13": "",
+      "r14": ""
+    },
+    "faq": {
+      "eyebrow": "",
+      "title": "",
+      "q1": "",
+      "a1pre": "",
+      "a1s1": "",
+      "a1mid": "",
+      "a1s2": "",
+      "a1post": "",
+      "q2": "",
+      "a2pre": "",
+      "a2s1": "",
+      "a2mid": "",
+      "a2s2": "",
+      "a2post": "",
+      "q3": "",
+      "a3pre": "",
+      "a3s1": "",
+      "a3post": "",
+      "q4": "",
+      "a4pre": "",
+      "a4s1": "",
+      "a4post": "",
+      "q5": "",
+      "a5pre": "",
+      "a5s1": "",
+      "a5post": "",
+      "q6": "",
+      "a6": ""
+    },
+    "cta": {
+      "title": "",
+      "body": ""
+    }
+  }
+}

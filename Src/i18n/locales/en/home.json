@@ -1,0 +1,144 @@
+{
+  "home": {
+    "meta": {
+      "title": "PromptBox — free your mind, your own AI prompt vault",
+      "description": "PromptBox is a local-first prompt manager built for the AI era. SQLCipher encryption, variable templates, card chaining, MCP integration for your IDE — core features free forever."
+    },
+    "hero": {
+      "titleLead": "The password manager for the AI era —",
+      "titleAccent": "but for your prompts, settings and keys",
+      "lead": "Your context lives on your own machine; any AI can use it, no vendor can take it.",
+      "imageAlt": "The PromptBox main window: folders and tags on the left, prompt cards on the right",
+      "floatTag": "Local-first AI prompt manager"
+    },
+    "trust": {
+      "aria": "Feature summary",
+      "local": "Stored locally",
+      "localSub": " · Works offline",
+      "encryption": "SQLCipher encryption at rest",
+      "free": "Core features free forever",
+      "platforms": "Windows (macOS coming soon)"
+    },
+    "privacy": {
+      "title": "Privacy & Security",
+      "subtitle": "Your prompts belong to you",
+      "item1": {
+        "title": "Two layers of encryption",
+        "body": "The whole database is encrypted at rest with SQLCipher; secret cards get a second layer of AES-256-GCM on top. Keys are held by the OS keychain (Windows DPAPI / macOS Keychain)."
+      },
+      "item2": {
+        "title": "Released only with your consent",
+        "body": "Only the content you copy or explicitly release ever reaches ChatGPT or Claude."
+      },
+      "item3": {
+        "title": "You decide when to update",
+        "body": "The app never checks for updates and never installs one silently. We announce new versions by email; when to download and install over the old one is entirely your call."
+      },
+      "flow": {
+        "yourComputer": "Your computer",
+        "yourComputerBody": "Every prompt lives in a local encrypted database. It works offline.",
+        "noCloud": "〔 NOTHING GOES TO THE CLOUD 〕",
+        "needAuth": "Prompts are sent only after you authorise it",
+        "aiTools": "AI tools",
+        "aiToolsBody": "Only the content you copy or explicitly release ever reaches ChatGPT / Claude / GEMINI."
+      }
+    },
+    "advanced": {
+      "title": "Advanced",
+      "subtitle": "Not just a box of snippets — a vault for confidential context",
+      "row1": {
+        "title": "Secret cards: AI can't take what you don't give",
+        "imageAria": "PromptBox secret cards and their locked state",
+        "imageAlt": "A PromptBox secret card: its locked state and the visible-to-AI toggle",
+        "b1": "Whole-database encryption at rest (SQLCipher + OS keychain)",
+        "b2": "AES-256-GCM encryption per card",
+        "b3": "Lock a card in one click; with the eye off, the AI does not even know it exists"
+      },
+      "row2": {
+        "title": "MCP integration: your IDE reads your prompts directly",
+        "imageAlt": "The PromptBox MCP settings window: server running, connection token list, and IDE setup guidance",
+        "b1": "Built-in MCP server for Cursor, VS Code, Claude Desktop and more",
+        "b2": "Named tokens you can revoke one at a time",
+        "b3": "Lives in the system tray — close the window, the service keeps running"
+      },
+      "row3": {
+        "title": "Variable templates: write a prompt once, reuse it forever",
+        "imageAria": "PromptBox variable templates and the fill-in panel",
+        "imageAlt": "PromptBox variable templates: the panel on the right lists detected variables and lets you fill them in",
+        "b1": "Dynamic variable substitution, applied as you copy",
+        "b2": "Recursive card chaining with a live preview",
+        "b3": "Markdown preview, so long prompts stay readable"
+      }
+    },
+    "price": {
+      "title": "Price",
+      "subtitle": "Buy once + update rights: pay once, keep the version you bought forever. Core features are free forever; upgrade whenever you want more.",
+      "free": {
+        "name": "FREE",
+        "tagline": "The complete core workflow, free forever",
+        "period": "Free forever",
+        "f1": "Full prompt management (create, edit, delete)",
+        "f2": "Up to {cards} cards in total (secret and chained cards included)",
+        "f3": "Of those, up to {secretCards} secret cards",
+        "f4": "Of those, up to {chainCards} cards in a chain folder",
+        "f5": "Up to {mcpTokens} named MCP tokens",
+        "f6": "Whole-database SQLCipher encryption at rest: free forever, never capped",
+        "f7": "Variable templates and substitution, complete and uncapped",
+        "f8": "Unlimited folders, tags, global search, light and dark themes"
+      },
+      "pro": {
+        "badge": "First {earlyBirdSeats} early adopters",
+        "name": "Personal Pro",
+        "tagline": "Current version forever + {updateMonths} months of updates",
+        "period": "USD / year (price locked for life)",
+        "f1": "Everything in Free",
+        "f2": "No limit on total cards",
+        "f3": "No limit on secret or chained cards",
+        "f4": "Unlimited named MCP tokens",
+        "f5": "Export the release audit log (ships with Pro)",
+        "f6": "{updateMonths} months of version updates included",
+        "f7": "Stop renewing and you keep your last version forever"
+      },
+      "lifetime": {
+        "name": "Lifetime updates",
+        "tagline": "A lifetime licence plus every future update",
+        "period": "USD / one-time",
+        "f1": "Everything in Pro",
+        "f2": "No quotas, no feature limits",
+        "f3": "Every update to the current product line, forever",
+        "f4": "Never renew anything again",
+        "f5": "Local-first · your data stays yours",
+        "f6": "Covers updates and security fixes for the current product line (major new modules priced separately)"
+      },
+      "commercial": {
+        "name": "Commercial",
+        "tagline": "For use inside a company, on the honour system",
+        "period": "USD / seat / year",
+        "f1": "Functionally identical to Pro",
+        "f2": "Licensed for company and commercial use",
+        "f3": "Buy 4 seats, get 1 free",
+        "f4": "Honour system: the offline app has no expiry lock",
+        "f5": "Not yet on sale; invoicing and receipts will be confirmed when it opens",
+        "soonBadge": "Planned",
+        "f6": "Organisations holding 25 seats or more can be listed as supporting organisations"
+      }
+    },
+    "faq": {
+      "title": "FAQ",
+      "q1": "Are my prompts uploaded to the cloud?",
+      "a1": "Never. Since v3.3.1 PromptBox is 100% offline (zero outbound). Every update check and telemetry hook has been removed from the app, and fonts ship with the binary instead of loading from a CDN. All data is encrypted at rest with SQLCipher (AES-256) on your own disk, with the key held by your operating system's secure keychain (Keychain / DPAPI). No third party can reach it. The one networked component is the built-in MCP server: it listens on 127.0.0.1 only, so the IDEs on your own machine can connect to it, and it never reaches outward.",
+      "q2": "Are secret cards safe? Can the AI read them?",
+      "a2": "Secret cards use per-card scrypt + AES-256-GCM encryption and need your own password to unlock in the GUI. From v3.6.0 on, password protection and visibility to AI are two independent axes: when a card is visible to AI, the AI sees only its name, description and ID; the content is released only after you hit allow in the consent dialog and type your password — every single time. You can tick “don’t ask again for 10 minutes”, which stops repeat prompts for that card in that window (held in memory only, never the password, and dropped instantly on lock screen or manual revocation). The boundary worth stating plainly: card names, descriptions and variable names are not protected by the password, and variable default values are stored as plaintext independently of it — so avoid putting hints about a secret into those names.",
+      "q3": "Is installing safe? Could I lose data?",
+      "a3": "Installers are published directly from this site, each with a SHA-256 checksum so you can verify the file’s integrity. We have not bought a code signing certificate yet, so Windows may show an “unrecognised app” prompt — the download page and the manual explain why and how to check for yourself. The encrypted database is created on first launch, and when you upgrade, the old plaintext database is automatically backed up as promptbox.db.plain.bak. The app never performs a silent background upgrade: new versions are announced by email and installed manually over the old one. The install path doesn’t change and your data stays exactly where it is.",
+      "q4": "Which platforms are supported?",
+      "a4": "Windows 10 / 11 today (64-bit, with both an installer and a portable build). The macOS build is still in preparation and has not been released — leave your email on the download page and we will tell you the day it ships. The built-in MCP server connects locally to Cursor, VS Code, Claude Desktop, Windsurf, Claude Code, Cline and other mainstream AI tools.",
+      "q5": "Is it really free? What are the limits?",
+      "a5": "The core workflow is free forever: prompt management, folders, tags, global search, one-click copy, Markdown preview and light/dark themes all cost nothing. (Free tier quotas: {cards} cards in total — secret and chained cards count towards that same number, of which up to {secretCards} may be secret and up to {chainCards} may sit in a chain folder — plus {mcpTokens} MCP tokens. Quotas only block new items; nothing you already have is ever removed.) Advanced features use a buy-once-plus-update-rights model: Personal Pro at the early-bird price of ${proEarly} USD / year (locked for life, including the current version forever plus {updateMonths} months of updates; if you stop renewing you keep the current version forever), lifetime updates for ${lifetime} USD one-time, or a commercial licence at ${commercial} USD / seat / year."
+    },
+    "cta": {
+      "title": "Start getting more out of AI today",
+      "body": "Free download, 30 seconds to install. Core features free forever."
+    }
+  }
+}

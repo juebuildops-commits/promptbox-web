@@ -1,0 +1,12 @@
+{
+  "docs": {
+    "meta": {
+      "title": "PromptBox 操作手冊 — 快速上手與進階功能教學",
+      "description": "PromptBox 使用教學：快速開始、卡片管理、資料夾與標籤、變數樣板、機密卡片、卡片串聯、MCP 整合與疑難排解。"
+    },
+    "sidebarHeading": "手冊章節導覽",
+    "sidebarAria": "手冊目錄",
+    "title": "PromptBox 操作手冊",
+    "lead": "從安裝到進階的機密保險庫與 MCP 整合，這份手冊帶您把 PromptBox 用到淋漓盡致。"
+  }
+}

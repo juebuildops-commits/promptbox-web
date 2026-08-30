@@ -1,0 +1,22 @@
+{
+  "changelog": {
+    "meta": {
+      "title": "",
+      "description": ""
+    },
+    "hero": {
+      "badge": "",
+      "titleLead": "",
+      "titleAccent": "",
+      "lead": "",
+      "leadLink": "",
+      "leadTail": ""
+    },
+    "latestBadge": "",
+    "legacyHeading": "",
+    "cta": {
+      "title": "",
+      "body": ""
+    }
+  }
+}

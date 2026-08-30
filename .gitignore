@@ -1,0 +1,36 @@
+# 相依
+node_modules/
+
+# 建置產物與快取
+.nuxt/
+.output/
+.data/
+dist/
+.vercel/
+
+# 環境變數 —— Buttondown API key、未來的簽章私鑰，一律不進版控
+.env
+.env.*
+!.env.example
+
+# 🔴 安裝檔／建置產物 —— 絕對不要進 repo
+#
+# 兩顆安裝檔各自超過 100 MB，而 GitHub 硬擋單檔 >100 MiB。
+# 一旦 commit 進去，push 會被拒絕，而檔案已經在 history 裡了 ——
+# `git rm` 救不了，得 filter-repo 重寫歷史。
+#
+# 正式發佈管道是 Cloudflare R2
+# （見 Docs/上線前置鏈.md P1、Src/app/pages/download.vue 頂端的 R2 常數）
+_artifacts/
+*.exe
+*.zip
+*.dmg
+*.msi
+
+# 作業系統
+.DS_Store
+Thumbs.db
+
+# 日誌
+*.log
+npm-debug.log*

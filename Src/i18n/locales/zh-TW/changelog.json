@@ -1,0 +1,22 @@
+{
+  "changelog": {
+    "meta": {
+      "title": "更新日誌 — PromptBox 版本發布紀錄",
+      "description": "PromptBox 軟體更新日誌：從 v1.0 到 v3.2.3 的每一次功能演進與版本歷程。"
+    },
+    "hero": {
+      "badge": "📜 發布歷程與功能更新",
+      "titleLead": "版本",
+      "titleAccent": "更新日誌",
+      "lead": "PromptBox 的每一次演進都詳實記錄於此。想第一時間掌握最新發布，",
+      "leadLink": "訂閱新版通知",
+      "leadTail": "，我們只在真的發版時寄信。"
+    },
+    "latestBadge": "最新版本",
+    "legacyHeading": "更早版本歷程",
+    "cta": {
+      "title": "立即體驗最新版本",
+      "body": "v3.7.1 現已推出，體驗極速、安全、100% 零連網的提示詞管理工作流。"
+    }
+  }
+}

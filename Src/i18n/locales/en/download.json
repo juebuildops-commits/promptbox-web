@@ -1,0 +1,94 @@
+{
+  "download": {
+    "meta": {
+      "title": "Download PromptBox — Windows",
+      "description": "Download PromptBox v3.7.1 free for Windows 10/11; the macOS build is coming soon. Installer and portable builds, encrypted local storage, 100% offline."
+    },
+    "hero": {
+      "badge": "✨ Latest release v3.7.1",
+      "titleLead": "Download",
+      "lead": "Free to start. Every installer is published here on this site with a SHA-256 checksum you can verify yourself — encrypted locally, 100% offline."
+    },
+    "trust": {
+      "aria": "Product guarantees",
+      "t1": "Published by us · checksum included",
+      "t2": "Encrypted from first launch",
+      "t3": "No account required",
+      "t4": "Manual updates · fully under your control"
+    },
+    "platforms": {
+      "title": "Choose your operating system",
+      "lead": "Windows installer and portable builds are available now, with offline support and a custom install directory. macOS is coming soon.",
+      "recommendedBadge": "Recommended for your system",
+      "win": {
+        "requirement": "Windows 10 / 11 (64-bit)",
+        "body": "A standard install wizard (with a choice of drive) plus a portable build that needs no installation. Settings live in an isolated local directory.",
+        "f1pre": "Installer (",
+        "f1post": ") — supports a custom install path",
+        "f2pre": "Portable build (",
+        "f2post": ") — unzip and run",
+        "f3": "Key protected by Windows DPAPI",
+        "cta": "Download for Windows",
+        "ctaPortable": "Portable build (.zip)"
+      },
+      "mac": {
+        "requirement": "macOS 10.15 (Catalina)+",
+        "body": "Natively integrated with the macOS Keychain, running on both Apple Silicon (M1/M2/M3/M4) and Intel.",
+        "f1pre": "Native macOS disk image (",
+        "f1post": ")",
+        "f2": "Universal: Apple Silicon and Intel",
+        "f3": "Key stored automatically in the macOS Keychain",
+        "soonBadge": "Coming soon",
+        "ctaSoon": "Notify me when macOS ships",
+        "soonNote": "The macOS build is in preparation. Leave your email and we’ll tell you the day it ships."
+      }
+    },
+    "checksum": {
+      "title": "File checksums (SHA-256)",
+      "lead": "Verify your download to confirm the file you received is exactly the one we published.",
+      "exeLabel": "Installer .exe",
+      "zipLabel": "Portable .zip",
+      "verifyWin": "Windows PowerShell",
+      "verifyUnix": "macOS / Linux"
+    },
+    "quickstart": {
+      "eyebrow": "Quick Start",
+      "title": "3 steps, 1 minute to get going",
+      "s1": {
+        "title": "Download and install",
+        "body": "Grab the installer for your OS from this page and follow the wizard — about 30 seconds."
+      },
+      "s2": {
+        "title": "First launch",
+        "body": "PromptBox creates the SQLCipher-encrypted database and loads a set of example cards, so you can explore without breaking anything."
+      },
+      "s3": {
+        "title": "Copy your first prompt",
+        "body": "Click a card to copy it, paste straight into ChatGPT / Claude / your IDE, and stop keeping prompts in your head."
+      }
+    },
+    "notes": {
+      "eyebrow": "Notes",
+      "title": "Before you install",
+      "n1": {
+        "title": "How updates work, and the zero-outbound guarantee",
+        "body": "PromptBox has been fully offline since v3.3.0. Every automatic update check and background connection has been removed from the app; new versions are announced by email and downloaded manually from this site, then installed over the old one (the install path doesn’t change and your data stays exactly where it is). The one networked component is the built-in MCP server: it listens on 127.0.0.1 only, so the IDEs on your own machine can connect to it, and it never reaches outward."
+      },
+      "n2": {
+        "title": "Local data encryption",
+        "body": "A page-level SQLCipher-encrypted database is created on first launch. The key is held by your operating system's secure keychain (Windows DPAPI / macOS Keychain) and never written to disk in plaintext."
+      },
+      "n3": {
+        "title": "Upgrading from v2.x",
+        "bodyPre": "The first time v3 launches, it backs the old plaintext database up as ",
+        "bodyPost": " and creates a fresh encrypted database. Old data is never silently merged in; you can import it by hand whenever you want."
+      },
+      "n4": {
+        "title": "Windows may show an “unrecognised app” prompt",
+        "bodyPre": "That prompt is accurate: we have not bought a code signing certificate yet, so Windows cannot match the installer to a verified publisher. We will not ask you to ignore it — check the file against the SHA-256 checksum above, and read ",
+        "linkLabel": "why there is no signature yet",
+        "bodyPost": " for the reasoning, how to verify us yourself, and when this goes away."
+      }
+    }
+  }
+}

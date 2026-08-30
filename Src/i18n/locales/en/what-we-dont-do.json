@@ -1,0 +1,74 @@
+{
+  "notDoing": {
+    "meta": {
+      "title": "What we don't do — PromptBox",
+      "description": "Six things PromptBox deliberately will not build, and five sentences we will not say to you. Stating the boundary plainly is not caution; it is what makes this product work."
+    },
+    "hero": {
+      "badge": "🚫 What we don't do",
+      "titleLead": "This page lists what we",
+      "titleAccent": "deliberately gave up",
+      "lead": "Feature lists are everywhere; this is the other one. Every item below is a decision not to build something, with the reason attached — so you can judge for yourself whether this product might one day turn into something you no longer want."
+    },
+    "features": {
+      "title": "Six things we don't build",
+      "lead": "The question is not what to add, but what we are willing to leave out. Here, less is a design outcome, not an unfinished roadmap.",
+      "i1": {
+        "title": "No team collaboration or role permissions",
+        "body": "Sharing between people means multi-tenancy, roles, concurrency and conflict resolution — which means we run a server and put your data on it. That collides head-on with a local-first product."
+      },
+      "i2": {
+        "title": "Cloud sync is never the pitch or the revenue",
+        "body": "Once revenue depends on the cloud, every product decision starts tilting towards getting more of your data up there. We would rather not create that incentive in the first place."
+      },
+      "i3": {
+        "title": "No prompt version control, A/B testing or analytics",
+        "body": "That is a workbench for engineering teams. Pile it on and the non-technical people we are here for bounce off the interface first."
+      },
+      "i4": {
+        "title": "No prompt marketplace or community browser",
+        "body": "A marketplace means moderation, copyright and quality disputes, and a cut of every sale. We have already ruled out taking a cut, which leaves only operational burden unrelated to what this product is."
+      },
+      "i5": {
+        "title": "We don't sell data, run ads, or take a cut",
+        "body": "Any of the three would destroy the only asset this product has. A tool that holds your keys cannot also be a tool that makes money from your data."
+      },
+      "i6": {
+        "title": "No hard DRM, no dongles, no machine locking",
+        "body": "Offline and copy-proof cannot both be true; that is arithmetic, not effort. We optimise for honest users instead: licences are verified offline, we accept that some copies will be cracked, and we don't degrade everyone's experience to stop them."
+      }
+    },
+    "words": {
+      "title": "Five sentences we won't say",
+      "lead": "The list above governs the product; this one governs the copy. Each line below is wording we have banned internally from this site, the upgrade screen and any marketing material — with the reason next to it.",
+      "i1": {
+        "claim": "“PromptBox is open source”",
+        "body": "The plan is an open core, but it comes after the first revenue — there is no public repository yet. Until there is, any version of “the code is right there, go read it” is a cheque we cannot cash."
+      },
+      "i2": {
+        "claim": "“You can reproduce our build yourself”",
+        "body": "The standard installer contains closed modules, so it cannot be reproduced byte-for-byte from an open core. What we give you is a SHA-256 checksum — proof the file you downloaded is the file we published — not a reproducible build."
+      },
+      "i3": {
+        "claim": "“Upgrade and all your data becomes encrypted”",
+        "body": "Whole-database encryption at rest is already complete, uncapped and permanent in the free version. Pro sells scale and release safeguards, not stronger encryption — and variable default values are stored as plaintext in both."
+      },
+      "i4": {
+        "claim": "“Set a password and the whole card is hidden”",
+        "body": "The password protects the card's content. Card names, descriptions and variable names are not covered by it, so avoid putting hints about a secret into those names. What we do guarantee: the content reaches an AI only after you allow it, every single time."
+      },
+      "i5": {
+        "claim": "“Fully offline” — said on its own",
+        "body": "The app really does make no outbound connections: no update checks, no telemetry, fonts bundled with the binary. But the built-in MCP server is a local service listening on 127.0.0.1 so the IDEs on your machine can reach it. We never say the first sentence without this one."
+      }
+    },
+    "why": {
+      "title": "Why publish any of this",
+      "body": "Recommending a tool that holds someone's keys means vouching for it with your own reputation, and that is an expensive thing to ask. So rather than asking you to trust us, we mark the boundaries one by one and let you decide which claims you can verify — and which sentences we don't dare say at all. Stating the boundary plainly is not caution; it is the condition on which this product works."
+    },
+    "cta": {
+      "title": "Read this first, then decide",
+      "body": "Core features are free forever, no account required, 30 seconds to install."
+    }
+  }
+}

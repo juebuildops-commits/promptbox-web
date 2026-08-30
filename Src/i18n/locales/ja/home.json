@@ -1,0 +1,144 @@
+{
+  "home": {
+    "meta": {
+      "title": "",
+      "description": ""
+    },
+    "hero": {
+      "titleLead": "",
+      "titleAccent": "",
+      "lead": "",
+      "imageAlt": "",
+      "floatTag": ""
+    },
+    "trust": {
+      "aria": "",
+      "local": "",
+      "localSub": "",
+      "encryption": "",
+      "free": "",
+      "platforms": ""
+    },
+    "privacy": {
+      "title": "",
+      "subtitle": "",
+      "item1": {
+        "title": "",
+        "body": ""
+      },
+      "item2": {
+        "title": "",
+        "body": ""
+      },
+      "item3": {
+        "title": "",
+        "body": ""
+      },
+      "flow": {
+        "yourComputer": "",
+        "yourComputerBody": "",
+        "noCloud": "",
+        "needAuth": "",
+        "aiTools": "",
+        "aiToolsBody": ""
+      }
+    },
+    "advanced": {
+      "title": "",
+      "subtitle": "",
+      "row1": {
+        "title": "",
+        "imageAria": "",
+        "imageAlt": "",
+        "b1": "",
+        "b2": "",
+        "b3": ""
+      },
+      "row2": {
+        "title": "",
+        "imageAlt": "",
+        "b1": "",
+        "b2": "",
+        "b3": ""
+      },
+      "row3": {
+        "title": "",
+        "imageAria": "",
+        "imageAlt": "",
+        "b1": "",
+        "b2": "",
+        "b3": ""
+      }
+    },
+    "price": {
+      "title": "",
+      "subtitle": "",
+      "free": {
+        "name": "",
+        "tagline": "",
+        "period": "",
+        "f1": "",
+        "f2": "",
+        "f3": "",
+        "f4": "",
+        "f5": "",
+        "f6": "",
+        "f7": "",
+        "f8": ""
+      },
+      "pro": {
+        "badge": "",
+        "name": "",
+        "tagline": "",
+        "period": "",
+        "f1": "",
+        "f2": "",
+        "f3": "",
+        "f4": "",
+        "f5": "",
+        "f6": "",
+        "f7": ""
+      },
+      "lifetime": {
+        "name": "",
+        "tagline": "",
+        "period": "",
+        "f1": "",
+        "f2": "",
+        "f3": "",
+        "f4": "",
+        "f5": "",
+        "f6": ""
+      },
+      "commercial": {
+        "name": "",
+        "tagline": "",
+        "period": "",
+        "f1": "",
+        "f2": "",
+        "f3": "",
+        "f4": "",
+        "f5": "",
+        "soonBadge": "",
+        "f6": ""
+      }
+    },
+    "faq": {
+      "title": "",
+      "q1": "",
+      "a1": "",
+      "q2": "",
+      "a2": "",
+      "q3": "",
+      "a3": "",
+      "q4": "",
+      "a4": "",
+      "q5": "",
+      "a5": ""
+    },
+    "cta": {
+      "title": "",
+      "body": ""
+    }
+  }
+}

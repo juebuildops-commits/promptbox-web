@@ -1,0 +1,89 @@
+{
+  "privacy": {
+    "meta": {
+      "title": "Privacy policy — PromptBox",
+      "description": "The privacy policy for the PromptBox website: what we collect, why, where it goes, and how to switch it off in one click. The app itself is fully offline and collects nothing."
+    },
+    "hero": {
+      "badge": "🔒 Privacy policy",
+      "titleLead": "What we collect,",
+      "titleAccent": "and how to turn it off",
+      "updated": "Last updated: 27 August 2026"
+    },
+    "appVsSite": {
+      "title": "First, the important part: the app and this website are two different things",
+      "bodyPre": "The PromptBox desktop application has been 100% offline (zero outbound) since v3.3.1 — no update checks, no telemetry, and fonts bundled with the binary rather than fetched from a CDN. It sends us nothing at all, so ",
+      "bodyStrong": "this policy does not apply to the app",
+      "bodyPost": ". Your prompts, secret cards and variable values stay on your own disk, encrypted at rest with SQLCipher, with the key held by your operating system's keychain. The one networked component is the built-in MCP server: it listens on 127.0.0.1 only, so the IDEs on your own machine can connect to it, and it never reaches outward.",
+      "notePre": "Everything below is only about the ",
+      "noteStrong": "website",
+      "notePost": " you are reading right now."
+    },
+    "collect": {
+      "title": "What this website collects",
+      "analytics": {
+        "title": "Site analytics (Google Analytics 4)",
+        "body": "We want to know which pages people actually read and where they arrive from, so we know what to write next. That means page path, referrer, approximate region, device type and browser language.",
+        "measures": "We've narrowed it down: IP addresses are anonymised, Google Signals and ad personalisation are switched off, we run no advertising at all, and we do no cross-site remarketing.",
+        "disabledNotice": "No analytics tool is currently configured on this site, and no analytics code is loaded.",
+        "optoutPre": "You can switch it off. When you do, ",
+        "optoutStrong": "the analytics code is never downloaded to your browser at all",
+        "optoutPost": " — this is not a flag asking the script to behave itself, the script simply does not load."
+      },
+      "email": {
+        "title": "Newsletter (Buttondown)",
+        "body": "Collected only if you type your address into a form yourself. There are exactly two uses: telling you about new releases, and holding your early-bird place.",
+        "unsubscribe": "Every email has one-click unsubscribe at the bottom. Unsubscribing removes you from the list; we don't keep a record of people who have left.",
+        "noTrackingPre": "We have ",
+        "noTrackingStrong": "turned off open-tracking pixels",
+        "noTrackingPost": ". We do not know whether you opened an email or which link you clicked. That is the reason we chose Buttondown over cheaper services."
+      },
+      "none": {
+        "title": "What we don't have",
+        "i1": "No account system — this site doesn't ask you to register for anything",
+        "i2": "No advertising, no ad pixels, no cross-site trackers",
+        "i3": "No session recording, no mouse heatmaps",
+        "i4": "No selling or sharing your email with anyone"
+      }
+    },
+    "storage": {
+      "title": "What's stored in your browser",
+      "body": "This site uses no cookies for personalisation or tracking. Two values live in your own browser's localStorage and are never sent to a server:",
+      "themeKey": "Your light/dark theme preference.",
+      "analyticsKey": "Whether you have opted out of analytics.",
+      "clear": "Clearing your browser data clears both, and the site returns to its defaults."
+    },
+    "processors": {
+      "title": "Whose hands the data passes through",
+      "colName": "Service",
+      "colPurpose": "Purpose",
+      "colData": "What it sees",
+      "vercel": "Hosting and delivery",
+      "vercelData": "Server-log-level IP address and user agent (for operating the service and preventing abuse)",
+      "ga": "Site analytics",
+      "gaData": "Anonymised pageview events (you can opt out)",
+      "buttondown": "Sending the newsletter",
+      "buttondownData": "The email address you gave us (no open tracking)"
+    },
+    "rights": {
+      "title": "What you can do",
+      "i1": "Opt out of analytics on this page, at any time",
+      "i2": "Unsubscribe from any email, in one click",
+      "i3": "Ask us to delete your email address and any related records"
+    },
+    "toggle": {
+      "label": "Allow anonymous analytics",
+      "on": "Currently on. You can switch it off at any time.",
+      "off": "Currently off. No analytics code will load in your browser.",
+      "unavailable": "No analytics tool is configured on this site, so this switch does nothing."
+    },
+    "contact": {
+      "title": "Who to ask",
+      "body": "For privacy questions and requests, the channels below reach us."
+    },
+    "changes": {
+      "title": "Changes to this policy",
+      "body": "If this policy changes materially we'll update the date at the top of this page and explain it in the newsletter. We won't quietly widen what we collect."
+    }
+  }
+}

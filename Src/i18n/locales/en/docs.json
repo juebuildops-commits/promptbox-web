@@ -1,0 +1,12 @@
+{
+  "docs": {
+    "meta": {
+      "title": "PromptBox manual — getting started and advanced features",
+      "description": "How to use PromptBox: getting started, cards, folders and tags, variable templates, secret cards, card chaining, MCP integration, and troubleshooting."
+    },
+    "sidebarHeading": "Manual contents",
+    "sidebarAria": "Table of contents",
+    "title": "PromptBox manual",
+    "lead": "From installation to the secret vault and MCP integration — this manual takes PromptBox as far as it goes."
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "notDoing": {
+    "meta": {
+      "title": "",
+      "description": ""
+    },
+    "hero": {
+      "badge": "",
+      "titleLead": "",
+      "titleAccent": "",
+      "lead": ""
+    },
+    "features": {
+      "title": "",
+      "lead": "",
+      "i1": {
+        "title": "",
+        "body": ""
+      },
+      "i2": {
+        "title": "",
+        "body": ""
+      },
+      "i3": {
+        "title": "",
+        "body": ""
+      },
+      "i4": {
+        "title": "",
+        "body": ""
+      },
+      "i5": {
+        "title": "",
+        "body": ""
+      },
+      "i6": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "words": {
+      "title": "",
+      "lead": "",
+      "i1": {
+        "claim": "",
+        "body": ""
+      },
+      "i2": {
+        "claim": "",
+        "body": ""
+      },
+      "i3": {
+        "claim": "",
+        "body": ""
+      },
+      "i4": {
+        "claim": "",
+        "body": ""
+      },
+      "i5": {
+        "claim": "",
+        "body": ""
+      }
+    },
+    "why": {
+      "title": "",
+      "body": ""
+    },
+    "cta": {
+      "title": "",
+      "body": ""
+    }
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "pricing": {
+    "meta": {
+      "title": "Pricing and licensing — PromptBox",
+      "description": "PromptBox pricing: core features free forever. Personal Pro at the early-bird price of $19 USD/year (locked for life, current version forever plus 12 months of updates), lifetime updates for $109 one-time, commercial licence $69/seat/year."
+    },
+    "hero": {
+      "badge": "💎 Buy once, own forever — plus update rights",
+      "titleLead": "Honest,",
+      "titleAccent": "simple pricing",
+      "lead": "Core features are free forever. Pay once for the advanced ones and the version you bought is yours permanently — when update rights lapse nothing is locked, and there is no time bomb."
+    },
+    "trust": {
+      "aria": "Pricing guarantees",
+      "t1": "Buy once + update rights · your version works forever",
+      "t2": "Limited early-bird · renewal price locked for life",
+      "t3": "Never forced online · offline signature checks, never locked out",
+      "t4": "Commercial honour licence · buy 4 seats, get 1 free"
+    },
+    "free": {
+      "name": "Free",
+      "tagline": "The complete core workflow, free forever.",
+      "period": "Free forever",
+      "f1": "Full prompt management (create, edit, delete)",
+      "f2": "Up to {cards} cards in total (secret and chained cards included)",
+      "f3": "Of those, up to {secretCards} secret cards",
+      "f4": "Of those, up to {chainCards} cards in a chain folder",
+      "f5": "Up to {mcpTokens} named MCP tokens",
+      "f6": "Whole-database SQLCipher encryption at rest — free forever, never capped",
+      "f7": "Variable templates and substitution, complete and uncapped",
+      "f8": "Consent dialog, idle auto-lock, and the release audit log with full history",
+      "f9": "Unlimited folders, tags and global search",
+      "f10": "Live Markdown preview and light/dark themes"
+    },
+    "pro": {
+      "badge": "🔥 First {earlyBirdSeats} early adopters · price locked for life",
+      "name": "Personal Pro",
+      "tagline": "Current version forever + {updateMonths} months of updates",
+      "period": "USD / year (purchase and renewal locked for life)",
+      "f1": "Everything in Free",
+      "f2": "No limit on total cards",
+      "f3": "No limit on secret or chained cards",
+      "f4": "Unlimited named MCP tokens",
+      "f5": "Export the release audit log (ships with Pro)",
+      "f6": "{updateMonths} months of version updates included",
+      "f7": "Stop renewing and you keep your last version forever",
+      "cta": "Join the early-bird list (${proEarly}/year)"
+    },
+    "lifetime": {
+      "name": "Lifetime updates",
+      "tagline": "A lifetime licence plus every future update. No renewals.",
+      "period": "USD / one-time",
+      "f1": "Everything in Pro",
+      "f2": "No limit on prompts, secret cards or chains",
+      "f3": "Unlimited named MCP tokens",
+      "f4": "Every future release on this product line, forever",
+      "f5": "No annual renewal to think about",
+      "f6": "Local-first · your data stays yours",
+      "f7": "Covers updates and security fixes for the current product line (major new modules priced separately)",
+      "cta": "Reserve lifetime updates (${lifetime})"
+    },
+    "commercial": {
+      "name": "Commercial",
+      "tagline": "Lawful use inside a company, on the honour system. Still planned — not on sale yet.",
+      "period": "USD / seat / year",
+      "f1": "Functionally identical to Pro",
+      "f2": "Licensed for company and for-profit environments",
+      "f3": "Buy 4 seats, get 1 free",
+      "f4": "Honour system: the offline app has no expiry lock",
+      "f5": "Not yet on sale; invoicing and receipts will be confirmed when it opens",
+      "cta": "Not yet available",
+      "soonBadge": "Planned",
+      "f6": "Organisations holding 25 seats or more can be listed as supporting organisations"
+    },
+    "promo": {
+      "twoYear": {
+        "title": "Buy 2 years, get 1 free",
+        "bodyPre": "Pay for two years of Personal Pro update rights at once (${proTwoYear}) and you get ",
+        "bodyStrong": "{bundleMonths} months",
+        "bodyPost": " of update rights outright."
+      },
+      "bundle": {
+        "title": "Team bundle: buy 4, get 1",
+        "bodyPre": "When commercial licences open, buying 4 seats at once (${commercialBundleTotal}/year) issues ",
+        "bodyStrong": "{commercialBundleSeats} independent licence keys",
+        "bodyPost": " — sized for teams and small studios."
+      },
+      "earlyBird": {
+        "title": "Early-bird price, locked for life",
+        "bodyPre": "The first {earlyBirdSeats} customers pay ${proEarly} up front, and every future update-rights renewal is ",
+        "bodyStrong": "locked at ${proEarly}/year for life",
+        "bodyPost": ". The standard renewal price is ${proRenewStandard}/year."
+      }
+    },
+    "compare": {
+      "eyebrow": "Compare",
+      "title": "Full feature comparison",
+      "colFeature": "Feature",
+      "colFree": "Free",
+      "colPro": "Personal Pro",
+      "colLifetime": "Lifetime",
+      "colCommercial": "Commercial",
+      "unlimited": "Unlimited",
+      "dash": "—",
+      "r1": "Prompt management (create, edit, delete)",
+      "r2": "Total card limit (secret and chained cards included)",
+      "r2free": "Up to {cards}",
+      "r3": "Of those, secret cards",
+      "r3free": "Up to {secretCards}",
+      "r4": "Of those, cards in a chain folder",
+      "r4free": "Up to {chainCards}",
+      "r5": "Named MCP tokens",
+      "r5free": "Up to {mcpTokens}",
+      "r6": "Number of folders",
+      "r7pre": "Variable templates and substitution (",
+      "r7post": ")",
+      "r8": "Whole-database SQLCipher encryption at rest",
+      "r9": "Perpetual right to use the current version",
+      "r9forever": "✓ Forever",
+      "r10": "Right to new versions",
+      "r10free": "Free updates",
+      "r10pro": "{updateMonths} months",
+      "r10lifetime": "Forever",
+      "r10commercial": "While the licence is current",
+      "r11": "Licensed for company / commercial use",
+      "r11commercial": "✓ Commercial",
+      "r12": "Fully offline operation (no time bomb)",
+      "r8free": "✓ Free forever",
+      "r13": "Release audit: log and review",
+      "r14": "Release audit: export"
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Pricing and licensing questions",
+      "q1": "What does \"buy once + update rights\" actually mean?",
+      "a1pre": "When you buy Personal Pro you pay once and ",
+      "a1s1": "own the current version permanently",
+      "a1mid": ", together with ",
+      "a1s2": "{updateMonths} months of rights to new versions",
+      "a1post": ". When those update rights lapse you are under no obligation to renew — the version you installed keeps working forever and is never locked or downgraded.",
+      "q2": "What does the early-bird \"price locked for life\" mean?",
+      "a2pre": "The first {earlyBirdSeats} customers pay just ",
+      "a2s1": "${proEarly} USD",
+      "a2mid": " up front (including {updateMonths} months of updates), and every future update-rights renewal stays locked at ",
+      "a2s2": "${proEarly} USD / year",
+      "a2post": " for life. The standard prices are ${proStandard} up front and ${proRenewStandard}/year to renew.",
+      "q3": "Once update rights expire, does the software still work? Will it lock me out?",
+      "a3pre": "It absolutely still works. PromptBox is local-first and offline by principle, and the app runtime ",
+      "a3s1": "never checks an expiry date and will never time-bomb",
+      "a3post": ". Expired update rights only mean you can't download versions released after that point; the version you own is entirely unaffected.",
+      "q4": "How is \"lifetime updates (${lifetime})\" different from Personal Pro?",
+      "a4pre": "Personal Pro is buy-once plus an optional annual update-rights renewal. Lifetime updates is a single payment of ${lifetime} USD that gives you every Pro feature and ",
+      "a4s1": "every future release on this product line, permanently",
+      "a4post": ", with no renewal to remember.",
+      "q5": "What is the commercial licence?",
+      "a5pre": "A licence designed for companies and for-profit organisations (${commercial} USD / seat / year). It is functionally identical to Pro — what you are buying is commercial compliance and support for the developer. It runs on the honour system (the offline app has no expiry lock) and includes a ",
+      "a5s1": "buy 4 seats, get 1 free",
+      "a5post": " bundle, with invoices for corporate purchasing.",
+      "q6": "How do I buy it? How do payment and invoicing work?",
+      "a6": "Nothing is on sale yet — every button on the four plan cards is a sign-up form, and we will email you when checkout opens. Payments will then be handled by a Merchant of Record platform, which collects and remits VAT and other taxes worldwide and issues the receipt; once payment clears, the licence key is emailed to you and verified offline inside the app, with no connection required. The payment methods and invoice formats we actually support will be published when checkout opens."
+    },
+    "cta": {
+      "title": "Start free, upgrade when you need to",
+      "body": "Core features free forever, 30 seconds to install, and one less thing to keep in your head."
+    }
+  }
+}
