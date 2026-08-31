@@ -375,13 +375,13 @@ useHead({
             </div>
           </div>
 
-          <div class="notice notice-warning">
-            <span class="icon icon--gift text-amber-500 shrink-0 mt-1" aria-hidden="true" />
-            <div>
-              <strong class="text-ink-900 font-bold block mb-1">{{ $t('download.notes.n3.title') }}</strong>
-              <p class="text-sm text-ink-700">{{ $t('download.notes.n3.bodyPre') }}<code>promptbox.db.plain.bak</code>{{ $t('download.notes.n3.bodyPost') }}</p>
-            </div>
-          </div>
+          <!--
+            2026-08-31：移除「從 v2.x 升級」那一則（原 n3）。
+            產品尚未發布、沒有任何既有使用者，**沒有人是從 v2.x 升上來的** ——
+            對全部都是新安裝的讀者說明舊庫備份，只會讓人以為自己漏了一個步驟。
+            App 的備份行為本身不變（見 appsync/身分字串凍結清單 的 `promptbox.db.plain.bak`），
+            首發後若真的出現 v2 使用者，再把這一則加回來。
+          -->
         </div>
 
         <!--

@@ -25,7 +25,8 @@
       "okEarlyBird": "You are on the list. Places are ordered by this sign-up’s timestamp; when we go on sale we will email you, and your place is held for one week from that email.",
       "already": "This address is already on the list — no need to sign up again.",
       "invalid": "That email address doesn't look right. Could you check it?",
-      "blocked": "Our email provider blocked this address (aliases containing + are a common cause). Please use a different one — resending the same address won’t help.",
+      "blocked": "This address didn't pass our email provider's anti-abuse check. Please try a different one.",
+      "rateLimited": "That's a lot of attempts. Please wait a few minutes and try again.",
       "disabled": "Subscriptions aren't live yet (no mail service configured).",
       "error": "That didn't go through. Please try again in a moment."
     },

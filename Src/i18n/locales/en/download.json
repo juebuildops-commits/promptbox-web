@@ -78,11 +78,6 @@
         "title": "Local data encryption",
         "body": "A page-level SQLCipher-encrypted database is created on first launch. The key is held by your operating system's secure keychain (Windows DPAPI / macOS Keychain) and never written to disk in plaintext."
       },
-      "n3": {
-        "title": "Upgrading from v2.x",
-        "bodyPre": "The first time v3 launches, it backs the old plaintext database up as ",
-        "bodyPost": " and creates a fresh encrypted database. Old data is never silently merged in; you can import it by hand whenever you want."
-      },
       "n4": {
         "title": "Windows may show an “unrecognised app” prompt",
         "bodyPre": "That prompt is accurate: we have not bought a code signing certificate yet, so Windows cannot match the installer to a verified publisher. We will not ask you to ignore it — check the file against the SHA-256 checksum above, and read ",

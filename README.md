@@ -11,7 +11,7 @@
 
 | | |
 | --- | --- |
-| **是** | 官網前端。6 個頁面、2 個語系、1 個 API 端點（email 訂閱），其餘全部是建置時預繪好的靜態 HTML |
+| **是** | 官網前端。8 個頁面、2 個語系、1 個 API 端點（email 訂閱），其餘全部是建置時預繪好的靜態 HTML |
 | **是** | PromptBox 安裝檔的**唯一**發佈管道 —— 沒有 GitHub Releases（決策 D19），App 本體的 repo 目前未公開 |
 | **不是** | 商店。目前**收不到錢**：金流（Polar）、帳號（Supabase Auth）、下載閘門都還沒接，定價頁的購買行為一律導向 email 訂閱表單 |
 | **不是** | App 本身。Electron 桌面程式在另一個 repo；App 的 README 快照在 `Docs/refer/APP快照.md`，那是**那個產品**的說明書，不是這個網站的 |
@@ -70,7 +70,7 @@ promptbox-web/
     │
     ├── app/
     │   ├── app.vue            ← 只做一件事：由 useLocaleHead() 輸出 <html lang>／hreflang／canonical
-    │   ├── pages/             ← 6 個頁面（見第四節）
+    │   ├── pages/             ← 8 個頁面（見第四節）
     │   ├── components/        ← AppHeader／AppFooter／LanguageSwitcher／SubscribeForm
     │   │                        ／ContentLocaleNotice／content/Notice.vue（MDC callout）
     │   ├── composables/       ← useTheme／useOsDetect／useAnalyticsConsent／useContact
@@ -144,6 +144,21 @@ Hero（含產品截圖）→ 信任列（本地儲存・SQLCipher 靜態加密�
 
 GA4 未設定時，這頁會誠實顯示「本站目前未設定任何分析工具」，而不是描述一個不存在的東西。頁尾「聯絡我們」在沒有聯絡信箱時會導到這頁的聯絡區。
 
+### `/what-we-dont-do` — 我們不做什麼（`app/pages/what-we-dont-do.vue`）
+
+**要表達**：這個產品**不會**變成什麼。六件主動放棄的事（BRD-01 §4）＋ 五句我們明文禁止自己說的話（BRD-03 §9）。
+
+它不是免責聲明，是行銷素材 —— 服務的是「準備把它推薦給別人、需要先確認自己不會被打臉」的讀者。全頁沒有正向功能敘述，也刻意不放訂閱表單。
+
+### `/enterprise` — 支持組織（`app/pages/enterprise.vue`）
+
+**要表達**：商業授權是什麼，以及**這面支持組織牆現在是空的**。
+
+對標 Obsidian 的 `/enterprise`，但前提相反：那頁是一萬多個組織的名單，我們一個都還沒有（商業授權尚未開賣）。因此主體是一個**誠實的空狀態** —— dashed 佔位框 ＋ 三條「這面牆不會出現什麼」（沒付費的標誌、案例研究與推薦語、查不到數字的集合名詞）。
+
+🔴 **本頁刻意不掛進 header／footer**：能開始賣之前，導覽裡多一個入口只會把訪客送到一個買不了東西的頁。
+**而沒有連結 ⇒ `crawlLinks` 爬不到 ⇒ 不會被預繪**，因此 `nitro.prerender.routes` 明列了 `/enterprise` 與 `/en/enterprise`（見 §五第三點，那個坑的症狀是建置成功、線上 404）。開賣時要一起改的三處寫在 [PageDescription 08 §3](Docs/webspec/PageDescription/08_enterprise.md)。
+
 ---
 
 ## 五、渲染與路由模型
@@ -151,9 +166,12 @@ GA4 未設定時，這頁會誠實顯示「本站目前未設定任何分析工�
 - **全站預繪**：`routeRules` 設 `'/**': { prerender: true }`，產物是純靜態 HTML。
 - 🔴 **唯一例外是 `/api/**`**。`server/api/subscribe.post.ts` 必須是真的 server route，否則 Buttondown 的 API key 只能放進前端（＝公開，任何人都能拿它讀取整份訂閱名單）。這是「純靜態」**唯一且刻意**的破例。
 - 🔴 `routeRules` 的 glob **不會餵種子給預繪器** —— 它只回答「這條路徑如果被走到，要不要預繪」。因為改用 `nuxt build`（而非會自動塞 `/` 的 `nuxt generate`），必須在 `nitro.prerender.routes` 明確給 `['/', '/en']` 兩個入口，其餘由 `crawlLinks` 從連結爬出來。漏了的症狀很惡毒：建置照樣成功，只是 `.output/public` 裡一個 `.html` 都沒有。
+  - 🔴 **同一個坑的第二種踩法**：`/enterprise` 與 `/en/enterprise` 刻意不掛進導覽（見 §四），於是 `crawlLinks` 也爬不到它們，因此它們**各自明列在 `routes` 裡**。把頁面從導覽拿掉、或新增一個不進導覽的頁面時，都要同時看這一行。
 - **深色模式**：初始判定是 `<head>` 內的**同步 inline script**（寫在 `nuxt.config.ts`），不是 plugin —— plugin 在 hydration 之後才跑，深色模式使用者每次載入都會閃一下白底。`useTheme()` 只負責點擊後的切換與持久化（`localStorage: pb-theme`）。
 - **分析退出**：`initMode: 'manual'` ＋ `plugins/analytics.client.ts`。退出的訪客身上，gtag.js **從頭到尾不會出現在網路請求裡** —— 比業界慣用的 `ga-disable-*` 旗標（照樣下載執行、只是不回報）強一級。狀態存 `localStorage: pb-analytics`，未表態視為允許（opt-out 模型）。
 - **訂閱端點**：前端只送 `kind`（updates／early-bird／commercial），**tag 由伺服器決定**，放任前端傳 tag ＝ 讓任何人污染名單分群。另含蜜罐欄位、保守的 email 檢查、以及「不回傳 Buttondown 原始錯誤」。
+  - 🔴 **不轉發訪客 IP 給 Buttondown**（路線 B）。Buttondown 官方建議這樣做以避開防火牆誤判，但那會擴大送給第三方的個資範圍，牴觸隱私頁的處理者矩陣。代價是防濫用責任回到我方 ＝ **每 IP 10 分鐘 5 次的限流**（實例層級記憶體，是減速丘不是牆）。
+  - 🔴 **Buttondown 後台的防火牆設定會整個關掉這支端點**（伺服器端轉發 ⇒ 對方只看得到機房 IP）。目標值與四輪除錯的來龍去脈見 [待討論問題 F17](Docs/webplan/待討論問題.md)，**動它之前先讀**。
 - **圖示**：`.icon--*` 走 CSS mask 上色，SVG 放 `public/assets/`，不引入圖示元件庫。
 
 ---

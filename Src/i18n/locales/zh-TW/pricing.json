@@ -2,7 +2,7 @@
   "pricing": {
     "meta": {
       "title": "定價與授權 — PromptBox",
-      "description": "PromptBox 定價：核心功能永久免費。個人版 Pro 早鳥優惠 $19 USD/年（永久鎖價，含當前版本永久可用 + 12 個月更新權）、永久更新權 $109 一次買斷、商業授權 $69/人/年。"
+      "description": "PromptBox 定價：核心功能永久免費。個人版 Pro 早鳥優惠 ${proEarly} USD/年（永久鎖價，含當前版本永久可用 + {updateMonths} 個月更新權）、商業授權 ${commercial}/人/年。"
     },
     "hero": {
       "badge": "💎 買斷 + 更新權模型（Buy Once, Own Forever）",
@@ -70,7 +70,7 @@
       "f5": "尚未開放購買，開放時一併公布發票與報帳方式",
       "cta": "尚未開放",
       "soonBadge": "還在計畫中",
-      "f6": "持有 25 席以上的組織，可列名為支持組織"
+      "f6": "持有 {sponsorSeats} 席以上的組織，可列名為支持組織"
     },
     "promo": {
       "twoYear": {

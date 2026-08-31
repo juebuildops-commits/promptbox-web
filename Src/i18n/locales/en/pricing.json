@@ -2,7 +2,7 @@
   "pricing": {
     "meta": {
       "title": "Pricing and licensing — PromptBox",
-      "description": "PromptBox pricing: core features free forever. Personal Pro at the early-bird price of $19 USD/year (locked for life, current version forever plus 12 months of updates), lifetime updates for $109 one-time, commercial licence $69/seat/year."
+      "description": "PromptBox pricing: core features free forever. Personal Pro at the early-bird price of ${proEarly} USD/year (locked for life, current version forever plus {updateMonths} months of updates), commercial licence ${commercial}/seat/year."
     },
     "hero": {
       "badge": "💎 Buy once, own forever — plus update rights",
@@ -70,7 +70,7 @@
       "f5": "Not yet on sale; invoicing and receipts will be confirmed when it opens",
       "cta": "Not yet available",
       "soonBadge": "Planned",
-      "f6": "Organisations holding 25 seats or more can be listed as supporting organisations"
+      "f6": "Organisations holding {sponsorSeats} seats or more can be listed as supporting organisations"
     },
     "promo": {
       "twoYear": {

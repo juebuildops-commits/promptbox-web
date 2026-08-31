@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PRICES, TOKENS, VAR_TOKEN } from '~/utils/pricing'
+import { PRICES, SHOW_LIFETIME, TOKENS, VAR_TOKEN } from '~/utils/pricing'
 
 /**
  * F2 收尾：階段一把 `alert('線上金流（Paddle）即將開放！…')` 改成不綁廠商的
@@ -17,7 +17,9 @@ const { hasEmail } = useContact()
 
 useHead({
   title: () => t('pricing.meta.title'),
-  meta: [{ name: 'description', content: () => t('pricing.meta.description') }],
+  // 🔴 meta.description 也引用價格（2026-08-31 起走具名參數）——
+  //    漏掉 TOKENS 的話三個數字會靜默消失，而這一句正是搜尋結果直接顯示的那一句。
+  meta: [{ name: 'description', content: () => t('pricing.meta.description', TOKENS) }],
 })
 </script>
 
@@ -79,7 +81,8 @@ useHead({
   <section class="py-20 max-md:py-12 bg-surface-page" id="plans">
     <div class="max-w-[1920px] mx-auto px-6 md:px-12 xl:px-24 2xl:px-60">
 
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-7xl mx-auto items-stretch">
+      <!-- 🔴 欄數跟著 SHOW_LIFETIME 走：少一張卡卻留 4 欄會在最後留一個空格 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto items-stretch" :class="SHOW_LIFETIME ? 'xl:grid-cols-4' : 'xl:grid-cols-3'">
 
         <!-- 1. 免費版 Free -->
         <div class="bg-surface-card border border-line-200 rounded-2xl p-7 flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
@@ -216,8 +219,8 @@ useHead({
           </div>
         </div>
 
-        <!-- 3. 永久更新權 Lifetime -->
-        <div class="bg-surface-card border border-line-200 rounded-2xl p-7 flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+        <!-- 3. 永久更新權 Lifetime —— 🔴 SHOW_LIFETIME=false 期間整張卡與對照表那一欄都不渲染。見 utils/pricing.ts -->
+        <div v-if="SHOW_LIFETIME" class="bg-surface-card border border-line-200 rounded-2xl p-7 flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
           <div class="flex flex-col gap-6">
             <div>
               <div class="flex items-center justify-between">
@@ -323,7 +326,7 @@ useHead({
               </li>
               <li class="flex items-start gap-2.5">
                 <span class="icon icon--check text-brand w-4 h-4 shrink-0" />
-                <span>{{ $t('pricing.commercial.f6') }}</span>
+                <span>{{ $t('pricing.commercial.f6', TOKENS) }}</span>
               </li>
               <li class="flex items-start gap-2.5 text-ink-500">
                 <span class="icon icon--check text-ink-400 w-4 h-4 shrink-0" />
@@ -417,7 +420,7 @@ useHead({
                 <th class="p-4 md:p-5">{{ $t('pricing.compare.colFeature') }}</th>
                 <th class="p-4 md:p-5 text-center w-28">{{ $t('pricing.compare.colFree') }}</th>
                 <th class="p-4 md:p-5 text-center w-36 text-brand bg-brand/15">{{ $t('pricing.compare.colPro') }}</th>
-                <th class="p-4 md:p-5 text-center w-36 text-brand bg-brand/10">{{ $t('pricing.compare.colLifetime') }}</th>
+                <th v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center w-36 text-brand bg-brand/10">{{ $t('pricing.compare.colLifetime') }}</th>
                 <th class="p-4 md:p-5 text-center w-36">{{ $t('pricing.compare.colCommercial') }}</th>
               </tr>
             </thead>
@@ -426,42 +429,42 @@ useHead({
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r1') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">✓</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">✓</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">✓</td>
               </tr>
               <tr>
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r2') }}</td>
                 <td class="p-4 md:p-5 text-center text-ink-700 font-bold">{{ $t('pricing.compare.r2free', TOKENS) }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">{{ $t('pricing.compare.unlimited') }}</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.unlimited') }}</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.unlimited') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">{{ $t('pricing.compare.unlimited') }}</td>
               </tr>
               <tr>
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r3') }}</td>
                 <td class="p-4 md:p-5 text-center text-ink-700 font-bold">{{ $t('pricing.compare.r3free', TOKENS) }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">{{ $t('pricing.compare.unlimited') }}</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.unlimited') }}</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.unlimited') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">{{ $t('pricing.compare.unlimited') }}</td>
               </tr>
               <tr>
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r4') }}</td>
                 <td class="p-4 md:p-5 text-center text-ink-700 font-bold">{{ $t('pricing.compare.r4free', TOKENS) }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">{{ $t('pricing.compare.unlimited') }}</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.unlimited') }}</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.unlimited') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">{{ $t('pricing.compare.unlimited') }}</td>
               </tr>
               <tr>
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r5') }}</td>
                 <td class="p-4 md:p-5 text-center text-ink-700 font-bold">{{ $t('pricing.compare.r5free', TOKENS) }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">{{ $t('pricing.compare.unlimited') }}</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.unlimited') }}</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.unlimited') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">{{ $t('pricing.compare.unlimited') }}</td>
               </tr>
               <tr>
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r6') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">{{ $t('pricing.compare.unlimited') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">{{ $t('pricing.compare.unlimited') }}</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.unlimited') }}</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.unlimited') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">{{ $t('pricing.compare.unlimited') }}</td>
               </tr>
               <!--
@@ -475,14 +478,14 @@ useHead({
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r7pre') }}<code>{{ VAR_TOKEN }}</code>{{ $t('pricing.compare.r7post') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">✓</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">✓</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">✓</td>
               </tr>
               <tr>
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r8') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">{{ $t('pricing.compare.r8free') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">✓</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">✓</td>
               </tr>
               <!-- 釋放稽核：記錄與檢視 Free 完整（§2.2），只有「匯出」是 Pro 的那一半 -->
@@ -490,42 +493,42 @@ useHead({
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r13') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">✓</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">✓</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">✓</td>
               </tr>
               <tr>
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r14') }}</td>
                 <td class="p-4 md:p-5 text-center text-ink-300">{{ $t('pricing.compare.dash') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">✓</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">✓</td>
               </tr>
               <tr>
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r9') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">✓</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">{{ $t('pricing.compare.r9forever') }}</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.r9forever') }}</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.r9forever') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">{{ $t('pricing.compare.r9forever') }}</td>
               </tr>
               <tr>
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r10') }}</td>
                 <td class="p-4 md:p-5 text-center text-ink-700">{{ $t('pricing.compare.r10free') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">{{ $t('pricing.compare.r10pro', TOKENS) }}</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.r10lifetime') }}</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">{{ $t('pricing.compare.r10lifetime') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">{{ $t('pricing.compare.r10commercial') }}</td>
               </tr>
               <tr>
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r11') }}</td>
                 <td class="p-4 md:p-5 text-center text-ink-300">{{ $t('pricing.compare.dash') }}</td>
                 <td class="p-4 md:p-5 text-center text-ink-300 bg-brand/8">{{ $t('pricing.compare.dash') }}</td>
-                <td class="p-4 md:p-5 text-center text-ink-300 bg-brand/4">{{ $t('pricing.compare.dash') }}</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-ink-300 bg-brand/4">{{ $t('pricing.compare.dash') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">{{ $t('pricing.compare.r11commercial') }}</td>
               </tr>
               <tr>
                 <td class="p-4 md:p-5 font-medium">{{ $t('pricing.compare.r12') }}</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">✓</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/8">✓</td>
-                <td class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
+                <td v-if="SHOW_LIFETIME" class="p-4 md:p-5 text-center text-brand font-bold bg-brand/4">✓</td>
                 <td class="p-4 md:p-5 text-center text-brand font-bold">✓</td>
               </tr>
             </tbody>
@@ -584,7 +587,8 @@ useHead({
             </div>
           </details>
 
-          <details class="gradient-border-faq relative group p-6 bg-surface-card border border-line-200 rounded-xl transition-all duration-200 open:rounded-lg">
+          <!-- q4 整條問答只在談永久更新權，SHOW_LIFETIME=false 時連問題都不該出現 -->
+          <details v-if="SHOW_LIFETIME" class="gradient-border-faq relative group p-6 bg-surface-card border border-line-200 rounded-xl transition-all duration-200 open:rounded-lg">
             <summary class="flex items-center justify-between gap-4 cursor-pointer list-none text-ink-800 font-sans font-bold text-lg leading-normal [&::-webkit-details-marker]:hidden">
               <span>{{ $t('pricing.faq.q4', TOKENS) }}</span>
               <span class="icon icon--chevron text-ink-800 rotate-180 group-open:rotate-0 transition-transform duration-200" aria-hidden="true" />

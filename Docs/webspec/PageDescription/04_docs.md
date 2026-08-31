@@ -62,7 +62,13 @@
 
 ### 外部連結（External Outbound）
 
-- [第 8 章「GitHub 提出 Issue」] -> `github.com/tsa206531/PromptBox`（第三方程式碼代管平台，作為意見回饋管道）
+> 🔴 **2026-08-31 移除**：第 8 章原有一條 [GitHub 提出 Issue] -> `github.com/tsa206531/PromptBox` 的外連。
+> **該 repo 未公開**（D19），所以那是一條使用者點了會 404 的死連結，而且它同時暗示「repo 是公開的」——
+> 撞 BRD-03 §9 規則 4（只能說「核心開源」，不能說 PromptBox 是開源軟體）。
+> 意見回饋管道現在只剩「聯絡我們」一條（`/privacy#contact`）。
+>
+> **為什麼 F10／F11 沒抓到**：那兩次清點掃的是 `Src/app/` 與語系檔，**沒有掃 `Src/content/`** ——
+> 手冊與版本紀錄是 Markdown，不在當時的搜尋範圍裡。同一次漏掉的還有 changelog v3.3.0 的「或 GitHub Releases」。
 - [第 9 章「VirusTotal」] -> `virustotal.com`（**第三方獨立驗證機構**）
 
 > 拓樸特徵：本頁是全站唯一同時具備**入站深層錨定**與**出站第三方驗證連結**的節點。`#install-safety` 被下載頁指名引用，而該章節內部又向外導向一個非本方控制的驗證服務——這在連結層構成一條「產品聲明 → 說明頁 → 外部獨立查核」的完整路徑。

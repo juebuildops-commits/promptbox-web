@@ -5,8 +5,8 @@
       "description": "PromptBox is a local-first prompt manager built for the AI era. SQLCipher encryption, variable templates, card chaining, MCP integration for your IDE — core features free forever."
     },
     "hero": {
-      "titleLead": "The password manager for the AI era —",
-      "titleAccent": "but for your prompts, settings and keys",
+      "titleLead": "The password manager for the AI era",
+      "titleAccent": "— but for your prompts, settings and keys.",
       "lead": "Your context lives on your own machine; any AI can use it, no vendor can take it.",
       "imageAlt": "The PromptBox main window: folders and tags on the left, prompt cards on the right",
       "floatTag": "Local-first AI prompt manager"
@@ -120,7 +120,7 @@
         "f4": "Honour system: the offline app has no expiry lock",
         "f5": "Not yet on sale; invoicing and receipts will be confirmed when it opens",
         "soonBadge": "Planned",
-        "f6": "Organisations holding 25 seats or more can be listed as supporting organisations"
+        "f6": "Organisations holding {sponsorSeats} seats or more can be listed as supporting organisations"
       }
     },
     "faq": {
@@ -130,11 +130,11 @@
       "q2": "Are secret cards safe? Can the AI read them?",
       "a2": "Secret cards use per-card scrypt + AES-256-GCM encryption and need your own password to unlock in the GUI. From v3.6.0 on, password protection and visibility to AI are two independent axes: when a card is visible to AI, the AI sees only its name, description and ID; the content is released only after you hit allow in the consent dialog and type your password — every single time. You can tick “don’t ask again for 10 minutes”, which stops repeat prompts for that card in that window (held in memory only, never the password, and dropped instantly on lock screen or manual revocation). The boundary worth stating plainly: card names, descriptions and variable names are not protected by the password, and variable default values are stored as plaintext independently of it — so avoid putting hints about a secret into those names.",
       "q3": "Is installing safe? Could I lose data?",
-      "a3": "Installers are published directly from this site, each with a SHA-256 checksum so you can verify the file’s integrity. We have not bought a code signing certificate yet, so Windows may show an “unrecognised app” prompt — the download page and the manual explain why and how to check for yourself. The encrypted database is created on first launch, and when you upgrade, the old plaintext database is automatically backed up as promptbox.db.plain.bak. The app never performs a silent background upgrade: new versions are announced by email and installed manually over the old one. The install path doesn’t change and your data stays exactly where it is.",
+      "a3": "Installers are published directly from this site, each with a SHA-256 checksum so you can verify the file’s integrity. We have not bought a code signing certificate yet, so Windows may show an “unrecognised app” prompt — the download page and the manual explain why and how to check for yourself. The encrypted SQLCipher database is created on first launch, with the key held by your operating system’s keychain. The app never performs a silent background upgrade: new versions are announced by email and installed manually over the old one. The install path doesn’t change and your data stays exactly where it is.",
       "q4": "Which platforms are supported?",
       "a4": "Windows 10 / 11 today (64-bit, with both an installer and a portable build). The macOS build is still in preparation and has not been released — leave your email on the download page and we will tell you the day it ships. The built-in MCP server connects locally to Cursor, VS Code, Claude Desktop, Windsurf, Claude Code, Cline and other mainstream AI tools.",
       "q5": "Is it really free? What are the limits?",
-      "a5": "The core workflow is free forever: prompt management, folders, tags, global search, one-click copy, Markdown preview and light/dark themes all cost nothing. (Free tier quotas: {cards} cards in total — secret and chained cards count towards that same number, of which up to {secretCards} may be secret and up to {chainCards} may sit in a chain folder — plus {mcpTokens} MCP tokens. Quotas only block new items; nothing you already have is ever removed.) Advanced features use a buy-once-plus-update-rights model: Personal Pro at the early-bird price of ${proEarly} USD / year (locked for life, including the current version forever plus {updateMonths} months of updates; if you stop renewing you keep the current version forever), lifetime updates for ${lifetime} USD one-time, or a commercial licence at ${commercial} USD / seat / year."
+      "a5": "The core workflow is free forever: prompt management, folders, tags, global search, one-click copy, Markdown preview and light/dark themes all cost nothing. (Free tier quotas: {cards} cards in total — secret and chained cards count towards that same number, of which up to {secretCards} may be secret and up to {chainCards} may sit in a chain folder — plus {mcpTokens} MCP tokens. Quotas only block new items; nothing you already have is ever removed.) Advanced features use a buy-once-plus-update-rights model: Personal Pro at the early-bird price of ${proEarly} USD / year (locked for life, including the current version forever plus {updateMonths} months of updates; if you stop renewing you keep the current version forever), or a commercial licence at ${commercial} USD / seat / year."
     },
     "cta": {
       "title": "Start getting more out of AI today",

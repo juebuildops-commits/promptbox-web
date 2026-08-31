@@ -29,8 +29,15 @@ const copyKey = computed(() =>
 )
 
 const email = ref('')
-/** 蜜罐。真人看不到也 tab 不到，填了就是機器人 */
-const company = ref('')
+/**
+ * 蜜罐。真人看不到也 tab 不到，填了就是機器人。
+ *
+ * 🔴 **不要把它改回 `company` 之類的語意欄位名**（2026-08-30 改）。
+ *    瀏覽器與密碼管理器會自動填 company / organization，而且普遍無視
+ *    `autocomplete="off"` —— 被填到的真人會看到「訂閱成功」，名單裡卻沒有他。
+ *    那種失敗跟成功長得一模一樣，沒有人會回報，我們也不會知道。
+ */
+const topic = ref('')
 const state = ref<'idle' | 'loading' | SubscribeResult['status']>('idle')
 
 const done = computed(() => state.value === 'ok' || state.value === 'already')
@@ -45,6 +52,7 @@ const message = computed(() => {
     case 'already': return t('subscribe.state.already')
     case 'invalid': return t('subscribe.state.invalid')
     case 'blocked': return t('subscribe.state.blocked')
+    case 'rateLimited': return t('subscribe.state.rateLimited')
     case 'disabled': return t('subscribe.state.disabled')
     case 'error': return t('subscribe.state.error')
     default: return ''
@@ -63,8 +71,8 @@ async function submit() {
   try {
     const res = await $fetch<SubscribeResult>('/api/subscribe', {
       method: 'POST',
-      body: { email: email.value, kind: props.kind, company: company.value },
-      // 422 / 501 / 502 都帶著可用的 status 回來，不該當成 network error 丟掉
+      body: { email: email.value, kind: props.kind, topic: topic.value },
+      // 422 / 429 / 501 / 502 都帶著可用的 status 回來，不該當成 network error 丟掉
       ignoreResponseError: true,
     })
     state.value = res?.status ?? 'error'
@@ -112,9 +120,12 @@ async function submit() {
         <!--
           蜜罐。用 `absolute + opacity-0` 而不是 `display:none` ——
           有些機器人會跳過 display:none 的欄位，但填走看得見的。
+
+          🔴 欄位名是刻意選的無語意字 `topic`，見 script 區的說明：
+             `company` / `organization` 會被瀏覽器自動填入，把真人誤判成機器人。
         -->
         <div class="absolute w-0 h-0 overflow-hidden opacity-0" aria-hidden="true">
-          <input v-model="company" type="text" name="company" tabindex="-1" autocomplete="off">
+          <input v-model="topic" type="text" name="topic" tabindex="-1" autocomplete="off">
         </div>
 
         <button

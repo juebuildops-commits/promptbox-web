@@ -42,6 +42,7 @@ export default defineNuxtConfig({
           'zh-TW/privacy.json',
           'zh-TW/subscribe.json',
           'zh-TW/what-we-dont-do.json',
+          'zh-TW/enterprise.json',
         ],
       },
       {
@@ -58,6 +59,7 @@ export default defineNuxtConfig({
           'en/privacy.json',
           'en/subscribe.json',
           'en/what-we-dont-do.json',
+          'en/enterprise.json',
         ],
       },
     ],
@@ -123,10 +125,14 @@ export default defineNuxtConfig({
   //    階段三為了 /api/subscribe 改用 `nuxt build`，那個自動行為就沒了。
   //    症狀很惡毒：建置照樣成功，只是 .output/public 裡一個 .html 都沒有。
   //    兩個語系各給一個入口，其餘由 crawlLinks 從連結爬出來。
+  //    🔴 `/enterprise`（2026-08-31）刻意**不掛進 header／footer 導覽** ——
+  //    商業授權尚未開放購買（D3），在能開始賣之前不把訪客送去一個買不了東西的頁。
+  //    但「沒有連結」正好踩中上面那個坑：crawlLinks 爬不到它 ⇒ 不會被預繪
+  //    ⇒ 建置成功、線上 404。因此兩個語系各自明列一條，**掛進導覽之前不要刪**。
   nitro: {
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/en'],
+      routes: ['/', '/en', '/enterprise', '/en/enterprise'],
     },
   },
 

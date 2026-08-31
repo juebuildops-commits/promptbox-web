@@ -1,0 +1,81 @@
+{
+  "enterprise": {
+    "meta": {
+      "title": "Supporting organisations — PromptBox",
+      "description": "A commercial licence lets a company use PromptBox legally in a for-profit setting. Same features as personal Pro, honour system, no technical lock. Organisations above the seat threshold can be listed here. Not yet on sale."
+    },
+    "hero": {
+      "badge": "🏢 Supporting organisations",
+      "titleLead": "This wall is",
+      "titleAccent": "empty right now",
+      "lead": "Commercial licences are not on sale yet, so no organisation is listed above. Once they are, any organisation holding {sponsorSeats} seats or more can be listed here — and only names that actually paid for a licence will ever appear on it."
+    },
+    "wall": {
+      "eyebrow": "Supporters",
+      "title": "Supporting organisations",
+      "rule": "Hold {sponsorSeats} commercial seats or more and your name and logo can go on this wall. That is the only condition — there is no separate sponsorship package, no paid placement, and no tiers.",
+      "emptyTitle": "Not one, so far",
+      "emptyBody": "Commercial licences are not on sale yet, so there is not a single name on this wall. We would rather leave it empty than fill it with logos of companies that merely use the product — a wall that looks full but that nobody actually paid for tells you nothing about whether this product will still be here in two years.",
+      "never": {
+        "i1": "No logo of a company that has not actually paid — that includes companies using it, trialling it, or in conversation with us.",
+        "i2": "No case studies and no testimonials. Being listed means that company bought a licence; it does not mean they endorse PromptBox.",
+        "i3": "No \"trusted by leading enterprises\" or \"used by thousands of companies\" — collective claims with no number you can check."
+      }
+    },
+    "license": {
+      "title": "The commercial licence",
+      "lead": "Using PromptBox inside a company or any for-profit setting requires a commercial licence. What it sells is compliance and support for the work, not features — the features are identical to personal Pro.",
+      "period": "USD / seat / year",
+      "soonBadge": "Still planned",
+      "i1": {
+        "title": "Identical features to Pro",
+        "body": "A commercial licence unlocks nothing that the personal version does not already have. The difference is the legality of the setting you use it in, and the fact that you are keeping the product funded."
+      },
+      "i2": {
+        "title": "An annual fee, with no perpetual option",
+        "body": "A company that uses it this year pays for this year; corporate purchasing runs on annual budgets anyway. There is no perpetual option — a perpetual licence would tell companies that paying once buys compliance forever, which kills any reason to renew."
+      },
+      "i3": {
+        "title": "Buy 4 seats, get 5",
+        "body": "Buy four seats at once (${commercialBundleTotal} / year) and {commercialBundleSeats} independent licence keys are issued, which suits small teams and studios."
+      },
+      "i4": {
+        "title": "Honour system, no technical lock",
+        "body": "The app never checks an expiry date, and there is no machine binding and no dongle. Whether we collect a second year depends on a company's willingness to comply, not on a lock — that is what an honour system means. When a licence lapses, the installed version keeps working forever; nothing is disabled or downgraded."
+      },
+      "notOpenTitle": "Not on sale yet",
+      "notOpenBody": "The commercial licence is still at the planning stage; the button on that card on the pricing page is disabled, and we are not accepting purchase intent of any kind. Invoicing and expense details will be published when it goes on sale — until company registration is finished, we will not promise an invoice we cannot issue."
+    },
+    "trust": {
+      "title": "Four things IT and security will ask",
+      "lead": "None of the four below is a new claim written for this page. They are the same facts stated elsewhere on this site, each with evidence you can check.",
+      "i1": {
+        "title": "The app makes no outbound connections",
+        "body": "Since v3.3.0 PromptBox initiates no outbound traffic at all: no update checks, no telemetry, fonts bundled with the binary. Its only network component is the built-in MCP server, which listens on 127.0.0.1 only, for IDEs on the same machine to connect to; it never connects out."
+      },
+      "i2": {
+        "title": "Encrypted at rest, keys held by the OS",
+        "body": "The whole database is page-encrypted with SQLCipher, with the key held by Windows DPAPI or the macOS Keychain. Secret cards add a second layer of scrypt + AES-256-GCM, and an AI tool only receives their contents after a human presses allow. The boundary belongs in the same breath: card names, descriptions, variable names and variable default values are not covered by the card password, so avoid putting hints about a secret into any of them."
+      },
+      "i3": {
+        "title": "The data stays on each employee's own machine",
+        "body": "No server, no accounts, no tenancy. We do not operate any service that holds your prompts or your keys, so there is no \"our side\" that can leak them. The flip side is that backups and lost devices are your own IT process to handle."
+      },
+      "i4": {
+        "title": "No time bomb",
+        "body": "The licence certificate format deliberately has no field for an expiry date, an update window, or a machine ID. If the field does not exist, nobody can add that conditional in some future release."
+      }
+    },
+    "why": {
+      "title": "Why a local-first tool needs companies to pay",
+      "body": "We do not sell data, run ads, or take a cut of a marketplace — those three are written down on the \"what we don't do\" page and they are not going to change. Rule them out and this product has exactly one source of income: the people who use it paying for it. Personal licences can fund development, but the level of care that maintaining a tool which holds people's keys demands costs considerably more than ordinary productivity software. The commercial licence is how the people using it at work carry that share, compliantly."
+    },
+    "cta": {
+      "title": "Leave a company address for now",
+      "body": "When commercial licences open, we will contact you with the details on licensing, the buy-4-get-5 bundle and being listed. No money changes hands now, and no salesperson will call you.",
+      "contact": "Email us about commercial licensing",
+      "subject": "PromptBox commercial licensing",
+      "toPricing": "See the full plans and feature comparison"
+    }
+  }
+}

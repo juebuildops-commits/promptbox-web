@@ -1,0 +1,81 @@
+{
+  "enterprise": {
+    "meta": {
+      "title": "",
+      "description": ""
+    },
+    "hero": {
+      "badge": "",
+      "titleLead": "",
+      "titleAccent": "",
+      "lead": ""
+    },
+    "wall": {
+      "eyebrow": "",
+      "title": "",
+      "rule": "",
+      "emptyTitle": "",
+      "emptyBody": "",
+      "never": {
+        "i1": "",
+        "i2": "",
+        "i3": ""
+      }
+    },
+    "license": {
+      "title": "",
+      "lead": "",
+      "period": "",
+      "soonBadge": "",
+      "i1": {
+        "title": "",
+        "body": ""
+      },
+      "i2": {
+        "title": "",
+        "body": ""
+      },
+      "i3": {
+        "title": "",
+        "body": ""
+      },
+      "i4": {
+        "title": "",
+        "body": ""
+      },
+      "notOpenTitle": "",
+      "notOpenBody": ""
+    },
+    "trust": {
+      "title": "",
+      "lead": "",
+      "i1": {
+        "title": "",
+        "body": ""
+      },
+      "i2": {
+        "title": "",
+        "body": ""
+      },
+      "i3": {
+        "title": "",
+        "body": ""
+      },
+      "i4": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "why": {
+      "title": "",
+      "body": ""
+    },
+    "cta": {
+      "title": "",
+      "body": "",
+      "contact": "",
+      "subject": "",
+      "toPricing": ""
+    }
+  }
+}

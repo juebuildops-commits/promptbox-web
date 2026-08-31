@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PRICES, TOKENS } from '~/utils/pricing'
+import { PRICES, SHOW_LIFETIME, TOKENS } from '~/utils/pricing'
 
 const { t } = useI18n()
 const localePath = useLocalePath()
@@ -26,7 +26,13 @@ useHead({
           <div class="flex flex-col items-center gap-9 text-center">
             <div class="flex flex-col items-center gap-5">
               <h1 class="font-sans font-black text-[54px] max-xl:text-[44px] max-md:text-[36px] max-sm:text-[28px] leading-[1.2] tracking-[0.0185em] text-brand">
-                <span class="text-ink-900">{{ $t('home.hero.titleLead') }}</span> {{ $t('home.hero.titleAccent') }}
+                <!--
+                  兩行是**版面決定，不是文案決定**：換行用 `block` 分行，
+                  不把 <br> 寫進語系檔 —— 訊息裡帶標籤就得改用 v-html，
+                  等於為了一個換行把 XSS 面打開，而且每個語系都要自己記得帶那顆標籤。
+                -->
+                <span class="block text-ink-900">{{ $t('home.hero.titleLead') }}</span>
+                <span class="block">{{ $t('home.hero.titleAccent') }}</span>
               </h1>
               <p class="font-sans font-normal text-2xl max-md:text-xl max-sm:text-lg text-ink-800 leading-[1.2] tracking-[0.0417em]">
                 {{ $t('home.hero.lead') }}
@@ -272,7 +278,8 @@ useHead({
           <p class="font-sans font-bold text-[28px] max-md:text-[22px] max-sm:text-[18px] leading-tight -tracking-[0.0396em] text-ink-600">{{ $t('home.price.subtitle') }}</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 w-full max-w-7xl mx-auto items-stretch">
+        <!-- 🔴 欄數跟著 SHOW_LIFETIME 走：少一張卡卻留 4 欄會在最後留一個空格 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-7xl mx-auto items-stretch" :class="SHOW_LIFETIME ? 'xl:grid-cols-4' : 'xl:grid-cols-3'">
 
           <!-- FREE 免費版 -->
           <article class="gradient-border-card flex flex-col justify-between p-8 bg-surface-card rounded-2xl shadow-sm">
@@ -335,8 +342,8 @@ useHead({
             </div>
           </article>
 
-          <!-- LIFETIME 永久更新權 -->
-          <article class="gradient-border-card flex flex-col justify-between p-8 bg-surface-card rounded-2xl shadow-sm">
+          <!-- LIFETIME 永久更新權 —— 🔴 SHOW_LIFETIME=false 期間整張卡不渲染，見 utils/pricing.ts 的旗標註解 -->
+          <article v-if="SHOW_LIFETIME" class="gradient-border-card flex flex-col justify-between p-8 bg-surface-card rounded-2xl shadow-sm">
             <div class="flex flex-col items-center gap-6">
               <span class="w-14 h-14 rounded-pill bg-brand-surface flex items-center justify-center font-ui font-normal text-2xl" aria-hidden="true">💎</span>
               <div class="text-center">
@@ -384,7 +391,7 @@ useHead({
                 <li class="flex gap-2 before:content-['-'] before:shrink-0 font-bold"><span>{{ $t('home.price.commercial.f2') }}</span></li>
                 <li class="flex gap-2 before:content-['-'] before:shrink-0 font-bold text-brand"><span>{{ $t('home.price.commercial.f3') }}</span></li>
                 <li class="flex gap-2 before:content-['-'] before:shrink-0"><span>{{ $t('home.price.commercial.f4') }}</span></li>
-                <li class="flex gap-2 before:content-['-'] before:shrink-0"><span>{{ $t('home.price.commercial.f6') }}</span></li>
+                <li class="flex gap-2 before:content-['-'] before:shrink-0"><span>{{ $t('home.price.commercial.f6', TOKENS) }}</span></li>
                 <li class="flex gap-2 before:content-['-'] before:shrink-0 text-ink-500"><span>{{ $t('home.price.commercial.f5') }}</span></li>
               </ul>
             </div>
