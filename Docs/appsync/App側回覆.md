@@ -53,7 +53,7 @@
 | 項目                | 現值                              | **凍結值**                           |
 | ------------------- | --------------------------------- | ------------------------------------ |
 | `build.appId`       | `com.promptbox.app`               | **`com.eychen.vault`**               |
-| userData 路徑       | `{appData}/PromptBox`（**推導**） | **`{appData}/EYChen/Vault`（寫死）** |
+| userData 路徑       | `{appData}/promptbox`（**推導自 package.json 頂層 name，小寫**） | **`{appData}/EYChen/Vault`（寫死）** |
 | `app.setName()`     | 無                                | **`Vault`** ⚠️ 見下                  |
 | 加密 DB 檔名        | `promptbox.db`                    | **`vault.db`**                       |
 | v2 明文備份         | `promptbox.db.plain.bak`          | **`vault.db.plain.bak`**             |
@@ -105,7 +105,8 @@
 | **W2** | 使用者的 **IDE 設定範例**若官網有列，`mcpServers.PromptBox` → `mcpServers.vault`                  | FR-5                                                                                                                                                                         | 同上                                                 |
 | **W3** | 定價頁規格對照表**確認有沒有列「強型別」**                                                        | Free 的邊界不只四項數字配額，還有布林能力 `strongTyping: false`（`limits.cjs:26-28`，硬性 false 無開關）。ADR-008 §7 那列只寫了「45 卡 / 3 機密卡 / 5 串聯卡 / 2 MCP Token」 | 隨時可做。權威來源是 `Doc/BRD/BRD-03` §2，不是本文件 |
 | **W4** | [身分字串凍結清單](身分字串凍結清單.md) 的 §A 空格**不必再填**，改為指向 v3.7.2 PRD               | 清單的執行版本已在 App repo 立案                                                                                                                                             | 隨時                                                 |
-| **W5** | [App 事實依據](App事實依據.md) §三「B5 護欄只釘住兩個身分字串」**已過期**                         | v3.7.2 出貨後護欄涵蓋 12 條以上                                                                                                                                              | **v3.7.2 出貨後**再改，現在改會提前說謊              |
+| **W5** | [App 事實依據](App事實依據.md) §三「B5 護欄只釘住兩個身分字串」**已過期**                         | v3.7.2 出貨後護欄為 **19 條**（2026-09-02 實作實數，非估計）                                                                                                                  | **v3.7.2 出貨後**再改，現在改會提前說謊              |
+| **W6** 🔴 | **一個技術前提被推翻了：`productName` 從來不決定 userData 路徑。** 官網側有三處引用它：①[身分字串凍結清單](身分字串凍結清單.md) A-2 的風險敘述；②`Docs/refer/BRD/BRD-02` §7.6；③`Docs/refer/BRD/BRD-04`。三處都寫「userData 路徑由 `productName` 決定」 | **那從來不是事實，是沒有人查證過的推論。** 真正的推導輸入是 `package.json` 的**頂層 `name`**（本專案 = `promptbox`，小寫）；`build.productName` 在 `build` 物件底下，Electron 讀不到。證據與撤回說明見本檔 §3.2 與 App repo 的 v3.7.2 TD §1.1 A。<br>🔴 **商業結論（雙 build 不得分名／升級不得鎖死資料）完全不變**，但**理由要換**——照舊文推論會得出「所以 `productName` 不能改」，而**那個結論在 v3.7.2 之前也一樣是錯的**（改 `productName` 從來就不會動到資料）。<br>📌 v3.7.2 出貨後三處都不再適用：userData 已由 `app.setPath` 寫死，`name` 與 `productName` **都**變成可自由變更的 A 類品牌字串 | **與 v3.7.2 出貨同步**。App 側的 ADR-000 §6、v3.7.2 PRD §3／FR-8、本檔 §1.2／§3.2 已於 2026-09-02 全數更正完畢 |
 
 > 📌 **關於 W5 的一個修正**：App 事實依據 §三 的判斷「只有一半有護欄保護」**完全正確**，
 > 但它低估了一階——**不只是「沒有測試保護」，而是那個值當時根本不是一個可被保護的東西**
@@ -145,7 +146,7 @@
 
 | 層                               | 依賴什麼                                       | Windows                                     | macOS |
 | -------------------------------- | ---------------------------------------------- | ------------------------------------------- | ----- |
-| **檔案層**：`keystore.bin`       | userData 路徑（← `productName`）               | 🔴 中                                       | 🔴 中 |
+| **檔案層**：`keystore.bin`       | userData 路徑（← 頂層 `name`，**不是 `productName`**，見 §3.2 更正）               | 🔴 中                                       | 🔴 中 |
 | **金鑰層**：`safeStorage` 主金鑰 | macOS Keychain 項目 `{getName()} Safe Storage` | ✅ **不中**（DPAPI 綁使用者帳戶，不綁名字） | 🔴 中 |
 
 因此清單那句「A-2 的路徑寫死**不一定**擋得住 A-3」——**macOS 上成立，Windows 上不成立**。
@@ -154,17 +155,42 @@
 `app.setName()` 是為 macOS 預留的，v3.7.2 會寫，但**要等 mac build 才驗得了**——
 🔴 **在那之前，任何文件都不得宣稱 macOS 這條已驗過。**
 
-### 3.2　🔴 A-4 比清單假設的更糟：四份推導，其中兩份是壞的
+### 3.2　🔴 A-4 是四份推導 —— 但「其中兩份是壞的」這個判斷**已於 2026-09-02 撤回**
 
-`scripts/check-db.cjs:11` 與 `scripts/migrate-sync-variables.cjs:55` 各自寫死：
+> ⛔ **本節原標題與原結論是錯的，整段撤回。** 原文如下（保留供對照，**不要據以行動**）：
+>
+> > ~~`scripts/check-db.cjs:11` 與 `scripts/migrate-sync-variables.cjs:55` 各自寫死
+> > `path.join(app.getPath('appData'), 'promptbox', 'promptbox.db')`，資料夾名用**小寫** `promptbox`，
+> > 而真實 userData 是 `appData/PromptBox`。Windows 檔名不分大小寫所以現在沒爆，
+> > **換到 macOS 會直接找不到檔案。** 這是一個已經存在的潛伏 bug，v3.7.2 FR-3 順手修掉。~~
 
-```js
-path.join(app.getPath('appData'), 'promptbox', 'promptbox.db')
-                                   ^^^^^^^^^ 小寫
-```
+**🔴 更正（2026-09-02，v3.7.2 實作時查核）：真實 userData 就是小寫 `appData/promptbox`。**
 
-真實 userData 是 `appData/PromptBox`。**Windows 檔名不分大小寫所以現在沒爆，
-換到 macOS 會直接找不到檔案。** 這是一個已經存在的潛伏 bug，v3.7.2 FR-3 順手修掉。
+`app.getName()` 讀的是 `package.json` 的**頂層 `productName`，沒有才退回頂層 `name`**。
+本專案的 `productName` 在 `build` 物件**底下**，Electron 讀不到 ⇒ 推導輸入一直是頂層 `name`（`promptbox`）。
+
+三組證據：
+
+1. 拆已安裝版的 `app.asar`，內含的 `package.json` **只有 `"name": "promptbox"`，沒有頂層 `productName`**
+   —— electron-builder **不會**把 `build.productName` 寫回打包後的 `package.json`。
+2. 實地查 `%APPDATA%`：目錄名就是小寫 `promptbox`，且內含 `promptbox.db` 與 `keystore.bin`。
+3. 以 Electron 40.2.1 跑探針，`getName()` 與 `getPath('userData')` 的行為與上述一致。
+
+**⇒ 那兩支腳本寫的小寫是對的**；`migrate-sync-variables.cjs:51` 的註解甚至把理由寫對了
+（「`npx electron` 執行時 `app.getName()` 回 `Electron`，不是 `promptbox`」）。
+**那個「macOS 大小寫潛伏 bug」不存在。**
+
+📌 **但兩支仍然要處理，理由換了**：它們是身分字串的第三、第四份副本。
+而查下去發現更根本的問題——**兩支都 `require('better-sqlite3')`，該套件自 v3.0 換成
+`better-sqlite3-multiple-ciphers` 後就不在 `node_modules` 裡（第一行就 `MODULE_NOT_FOUND`），
+且 DB 自 v3.0 起為 SQLCipher 加密而兩支都沒有取金鑰的程式碼**。它們是死碼，
+**已於 v3.7.2 刪除**（創辦人 2026-09-02 裁示）。
+
+> 🔴 **這一節值得留著當教材，而不是清掉重寫。**
+> 原判斷不是粗心，是**推論鏈上有一環沒有查證**（「`productName` 決定 userData」這句從沒有人跑過），
+> 而它一路傳到了凍結清單、ADR-000、BRD-02／BRD-04 與 v3.7.2 PRD。
+> **一個未經查證的技術前提，會以「事實」的形式被下游文件反覆引用**——
+> 而每一次引用都讓它更難被推翻，因為看起來已經有很多人同意過了。
 
 ### 3.3　🔴 清單漏了一格：MCP resource URI scheme
 

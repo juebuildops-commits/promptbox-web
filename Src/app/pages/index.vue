@@ -179,7 +179,7 @@ useHead({
 
             <!-- 授權指示（14:124） -->
             <div class="flex items-center gap-4 max-sm:flex-col max-sm:gap-2 max-sm:text-center text-ink-900">
-              <span class="icon icon--flow [--icon-size:48px] text-ink-900" aria-hidden="true" />
+              <span class="icon icon--flow [--icon-size:48px] rotate-90 text-ink-900" aria-hidden="true" />
               <span class="font-sans font-bold text-base leading-normal tracking-[0.0406em] uppercase text-ink-900">{{ $t('home.privacy.flow.needAuth') }}</span>
             </div>
 

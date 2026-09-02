@@ -21,7 +21,10 @@ const NAV = [
   { to: '/pricing', key: 'common.footer.buy' },
   { to: '/docs', key: 'common.footer.docs' },
   { to: '/changelog', key: 'common.footer.changelog' },
-  { to: '/what-we-dont-do', key: 'common.footer.notDoing' },
+  // 2026-09-03 下架：「我們不做什麼」語氣太死，暫時撤出頁尾導覽。
+  // 頁面與 /what-we-dont-do 路由都還在，語系鍵 common.footer.notDoing 也留著 ——
+  // 這是暫時下架，要復原就把下面這行的註解拿掉。
+  // { to: '/what-we-dont-do', key: 'common.footer.notDoing' },
   { to: '/privacy', key: 'common.footer.privacy' },
 ]
 
