@@ -13,13 +13,21 @@ const route = useRoute()
 const { isDark, toggleTheme } = useTheme()
 const localePath = useLocalePath()
 
-const NAV = [
+const { locale } = useI18n()
+
+// 🔴 `/demo` 只對 zh-TW 露出（webplan/模擬試用頁.md D5）：demo 本體的介面
+//    只有繁體中文，對英文使用者露出等於把人送進一個看不懂的頁。
+//    英文讀者仍能從首頁那一段的 CTA 進去 —— 那段的文案有寫明語言。
+//    要對 en 開放＝把 demo-app/index.html 的文案抽出來翻，然後刪掉這個 filter。
+//    ⚠️ 這裡是**唯一**的 NAV 來源，桌機與行動版選單共用，改一處兩邊都會動。
+const NAV = computed(() => [
   { to: '/', key: 'common.nav.home' },
+  ...(locale.value === 'zh-TW' ? [{ to: '/demo', key: 'common.nav.demo' }] : []),
   { to: '/download', key: 'common.nav.download' },
   { to: '/pricing', key: 'common.nav.pricing' },
   { to: '/docs', key: 'common.nav.docs' },
   { to: '/changelog', key: 'common.nav.changelog' },
-]
+])
 
 const DESKTOP_ACTIVE
   = 'px-3.5 py-2.5 rounded-sm bg-brand-surface text-brand font-sans font-bold text-base leading-tight min-w-[92px] text-center transition-colors duration-150'

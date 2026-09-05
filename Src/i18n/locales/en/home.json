@@ -43,6 +43,14 @@
         "aiToolsBody": "Only the content you copy or explicitly release ever reaches ChatGPT / Claude / GEMINI."
       }
     },
+    "demo": {
+      "eyebrow": "Interactive demo",
+      "title": "Walk through that diagram yourself",
+      "body": "No install, no sign-up. Open a simulated PromptBox next to a simulated AI client in your browser, mark a card as secret, then have the AI ask for it — and see exactly what the consent moment looks like.",
+      "cta": "Open the interactive demo",
+      "note": "Runs in your browser. The demo interface is in Traditional Chinese.",
+      "imageAlt": "The PromptBox interactive demo: card box on the left, external AI client on the right"
+    },
     "advanced": {
       "title": "Advanced",
       "subtitle": "Not just a box of snippets — a vault for confidential context",

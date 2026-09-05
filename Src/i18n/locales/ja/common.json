@@ -1,63 +1,64 @@
 {
   "common": {
     "nav": {
-      "home": "",
-      "download": "",
-      "pricing": "",
-      "docs": "",
-      "changelog": "",
-      "ariaMain": "",
-      "ariaFooter": ""
+      "home": "ホーム",
+      "download": "無料ダウンロード",
+      "pricing": "料金",
+      "docs": "マニュアル",
+      "changelog": "変更履歴",
+      "ariaMain": "メインナビゲーション",
+      "ariaFooter": "フッターナビゲーション",
+      "demo": ""
     },
     "a11y": {
-      "homeLink": "",
-      "logoAlt": "",
-      "switchLang": "",
-      "toggleTheme": "",
-      "openMenu": ""
+      "homeLink": "PromptBox ホーム",
+      "logoAlt": "PromptBox ロゴ",
+      "switchLang": "言語を切り替える",
+      "toggleTheme": "ライト／ダークモードを切り替える",
+      "openMenu": "メニューを開く"
     },
     "cta": {
-      "download": "",
-      "downloadWin": "",
-      "macSoon": "",
-      "downloadFree": "",
-      "startTrial": "",
-      "preorderEarlyBird": "",
-      "buyLifetime": "",
-      "learnLicense": "",
-      "goDownloadLatest": "",
-      "downloadAndStart": ""
+      "download": "ダウンロード",
+      "downloadWin": "Windows 版を無料ダウンロード",
+      "macSoon": "macOS 版は近日公開",
+      "downloadFree": "無料ダウンロード",
+      "startTrial": "使ってみる",
+      "preorderEarlyBird": "アーリーバードを予約",
+      "buyLifetime": "永久ライセンスを購入",
+      "learnLicense": "ライセンスについて",
+      "goDownloadLatest": "最新版をダウンロード",
+      "downloadAndStart": "無料ダウンロードして始める"
     },
     "menu": {
-      "theme": ""
+      "theme": "テーマ"
     },
     "footer": {
-      "download": "",
-      "buy": "",
-      "docs": "",
-      "changelog": "",
-      "contact": "",
-      "privacy": "",
-      "copyright": "",
-      "tagline": "",
-      "notDoing": ""
+      "download": "ダウンロード",
+      "buy": "購入",
+      "docs": "マニュアル",
+      "changelog": "変更履歴",
+      "contact": "お問い合わせ",
+      "privacy": "プライバシー",
+      "copyright": "© 2026 PromptBox. All rights reserved.",
+      "tagline": "ローカル保存 ・ 暗号化保護 ・ あなたのプロンプトはあなただけのもの",
+      "notDoing": "私たちがやらないこと"
     },
     "os": {
-      "ctaDefault": "",
-      "ctaWin": "",
-      "ctaMac": "",
-      "noteDefault": "",
-      "noteWin": "",
-      "noteMac": ""
+      "ctaDefault": "無料ダウンロード",
+      "ctaWin": "Windows 版を無料ダウンロード",
+      "ctaMac": "macOS 版を無料ダウンロード",
+      "noteDefault": "現在 Windows 10 / 11 版を提供中・macOS 版は近日公開",
+      "noteWin": "Windows 10 / 11 対応・macOS 版は近日公開",
+      "noteMac": "macOS 版は近日公開・現在は Windows 版をダウンロードいただけます"
     },
     "lang": {
-      "zh-TW": "",
-      "en": "",
-      "ja": ""
+      "zh-TW": "繁體中文",
+      "en": "English",
+      "ja": "日本語"
     },
     "contentZhOnly": {
-      "title": "",
-      "body": ""
+      "title": "このページの本文は現在、繁体字中国語のみです",
+      "body": "レイアウトとナビゲーションは翻訳済みですが、本文はまだです。内容が欠けてしまわないよう、翻訳が仕上がるまでは原文を表示しています。"
     }
   }
 }

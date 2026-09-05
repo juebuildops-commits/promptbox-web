@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PromptBox 互動示範</title>
+<style>
+/* ==========================================================================
+   Design Tokens —— 取自 design/Design System.md
+   RGB channel 格式，讓所有語義色可自由掛透明度
+   ========================================================================== */
+:root {
+  --primary: 0 159 183;
+  --primary-hover: 0 127 147;
+  --bg-main: 244 244 248;
+  --bg-sidebar: 255 255 255;
+  --bg-card: 255 255 255;
+  --border-light: 230 230 234;
+  --text-main: 31 41 51;
+  --text-secondary: 107 114 128;
+  --btn-secondary: 217 238 242;
+  --success: 47 191 113;
+  --warning: 254 215 102;
+  --error: 254 74 73;
+
+  --amber: 245 158 11;
+  --orange: 234 88 12;
+  --danger: 239 68 68;
+
+  /* IDE 視窗永遠是深色（真實 IDE 就長這樣，不隨主題翻轉） */
+  --ide-bg: 24 26 33;
+  --ide-surface: 32 35 44;
+  --ide-border: 52 56 68;
+  --ide-text: 214 219 230;
+  --ide-dim: 138 146 163;
+
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                  "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo,
+               Consolas, "Noto Sans Mono CJK TC", monospace;
+
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 9999px;
+
+  --sh-surface: 0 1px 2px 0 rgb(0 0 0 / .05);
+  --sh-hover: 0 4px 6px -1px rgb(0 0 0 / .1), 0 2px 4px -2px rgb(0 0 0 / .1);
+  --sh-cta: 0 10px 15px -3px rgb(var(--primary) / .2), 0 4px 6px -4px rgb(var(--primary) / .2);
+  --sh-panel: 0 20px 25px -5px rgb(0 0 0 / .1), 0 8px 10px -6px rgb(0 0 0 / .1);
+  --sh-modal: 0 25px 50px -12px rgb(0 0 0 / .25);
+
+  --d-fast: 150ms; --d-base: 200ms; --d-enter: 300ms;
+}
+html.dark {
+  --primary: 43 176 201;
+  --primary-hover: 78 198 219;
+  --bg-main: 15 23 42;
+  --bg-sidebar: 13 18 28;
+  --bg-card: 17 24 39;
+  --border-light: 31 41 55;
+  --text-main: 229 231 235;
+  --text-secondary: 156 163 175;
+  --btn-secondary: 31 41 55;
+  --success: 74 222 128;
+  --warning: 250 204 21;
+  --error: 248 113 113;
+  --danger: 248 113 113;
+  --orange: 251 146 60;
+}
+
+/* ==========================================================================
+   Reset & 頁面骨架
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }   /* class 的 display:flex 會蓋掉 UA 的 [hidden]，這行是總開關 */
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font: 400 14px/1.45 var(--font-display);
+  background: rgb(var(--bg-main));
+  color: rgb(var(--text-main));
+  overflow: hidden;
+  transition: background var(--d-base), color var(--d-base);
+}
+::selection { background: rgb(var(--primary) / .3); }
+button { font: inherit; color: inherit; cursor: pointer; }
+input, textarea, select { font: inherit; color: inherit; }
+svg.i { width: 20px; height: 20px; fill: currentColor; flex: none; display: block; }
+svg.i-sm { width: 16px; height: 16px; }
+svg.i-xs { width: 14px; height: 14px; }
+svg.i-lg { width: 24px; height: 24px; }
+svg.i-xl { width: 40px; height: 40px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+.page { height: 100%; display: flex; flex-direction: column; }
+
+/* ---- 頁首 ---- */
+.topbar {
+  height: 56px; flex: none;
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 20px;
+  background: rgb(var(--bg-sidebar));
+  border-bottom: 1px solid rgb(var(--border-light));
+}
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; letter-spacing: -.025em; }
+.brand .dot {
+  width: 26px; height: 26px; border-radius: var(--r-lg);
+  background: rgb(var(--primary)); color: #fff;
+  display: grid; place-items: center;
+}
+.topbar .tag {
+  font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  padding: 3px 7px; border-radius: var(--r-md);
+  background: rgb(var(--primary) / .1); color: rgb(var(--primary));
+  border: 1px solid rgb(var(--primary) / .2);
+}
+/* APP 視窗標題列右側的工具區（原本在頁首）*/
+.chrome-tools {
+  margin-left: auto; min-width: 0;
+  display: flex; align-items: center; gap: 8px;
+}
+.chrome-tools .note {
+  font-size: 11px; font-weight: 400; color: rgb(var(--text-secondary));
+  min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ---- 舞台：兩個視窗 ---- */
+.stage {
+  flex: 1; min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 16px; padding: 16px;
+}
+.win {
+  min-width: 0; min-height: 0;
+  display: flex; flex-direction: column;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  position: relative;                  /* 彈窗錨定在各自視窗內 */
+  box-shadow: var(--sh-panel);
+}
+.win-chrome {
+  height: 34px; flex: none;
+  min-width: 0;
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 12px;
+  font-size: 11px; font-weight: 600;
+  user-select: none;
+}
+.lights { display: flex; gap: 6px; }
+.lights i { width: 10px; height: 10px; border-radius: var(--r-full); display: block; }
+.lights i:nth-child(1) { background: #ff5f57; }
+.lights i:nth-child(2) { background: #febc2e; }
+.lights i:nth-child(3) { background: #28c840; }
+
+/* APP 視窗 */
+.win-app { background: rgb(var(--bg-sidebar)); border: 1px solid rgb(var(--border-light)); }
+.win-app .win-chrome {
+  height: 46px; padding-right: 10px;
+  background: rgb(var(--bg-main));
+  border-bottom: 1px solid rgb(var(--border-light));
+  color: rgb(var(--text-secondary));
+}
+.app-body { flex: 1; min-height: 0; overflow-y: auto; padding: 16px; background: rgb(var(--bg-main)); }
+
+/* IDE 視窗（固定深色） */
+.win-ide { background: rgb(var(--ide-bg)); border: 1px solid rgb(var(--ide-border)); color: rgb(var(--ide-text)); }
+.win-ide .win-chrome { background: rgb(var(--ide-surface)); border-bottom: 1px solid rgb(var(--ide-border)); color: rgb(var(--ide-dim)); }
+
+/* ==========================================================================
+   基礎元件
+   ========================================================================== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--r-lg);
+  font-size: 14px; font-weight: 500;
+  border: 1px solid transparent; background: none;
+  transition: all var(--d-fast);
+  white-space: nowrap;
+}
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 2px rgb(var(--primary) / .5); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+.btn-primary { background: rgb(var(--primary)); color: #fff; box-shadow: var(--sh-cta); }
+.btn-primary:not([disabled]):hover { background: rgb(var(--primary-hover)); }
+.btn-secondary { background: rgb(var(--bg-card)); border-color: rgb(var(--border-light)); color: rgb(var(--text-main)); }
+.btn-secondary:not([disabled]):hover { background: rgb(var(--text-main) / .04); }
+.btn-ghost { color: rgb(var(--text-secondary)); }
+.btn-ghost:not([disabled]):hover { background: rgb(var(--text-main) / .05); color: rgb(var(--text-main)); }
+.btn-sm { padding: 4px 8px; font-size: 12px; }
+.btn-orange { color: rgb(var(--orange)); }
+.btn-orange:hover { background: rgb(var(--orange) / .08); }
+
+.icon-btn {
+  width: 32px; height: 32px; flex: none;
+  display: grid; place-items: center;
+  border: none; background: none; border-radius: var(--r-lg);
+  color: rgb(var(--text-secondary));
+  transition: all var(--d-fast);
+}
+.icon-btn:hover { background: rgb(var(--text-main) / .05); color: rgb(var(--text-main)); }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field > label {
+  font-size: 12px; font-weight: 600; color: rgb(var(--text-secondary));
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.ctl {
+  width: 100%; padding: 8px 12px;
+  background: rgb(var(--bg-main));
+  border: 1px solid rgb(var(--border-light));
+  border-radius: var(--r-lg);
+  color: rgb(var(--text-main));
+  transition: border-color var(--d-fast), box-shadow var(--d-fast);
+}
+.ctl::placeholder { color: rgb(156 163 175); }
+.ctl:focus { outline: none; border-color: rgb(var(--primary)); box-shadow: 0 0 0 1px rgb(var(--primary)); }
+
+.pillbar { display: inline-flex; gap: 4px; padding: 4px; background: rgb(var(--bg-main)); border-radius: var(--r-lg); }
+.pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 12px; border: none; background: none;
+  border-radius: var(--r-md); font-size: 12px;
+  color: rgb(var(--text-secondary));
+  transition: all var(--d-fast);
+}
+.pill:hover { color: rgb(var(--text-main)); }
+.pill[aria-pressed="true"] {
+  background: rgb(var(--bg-card)); color: rgb(var(--primary));
+  font-weight: 500; box-shadow: var(--sh-surface);
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 6px; border-radius: var(--r-md);
+  font-size: 10px; font-weight: 700; line-height: 1.4;
+  border: 1px solid;
+}
+.badge-secret { background: rgb(var(--orange) / .12); color: rgb(var(--orange)); border-color: rgb(var(--orange) / .3); }
+.badge-hidden { background: rgb(var(--amber) / .12); color: rgb(var(--amber)); border-color: rgb(var(--amber) / .3); }
+.badge-grant  { background: rgb(var(--amber) / .12); color: rgb(var(--amber)); border-color: rgb(var(--amber) / .3); }
+.badge-var    { background: rgb(var(--primary) / .1); color: rgb(var(--primary)); border-color: rgb(var(--primary) / .2); }
+
+/* ==========================================================================
+   卡片盒
+   ========================================================================== */
+/* MCP 伺服器狀態條（APP 側）*/
+.mcp-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; margin-bottom: 16px;
+  background: rgb(var(--bg-card));
+  border: 1px solid rgb(var(--border-light));
+  border-radius: var(--r-xl);
+  transition: all var(--d-base);
+}
+.mcp-bar.on { border-color: rgb(var(--success) / .45); background: rgb(var(--success) / .06); }
+.mcp-bar .grow { flex: 1; min-width: 0; }
+.mcp-bar .t { font-size: 13px; font-weight: 600; }
+.mcp-bar .s { font-size: 11px; color: rgb(var(--text-secondary)); }
+.led { width: 9px; height: 9px; border-radius: var(--r-full); background: rgb(156 163 175); flex: none; transition: all var(--d-base); }
+.led.on { background: rgb(var(--success)); box-shadow: 0 0 0 3px rgb(var(--success) / .2); }
+.ide-conn { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; font-size: 11px; }
+/* 卡片上的複製鍵 */
+.card-copy {
+  width: 28px; height: 28px; flex: none;
+  border: none; background: none; border-radius: var(--r-lg);
+  display: grid; place-items: center;
+  color: rgb(var(--text-secondary)); transition: all var(--d-fast);
+}
+.card-copy:hover:not([disabled]) { background: rgb(var(--primary) / .1); color: rgb(var(--primary)); }
+.card-copy[disabled] { opacity: .4; cursor: not-allowed; }
+.card-copy.done { color: rgb(var(--success)); }
+/* IDE 貼上區 */
+.paste-row { display: flex; gap: 6px; align-items: center; }
+.paste-row input {
+  flex: 1; min-width: 0; padding: 6px 10px;
+  border: 1px solid rgb(var(--ide-border)); border-radius: var(--r-lg);
+  background: rgb(var(--ide-bg)); color: rgb(var(--ide-text)); font-size: 12px;
+}
+.paste-row input:focus { outline: none; border-color: rgb(var(--primary) / .6); }
+.paste-row input::placeholder { color: rgb(var(--ide-dim)); }
+.ide-paste { border: 1px dashed rgb(var(--ide-border)); border-radius: var(--r-lg); padding: 10px; }
+.ide-paste .ph {
+  font-size: 10px; letter-spacing: .05em; text-transform: uppercase;
+  color: rgb(var(--ide-dim)); margin-bottom: 6px;
+  display: flex; align-items: center; gap: 4px;
+}
+.ide-paste pre {
+  margin: 0; font: 400 12px/1.6 var(--font-mono);
+  white-space: pre-wrap; overflow-wrap: break-word;
+  max-height: 190px; overflow: auto;
+}
+.box-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.box-head h2 { margin: 0; font-size: 13px; font-weight: 700; }
+.box-head .hint { font-size: 11px; color: rgb(var(--text-secondary)); }
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.card {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 16px; text-align: left;
+  background: rgb(var(--bg-card));
+  border: 1px solid rgb(var(--border-light));
+  border-radius: var(--r-xl);
+  transition: all var(--d-fast);
+}
+.card:hover { border-color: rgb(var(--primary) / .5); box-shadow: var(--sh-hover); }
+.card:hover .card-title { color: rgb(var(--primary)); }
+.card-top { display: flex; align-items: flex-start; gap: 6px; }
+.card-title { font-size: 14px; font-weight: 700; line-height: 1.25; flex: 1; min-width: 0; transition: color var(--d-fast); }
+.card-id { font-family: var(--font-mono); font-size: 11px; color: rgb(156 163 175); flex: none; }
+.card-preview {
+  font-size: 12px; line-height: 1.5; color: rgb(var(--text-secondary));
+  overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; line-clamp: 3;
+  min-height: 54px;
+}
+.card-preview.locked {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  border: 1px dashed rgb(var(--border-light)); border-radius: var(--r-lg);
+  color: rgb(var(--orange)); font-size: 11px; min-height: 54px;
+}
+.card-foot { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; min-height: 20px; }
+.card-foot .grow { flex: 1; }
+
+/* ==========================================================================
+   彈窗（錨定在所屬視窗內）
+   ========================================================================== */
+.overlay {
+  position: absolute; inset: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+  background: rgb(0 0 0 / .5); backdrop-filter: blur(4px);
+  animation: fade var(--d-base) ease;
+}
+.overlay[hidden] { display: none; }
+@keyframes fade { from { opacity: 0 } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(.95) } }
+.sheet {
+  background: rgb(var(--bg-card));
+  border: 1px solid rgb(var(--border-light));
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-modal);
+  display: flex; flex-direction: column;
+  max-height: 100%; min-height: 0;
+  animation: scaleIn var(--d-base) ease-out;
+}
+.sheet-head {
+  flex: none; padding: 12px 16px;
+  border-bottom: 1px solid rgb(var(--border-light));
+  display: flex; align-items: center; gap: 8px;
+}
+.sheet-head h3 { margin: 0; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.sheet-head .grow { flex: 1; }
+.sheet-body { flex: 1; min-height: 0; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.sheet-foot {
+  flex: none; padding: 12px 16px;
+  border-top: 1px solid rgb(var(--border-light));
+  background: rgb(var(--bg-main) / .5);
+  display: flex; justify-content: flex-end; gap: 8px;
+}
+
+/* 編輯器：主體 + 變數側欄 */
+.editor-shell { display: flex; gap: 12px; width: 100%; height: 100%; min-height: 0; }
+.editor-main { flex: 1; min-width: 0; }
+.var-panel {
+  width: 264px; flex: none;
+  background: rgb(var(--bg-card));
+  border: 1px solid rgb(var(--border-light));
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-modal);
+  display: flex; flex-direction: column;
+  max-height: 100%;
+  animation: scaleIn var(--d-base) ease-out;
+}
+.var-panel[hidden] { display: none; }
+.var-panel .ph {
+  flex: none; padding: 10px 14px;
+  border-bottom: 1px solid rgb(var(--border-light));
+  background: rgb(var(--bg-main) / .3);
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 700;
+}
+.var-panel .pb { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.var-panel .pf {
+  flex: none; padding: 8px 14px;
+  border-top: 1px solid rgb(var(--border-light));
+  background: rgb(var(--bg-main) / .3);
+  font-size: 12px; color: rgb(var(--text-secondary));
+}
+.var-row {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 10px; border-radius: var(--r-lg);
+  background: rgb(var(--bg-main) / .5);
+  border: 1px solid rgb(var(--border-light));
+}
+.var-name {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--font-mono); font-size: 12px;
+  color: rgb(var(--primary));
+}
+.var-row .ctl { font-family: var(--font-mono); font-size: 12px; padding: 6px 10px; }
+.var-empty { text-align: center; color: rgb(var(--text-secondary)); font-size: 13px; padding: 24px 8px; }
+.var-empty svg { margin: 0 auto 8px; opacity: .3; }
+
+/* 內容編輯區：highlight overlay + 透明 textarea */
+.content-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 8px; }
+.content-head > label { font-size: 12px; font-weight: 600; color: rgb(var(--text-secondary)); text-transform: uppercase; letter-spacing: .05em; }
+.content-head .grow { flex: 1; }
+#contentBlock { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+#plainContent, #unlockedPane { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.editor-wrap { position: relative; flex: 1; min-height: 180px; border-radius: var(--r-lg); overflow: hidden; border: 1px solid rgb(var(--border-light)); background: rgb(var(--bg-main)); }
+.editor-wrap:focus-within { border-color: rgb(var(--primary)); box-shadow: 0 0 0 1px rgb(var(--primary)); }
+.editor-hl, .editor-ta {
+  position: absolute; inset: 0;
+  margin: 0; padding: 12px;
+  font: 400 13px/1.65 var(--font-mono);
+  white-space: pre-wrap; overflow-wrap: break-word;
+  border: none; overflow: auto;
+}
+.editor-hl { color: rgb(var(--text-main)); pointer-events: none; }
+.editor-ta { background: transparent; color: transparent; caret-color: rgb(var(--text-main)); resize: none; }
+.editor-ta:focus { outline: none; }
+.tok { border-radius: var(--r-sm); padding: 1px 2px; background: rgb(var(--primary) / .12); color: rgb(var(--primary)); font-weight: 600; }
+.tok.filled { background: rgb(var(--success) / .15); color: rgb(var(--success)); }
+.tok.unfilled { background: rgb(var(--amber) / .16); color: rgb(var(--amber)); }
+.preview-pane {
+  flex: 1; min-height: 180px; padding: 12px; overflow: auto;
+  font: 400 13px/1.65 var(--font-mono);
+  white-space: pre-wrap; overflow-wrap: break-word;
+  background: rgb(var(--bg-main));
+  border: 1px solid rgb(var(--border-light));
+  border-radius: var(--r-lg);
+}
+
+/* 機密／可見性區塊 */
+.sec-box {
+  border: 1px solid rgb(var(--border-light));
+  background: rgb(var(--bg-main) / .5);
+  border-radius: var(--r-xl);
+  padding: 14px;
+  display: flex; flex-direction: column; gap: 12px;
+  transition: all var(--d-base);
+}
+.sec-box.on { border-color: rgb(var(--orange) / .45); background: rgb(var(--orange) / .06); }
+.sec-row { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 10px; }
+.sec-row .grow { flex: 1 1 180px; }
+#secActions, #visBtn { margin-left: auto; }
+.sec-row .grow { min-width: 0; }
+.sec-row .t { font-size: 13px; font-weight: 600; }
+.sec-row .s { font-size: 11px; color: rgb(var(--text-secondary)); }
+.sec-form { display: flex; flex-direction: column; gap: 8px; padding-top: 10px; border-top: 1px solid rgb(var(--border-light)); }
+.sec-form[hidden] { display: none; }
+.divider { padding-top: 10px; border-top: 1px solid rgb(var(--border-light)); }
+.note-warn { font-size: 11px; color: rgb(var(--danger)); display: flex; align-items: flex-start; gap: 4px; }
+.note-info { font-size: 11px; color: rgb(var(--text-secondary)); display: flex; align-items: flex-start; gap: 4px; }
+.err { font-size: 11px; color: rgb(var(--danger)); }
+.err[hidden] { display: none; }
+
+/* 已加密內容的鎖定視圖 */
+.locked-pane {
+  flex: 1; min-height: 180px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px; padding: 20px;
+  background: rgb(var(--bg-main));
+  border: 1px dashed rgb(var(--border-light));
+  border-radius: var(--r-xl); text-align: center;
+}
+.locked-pane p { margin: 0; font-size: 13px; color: rgb(var(--text-secondary)); }
+.locked-pane .unlock-form { width: 100%; max-width: 260px; display: flex; flex-direction: column; gap: 8px; }
+.unlocked-note { display: flex; align-items: center; gap: 4px; font-size: 11px; color: rgb(var(--text-secondary)); margin-bottom: 6px; }
+
+/* 授權彈窗 */
+.consent-sheet { width: 100%; max-width: 380px; border-color: rgb(var(--amber) / .4); }
+.consent-fact {
+  border: 1px solid rgb(var(--border-light)); background: rgb(var(--bg-main));
+  border-radius: var(--r-lg); padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 6px; font-size: 13px;
+}
+.consent-fact div { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.consent-fact .k { color: rgb(var(--text-secondary)); flex: none; }
+.consent-fact .v { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.consent-fact .v.mono { font-family: var(--font-mono); font-weight: 400; }
+.chk { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; user-select: none; }
+.chk input { margin-top: 2px; width: 15px; height: 15px; accent-color: rgb(var(--amber)); flex: none; cursor: pointer; }
+.chk .t { font-size: 13px; }
+.chk .s { display: block; font-size: 11px; color: rgb(var(--text-secondary)); }
+
+/* ==========================================================================
+   IDE 視窗
+   ========================================================================== */
+.ide-log { flex: 1; min-height: 0; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.ide-log::-webkit-scrollbar, .app-body::-webkit-scrollbar,
+.sheet-body::-webkit-scrollbar, .pb::-webkit-scrollbar { width: 10px; }
+.ide-log::-webkit-scrollbar-thumb { background: rgb(var(--ide-border)); border-radius: var(--r-full); border: 3px solid rgb(var(--ide-bg)); }
+.app-body::-webkit-scrollbar-thumb, .sheet-body::-webkit-scrollbar-thumb {
+  background: rgb(var(--text-secondary) / .3); border-radius: var(--r-full); border: 3px solid transparent; background-clip: content-box;
+}
+
+.ide-user { display: flex; gap: 8px; align-items: baseline; font-size: 13px; }
+.ide-user .caret { color: rgb(var(--primary)); font-family: var(--font-mono); font-weight: 700; }
+.ide-tool {
+  border: 1px solid rgb(var(--ide-border)); border-radius: var(--r-lg);
+  background: rgb(var(--ide-surface)); overflow: hidden;
+}
+.ide-tool .th {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 10px; font-family: var(--font-mono); font-size: 11px;
+  color: rgb(var(--ide-dim)); border-bottom: 1px solid rgb(var(--ide-border));
+}
+.ide-tool .th .ok { color: rgb(var(--success)); margin-left: auto; }
+.ide-tool .th .wait { color: rgb(var(--amber)); margin-left: auto; }
+.ide-tool .th .no { color: rgb(var(--danger)); margin-left: auto; }
+.ide-tool .tb {
+  padding: 10px; margin: 0;
+  font: 400 12px/1.6 var(--font-mono);
+  white-space: pre-wrap; overflow-wrap: break-word;
+  color: rgb(var(--ide-text));
+  max-height: 260px; overflow: auto;
+}
+.ide-tool .tb .dim { color: rgb(var(--ide-dim)); }
+.ide-tool .tb .hi { color: #7dd3fc; }
+.ide-tool .tb .lock { color: #fbbf24; }
+.ide-say { font-size: 13px; line-height: 1.6; color: rgb(var(--ide-text)); }
+.ide-say .cursor { display: inline-block; width: 7px; height: 14px; background: rgb(var(--primary)); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0 } }
+.ide-empty { margin: auto; text-align: center; color: rgb(var(--ide-dim)); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+.ide-bar {
+  flex: none; border-top: 1px solid rgb(var(--ide-border));
+  background: rgb(var(--ide-surface)); padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.ide-bar .lbl { font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: rgb(var(--ide-dim)); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 10px; border-radius: var(--r-lg);
+  border: 1px solid rgb(var(--ide-border)); background: rgb(var(--ide-bg));
+  color: rgb(var(--ide-text)); font-size: 12px;
+  transition: all var(--d-fast);
+}
+.chip:hover:not([disabled]) { border-color: rgb(var(--primary) / .6); color: #fff; }
+.chip[disabled] { opacity: .45; cursor: not-allowed; }
+.chip .lk { color: #fbbf24; }
+
+/* ==========================================================================
+   引導清單
+   ========================================================================== */
+/* ---- 橫向步驟列：topbar 與 stage 之間，不是浮層 ---- */
+.guide {
+  flex: none;
+  margin: 16px 16px 0;
+  display: flex; align-items: stretch;
+  background: rgb(var(--bg-card));
+  border: 1px solid rgb(var(--border-light));
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+.guide-head {
+  flex: none;
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 14px; border: none; background: none; text-align: left;
+  border-right: 1px solid rgb(var(--border-light));
+}
+.guide-head .t { font-size: 14px; font-weight: 700; white-space: nowrap; }
+.guide-head .n { font-size: 13px; font-family: var(--font-mono); color: rgb(var(--text-main)); font-weight: 700; }
+.guide-head .chev { transition: transform var(--d-base); color: rgb(var(--text-secondary)); }
+.guide[data-open="false"] .chev { transform: rotate(180deg); }
+.guide[data-open="false"] .guide-body { display: none; }
+.guide[data-open="false"] .guide-head { border-right: none; }
+.guide-body {
+  flex: 1; min-width: 0;
+  padding: 8px 10px;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px;
+  counter-reset: step;               /* 編號來源，見 .step .mark::before */
+}
+
+/* 🔴 字級 16px 是刻意的（2026-09-05 創辦人決定）：**寧可換行也不要看不清楚**。
+   這是一份要照著做的操作清單，不是註腳 —— 為了省高度把它改小，等於讓它回到
+   沒人讀的狀態，那正是它原本擺在左下角浮層時的問題。
+
+   🔴 對比是刻意反過來的：**未完成＝深色、已完成＝淡色**。
+   舊版是未完成灰、已完成深＋刪除線 —— 一份任務清單最該跳出來的是
+   「你接下來要做什麼」，那樣寫等於把已經劃掉的東西做得比待辦還顯眼。 */
+.step {
+  counter-increment: step;
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 9px 11px;
+  border: 1px solid transparent; border-radius: var(--r-lg);
+  font-size: 16px; line-height: 1.5;
+  color: rgb(var(--text-main));
+  transition: all var(--d-base);
+}
+.step .txt { min-width: 0; }
+.step .mark {
+  position: relative;
+  width: 22px; height: 22px; flex: none; margin-top: 1px;
+  border-radius: var(--r-full); border: 1.5px solid rgb(var(--border-light));
+  display: grid; place-items: center; color: transparent;
+  transition: all var(--d-base);
+}
+/* 空心圓改編號：數字說「照順序做」，空心圓只說「有個東西可以打勾」。
+   完成時 content 收掉，讓位給底下那支本來就在的綠勾 SVG。 */
+.step .mark::before {
+  content: counter(step);
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font: 700 12px/1 var(--font-mono);
+  color: rgb(var(--text-secondary));
+}
+
+/* 🔴 這條任務列**刻意不用品牌青藍 `--primary`**（2026-09-05 創辦人決定）。
+   理由：真實 App 裡**沒有這條任務列** —— 它是示範用的鷹架，不是產品的一部分。
+   套上品牌色會讓它讀起來像個功能；它該講的是「狀態」，所以整條改用
+   與上方 `.mcp-bar` 完全相同的語彙：**中性灰（尚未）↔ --success 綠（已完成）**，
+   包含 `.led.on` 那圈 `0 0 0 3px` 光暈。
+   （橘色與 amber 一樣不能借 —— 它們在本示範是「機密」與「隱藏／授權窗」。）
+
+   狀態只有兩色可用，但步驟有三種狀態，所以「下一步」**靠重量而不是色相**區分：
+   深一階的中性邊框 + 極淡中性底 + 深色編號。 */
+
+/* 「下一步」＝ DOM 順序上第一個未完成的那一格，只點亮它一條。
+   ⚠️ 這是「建議的下一步」，不是「當前步驟」—— 使用者可以先做第 2 步。 */
+.step[data-done="false"] {
+  border-color: rgb(var(--text-main) / .22);
+  background: rgb(var(--text-main) / .04);
+}
+.step[data-done="false"] .mark {
+  border-color: rgb(var(--text-main) / .55);
+  box-shadow: 0 0 0 3px rgb(var(--text-main) / .06);   /* 呼應 .led.on 的光暈手法 */
+}
+.step[data-done="false"] .mark::before { color: rgb(var(--text-main)); }
+/* 後面其餘未完成的還原成中性（~ 只選「前面還有未完成」的那些）＝ .mcp-bar 未啟動的樣子 */
+.step[data-done="false"] ~ .step[data-done="false"] { border-color: transparent; background: none; }
+.step[data-done="false"] ~ .step[data-done="false"] .mark { border-color: rgb(var(--border-light)); box-shadow: none; }
+.step[data-done="false"] ~ .step[data-done="false"] .mark::before { color: rgb(var(--text-secondary)); }
+
+/* 已完成＝ .mcp-bar.on 逐值照抄：success/.45 邊、success/.06 底、徽章帶 success/.2 光暈。
+   底色刻意維持 .06 這種極淡的量 —— 內文已是 secondary + 刪除線，
+   「未完成比已完成顯眼」那條原則不會因為多了一層綠底而翻掉。 */
+.step[data-done="true"] {
+  border-color: rgb(var(--success) / .45);
+  background: rgb(var(--success) / .06);
+  color: rgb(var(--text-secondary));
+}
+.step[data-done="true"] .mark {
+  background: rgb(var(--success)); border-color: rgb(var(--success)); color: #fff;
+  box-shadow: 0 0 0 3px rgb(var(--success) / .2);
+}
+.step[data-done="true"] .txt { text-decoration: line-through; text-decoration-color: rgb(var(--text-secondary) / .5); }
+
+/* 四步走完時 JS 會把這塊 append 進 guideBody —— 在 grid 裡要自己佔滿一整列 */
+.guide-done {
+  grid-column: 1 / -1;
+  padding: 8px 10px; border-radius: var(--r-lg);
+  background: rgb(var(--success) / .1); border: 1px solid rgb(var(--success) / .3);
+  color: rgb(var(--success)); font-size: 13px; line-height: 1.5;
+}
+.guide-done[hidden] { display: none; }
+
+/* Toast */
+.toast {
+  position: fixed; top: 12px; left: 50%; transform: translateX(-50%) translateY(-6px); z-index: 100;
+  background: #1f2937; color: #fff;
+  padding: 8px 16px; border-radius: var(--r-lg);
+  box-shadow: var(--sh-panel);
+  font-size: 13px; display: flex; align-items: center; gap: 6px;
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--d-enter) ease-out, transform var(--d-enter) ease-out;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast svg { flex: none; }
+.toast .ok { color: #4ade80; }
+</style>
+</head>
+<body>
+
+<!-- ===================== Icon 定義（inline SVG，無外部依賴） ===================== -->
+<svg class="sr" aria-hidden="true"><defs>
+<symbol id="i-lock" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z"/></symbol>
+<symbol id="i-unlock" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></symbol>
+<symbol id="i-key" viewBox="0 0 24 24"><path d="M21 10h-8.35A5.99 5.99 0 0 0 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6a5.99 5.99 0 0 0 5.65-4H13l2 2 2-2 2 2 4-4.05L21 10zM7 15c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></symbol>
+<symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2z"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M17.65 6.35A7.96 7.96 0 0 0 12 4c-4.42 0-7.99 3.58-8 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a1 1 0 0 0-1.41 0 1 1 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a1 1 0 0 0-1.41 0 1 1 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a1 1 0 0 0 0-1.41l-1.06-1.06zm1.06-10.96a1 1 0 0 0 0-1.41 1 1 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a1 1 0 0 0 0-1.41 1 1 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></symbol>
+<symbol id="i-warn" viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></symbol>
+<symbol id="i-terminal" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V8h16v10zm-2-1h-6v-2h6v2zM7.5 17l-1.41-1.41L8.67 13l-2.59-2.59L7.5 9l4 4-4 4z"/></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M20 2H4c-1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1 1.1 2 2 2h14c.9 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-1-2-2-2zm-5 12H9v-2h6v2zm5-7H4V4l16-.02V7z"/></symbol>
+</defs></svg>
+
+<div class="page">
+
+  <!-- ===================== 頁首 ===================== -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"><svg class="i i-sm"><use href="#i-box"/></svg></span>
+      PromptBox
+      <span class="tag">互動示範</span>
+    </div>
+  </header>
+
+  <!-- ===================== 引導清單 =====================
+       🔴 這一列**必須待在文件流裡**，不要改回 position:fixed。
+       它原本是釘在左下角的浮層，在 720px 高的 iframe 裡會整個蓋住第 3 張卡片，
+       而且會壓過 App 視窗的圓角邊界。移到 stage 上方之後重疊從結構上消失，
+       順帶讓它變成「進來先讀到的東西」—— 一份操作清單不該長得像客服泡泡。 -->
+  <div class="guide" id="guide" data-open="true">
+    <button class="guide-head" id="guideHead">
+      <span class="t">探索進度</span>
+      <span class="n" id="guideCount">0/4</span>
+      <svg class="i i-sm chev"><use href="#i-chev"/></svg>
+    </button>
+    <div class="guide-body" id="guideBody"></div>
+  </div>
+
+  <!-- ===================== 舞台 ===================== -->
+  <main class="stage">
+
+    <!-- ---------- 左：PromptBox App ---------- -->
+    <section class="win win-app" id="winApp">
+      <div class="win-chrome">
+        <span class="lights"><i></i><i></i><i></i></span>
+        <span>PromptBox — 我的卡片盒</span>
+        <span class="chrome-tools">
+          <span class="note">離線示範 · 不會儲存任何資料 · 密碼只存在這個分頁的記憶體裡</span>
+          <button class="icon-btn" id="themeBtn" title="切換亮／暗色">
+            <svg class="i" id="themeIcon"><use href="#i-moon"/></svg>
+          </button>
+          <button class="btn btn-secondary btn-sm" id="resetBtn">
+            <svg class="i i-sm"><use href="#i-refresh"/></svg>重新開始
+          </button>
+        </span>
+      </div>
+
+      <div class="app-body">
+        <!-- MCP 伺服器：預設未啟動。連線鍵放在 APP 這一側，因為「你在 PromptBox 開啟伺服器」
+             才是實話；放在 IDE 就變成「IDE 一鍵就連上」，那是假的。 -->
+        <div class="mcp-bar" id="mcpBar">
+          <span class="led" id="mcpLed"></span>
+          <div class="grow">
+            <div class="t">內建 MCP 伺服器</div>
+            <div class="s" id="mcpHint">尚未啟動 —— AI 客戶端現在連不到你的任何卡片</div>
+          </div>
+          <button class="btn btn-primary btn-sm" id="mcpBtn">啟動伺服器</button>
+        </div>
+
+        <div class="box-head">
+          <svg class="i i-sm" style="color:rgb(var(--text-secondary))"><use href="#i-box"/></svg>
+          <h2>卡片盒</h2>
+          <span class="hint">點任一張卡片開始編輯</span>
+        </div>
+        <div class="card-grid" id="cardGrid"></div>
+      </div>
+
+      <!-- 卡片編輯彈窗 -->
+      <div class="overlay" id="editorOverlay" hidden>
+        <div class="editor-shell">
+          <div class="sheet editor-main">
+            <div class="sheet-head">
+              <h3 id="edHeadTitle">編輯卡片</h3>
+              <span class="card-id" id="edHeadId"></span>
+              <span class="grow"></span>
+              <button class="icon-btn" id="edCloseBtn" title="關閉"><svg class="i"><use href="#i-close"/></svg></button>
+            </div>
+
+            <div class="sheet-body">
+              <div class="field">
+                <label for="edTitle">標題</label>
+                <input class="ctl" id="edTitle" placeholder="為這張卡片取個名字">
+              </div>
+
+              <!-- 機密 + AI 可見性 -->
+              <div class="sec-box" id="secBox">
+                <div class="sec-row">
+                  <svg class="i" id="secIcon" style="color:rgb(var(--orange))"><use href="#i-unlock"/></svg>
+                  <div class="grow">
+                    <div class="t" id="secTitle">一般卡片</div>
+                    <div class="s">機密卡片需密碼查看；提供給 AI 時必須由你逐次授權</div>
+                  </div>
+                  <div id="secActions" style="display:flex;gap:4px;flex:none;flex-wrap:wrap"></div>
+                </div>
+
+                <div class="sec-row divider">
+                  <svg class="i" id="visIcon" style="color:rgb(var(--text-secondary))"><use href="#i-eye"/></svg>
+                  <div class="grow">
+                    <div class="t" style="font-size:12px">AI 可見性</div>
+                    <div class="s" id="visHint">AI 看得到名稱與描述；機密內容仍需你授權才會釋放</div>
+                  </div>
+                  <button class="btn btn-ghost btn-sm" id="visBtn">對 AI 隱藏</button>
+                </div>
+
+                <!-- 設定密碼 -->
+                <div class="sec-form" id="formSet" hidden>
+                  <div class="field"><label>設定密碼</label><input class="ctl" type="password" id="pwNew" placeholder="設定密碼"></div>
+                  <div class="field"><label>確認密碼</label><input class="ctl" type="password" id="pwNew2" placeholder="再輸入一次"></div>
+                  <p class="note-warn"><svg class="i i-xs"><use href="#i-warn"/></svg>真實 App 中忘記密碼將永久無法復原內容，且系統不會儲存密碼。（此示範不做真加密）</p>
+                  <p class="note-info" id="setVarHint" hidden><svg class="i i-xs"><use href="#i-info"/></svg>此卡片含變數：變數面板將於解鎖後才可使用</p>
+                  <p class="err" id="errSet" hidden></p>
+                  <div style="display:flex;justify-content:flex-end;gap:8px">
+                    <button class="btn btn-ghost btn-sm" data-sec-cancel>取消</button>
+                    <button class="btn btn-primary btn-sm" id="doSet">確定加密</button>
+                  </div>
+                </div>
+
+                <!-- 變更密碼 -->
+                <div class="sec-form" id="formChange" hidden>
+                  <div class="field"><label>舊密碼</label><input class="ctl" type="password" id="pwOldC" placeholder="舊密碼"></div>
+                  <div class="field"><label>新密碼</label><input class="ctl" type="password" id="pwNewC" placeholder="新密碼"></div>
+                  <div class="field"><label>確認密碼</label><input class="ctl" type="password" id="pwNewC2" placeholder="再輸入一次"></div>
+                  <p class="err" id="errChange" hidden></p>
+                  <div style="display:flex;justify-content:flex-end;gap:8px">
+                    <button class="btn btn-ghost btn-sm" data-sec-cancel>取消</button>
+                    <button class="btn btn-primary btn-sm" id="doChange">確定變更</button>
+                  </div>
+                </div>
+
+                <!-- 移除密碼 -->
+                <div class="sec-form" id="formRemove" hidden>
+                  <div class="field"><label>舊密碼</label><input class="ctl" type="password" id="pwOldR" placeholder="舊密碼"></div>
+                  <p class="note-info"><svg class="i i-xs"><use href="#i-info"/></svg>移除後內容將還原為一般明文卡片。</p>
+                  <p class="err" id="errRemove" hidden></p>
+                  <div style="display:flex;justify-content:flex-end;gap:8px">
+                    <button class="btn btn-ghost btn-sm" data-sec-cancel>取消</button>
+                    <button class="btn btn-primary btn-sm" id="doRemove">確定移除</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 內容區 -->
+              <div id="contentBlock">
+                <div class="content-head">
+                  <label>內容</label>
+                  <span class="grow"></span>
+                  <div class="pillbar" id="modeBar">
+                    <button class="pill" data-mode="edit" aria-pressed="true">Edit</button>
+                    <button class="pill" data-mode="preview" aria-pressed="false">Preview</button>
+                  </div>
+                  <div class="pillbar">
+                    <button class="pill" id="varToggle" aria-pressed="false">
+                      <svg class="i i-sm"><use href="#i-pencil"/></svg>Variables
+                    </button>
+                  </div>
+                  <div class="pillbar" id="copyBar">
+                    <button class="pill" id="copyBtn" title="複製內容（變數會自動代入）">
+                      <svg class="i i-sm" id="copyIcon"><use href="#i-copy"/></svg><span id="copyLabel">複製</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 一般卡：可編輯 -->
+                <div id="plainContent">
+                  <div class="editor-wrap" id="editorWrap">
+                    <div class="editor-hl" id="editorHl"></div>
+                    <textarea class="editor-ta" id="editorTa" spellcheck="false"
+                      placeholder="在這裡寫下你的 prompt。想加變數就打 {{變數名}}，右邊的變數面板會立刻多一列。"></textarea>
+                  </div>
+                  <div class="preview-pane" id="previewPane" hidden></div>
+                </div>
+
+                <!-- 機密卡：未解鎖 -->
+                <div class="locked-pane" id="lockedPane" hidden>
+                  <svg class="i i-xl" style="color:rgb(var(--orange))"><use href="#i-key"/></svg>
+                  <p>此卡片內容已加密，請輸入密碼查看。</p>
+                  <div class="unlock-form">
+                    <input class="ctl" type="password" id="pwUnlock" placeholder="輸入密碼">
+                    <p class="err" id="errUnlock" hidden></p>
+                    <button class="btn btn-primary" id="doUnlock">查看內容</button>
+                  </div>
+                </div>
+
+                <!-- 機密卡：已解鎖（唯讀） -->
+                <div id="unlockedPane" hidden>
+                  <div class="unlocked-note">
+                    <svg class="i i-xs" style="color:rgb(var(--success))"><use href="#i-unlock"/></svg>
+                    已解密 · 關閉後自動清除
+                  </div>
+                  <div class="preview-pane" id="unlockedText"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sheet-foot">
+              <button class="btn btn-ghost" id="edCancel">取消</button>
+              <button class="btn btn-primary" id="edSave">儲存</button>
+            </div>
+          </div>
+
+          <!-- 變數面板 -->
+          <aside class="var-panel" id="varPanel" hidden>
+            <div class="ph">
+              <svg class="i i-sm" style="color:rgb(var(--primary))"><use href="#i-tag"/></svg>
+              Variables
+              <span style="flex:1"></span>
+              <button class="icon-btn" id="varClose" style="width:24px;height:24px"><svg class="i i-sm"><use href="#i-close"/></svg></button>
+            </div>
+            <div class="pb" id="varList"></div>
+            <div class="pf"><span id="varCount">0</span> 個變數 · 值會跟著卡片一起交給 AI</div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- 機密釋放授權彈窗（**跳在 App 這一側，不是 IDE**） -->
+      <div class="overlay" id="consentOverlay" hidden style="z-index:60">
+        <div class="sheet consent-sheet">
+          <div class="sheet-head">
+            <svg class="i" style="color:rgb(var(--amber))"><use href="#i-key"/></svg>
+            <h3>機密釋放授權</h3>
+          </div>
+          <div class="sheet-body">
+            <p style="margin:0;font-size:13px;color:rgb(var(--text-secondary))">
+              外部 AI 客戶端請求使用此機密卡片。確認後將解密，供此次請求使用。
+            </p>
+            <div class="consent-fact">
+              <div><svg class="i i-sm" style="color:rgb(var(--text-secondary))"><use href="#i-doc"/></svg>
+                <span class="k">卡片：</span><span class="v" id="csCard"></span></div>
+              <div><svg class="i i-sm" style="color:rgb(var(--text-secondary))"><use href="#i-key"/></svg>
+                <span class="k">來源 token：</span><span class="v mono" id="csToken"></span></div>
+            </div>
+            <div>
+              <input class="ctl" type="password" id="csPw" placeholder="請輸入密碼">
+              <p class="err" id="csErr" hidden style="margin:4px 0 0"></p>
+            </div>
+            <label class="chk">
+              <input type="checkbox" id="csGrant">
+              <span>
+                <span class="t">10 分鐘內不再問我</span>
+                <span class="s">僅限這張卡與這個來源；鎖屏、睡眠或手動撤銷時立即失效。每次取用仍會記錄。</span>
+              </span>
+            </label>
+          </div>
+          <div class="sheet-foot">
+            <button class="btn btn-ghost" id="csDeny">拒絕</button>
+            <button class="btn btn-primary" id="csAllow">允許這次</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- 右：外部 IDE ---------- -->
+    <section class="win win-ide">
+      <div class="win-chrome">
+        <span class="lights"><i></i><i></i><i></i></span>
+        <span>Cursor — my-project</span>
+        <span class="ide-conn" id="ideConn"><i class="led"></i><span>未連線</span></span>
+      </div>
+
+      <div class="ide-log" id="ideLog">
+        <div class="ide-empty">
+          <svg class="i i-lg"><use href="#i-terminal"/></svg>
+          <div>這是一個 AI 客戶端。<br>先在左邊啟動 MCP 伺服器，<br>或直接把複製好的卡片內容貼進來。</div>
+        </div>
+      </div>
+
+      <div class="ide-bar">
+        <div class="paste-row">
+          <input id="pasteInput" placeholder="或：把複製好的內容貼進來（Ctrl+V 後按 Enter）—— 這條路不需要連線">
+          <button class="chip" id="pasteBtn">送出</button>
+        </div>
+        <div class="lbl">可用指令</div>
+        <div class="chips" id="ideChips"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast"><svg class="i i-sm ok"><use href="#i-check"/></svg><span id="toastText"></span></div>
+
+<script>
+(() => {
+"use strict";
+
+/* ==========================================================================
+   1. 資料：四張卡片，各扛一個功能點
+   ========================================================================== */
+const TOKEN_NAME = "cursor-dev-laptop";
+const GRANT_MS = 10 * 60 * 1000;
+
+const seed = () => ([
+  {
+    id: 1,
+    title: "Code Review 指令",
+    content:
+`你是一位嚴格但友善的資深工程師。請審查以下程式碼，並依序指出：
+
+1. 會導致錯誤的問題（必須修）
+2. 可維護性問題（建議修）
+3. 風格建議（可選）
+
+每一點都要附上具體的修改方式，不要只說「這樣不好」。`,
+    values: {}, hidden: false, secret: false, password: null
+  },
+  {
+    id: 2,
+    title: "Bug 回報模板",
+    content:
+`## 問題模組
+{{模組}}
+
+## 重現步驟
+{{重現步驟}}
+
+## 預期行為
+{{預期行為}}
+
+## 實際行為
+{{實際行為}}
+
+環境：{{環境}}`,
+    values: { 環境: "Windows 11 · v3.7.2" }, hidden: false, secret: false, password: null
+  },
+  {
+    id: 3,
+    title: "內部 API 命名規範",
+    content:
+`本專案 API 命名規範（內部文件，勿外流）：
+
+- 所有 endpoint 使用 kebab-case，例如 /user-profile
+- 內部服務前綴一律為 /_internal/，不得出現在公開文件
+- 錯誤碼採 SCREAMING_SNAKE，前四碼為服務代號
+- 廢棄的 endpoint 保留兩個大版本，回傳標頭帶 X-Deprecated-At`,
+    values: {}, hidden: false, secret: false, password: null
+  },
+  {
+    id: 4,
+    title: "正式環境連線設定",
+    content:
+`PROD_DB_HOST=db-prod-01.internal.example.com
+PROD_DB_USER=svc_promptbox
+PROD_DB_PASSWORD=Hx9!tR2#vQ7mLp
+REDIS_URL=redis://cache-prod.internal:6379/2
+S3_BUCKET=promptbox-prod-assets`,
+    values: {}, hidden: false, secret: false, password: null
+  }
+]);
+
+const STEPS = [
+  { key: "copy",   text: "打開一張卡片、填入變數，一鍵複製 —— 這條路不用連線" },
+  { key: "mcp",    text: "啟動 MCP 伺服器 —— 現在 AI 也能自己來拿了" },
+  { key: "hide",   text: "把一張卡對 AI 隱藏，然後讓 IDE 重列一次清單" },
+  { key: "secret", text: "把一張卡設為機密，讓 IDE 來取用它" }
+];
+
+let S = null;   // 全域狀態
+const $  = (id) => document.getElementById(id);
+const el = (tag, cls, txt) => {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (txt != null) n.textContent = txt;
+  return n;
+};
+const svg = (name, cls) => {
+  const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  s.setAttribute("class", "i " + (cls || ""));
+  const u = document.createElementNS("http://www.w3.org/2000/svg", "use");
+  u.setAttribute("href", "#" + name);
+  s.appendChild(u);
+  return s;
+};
+
+function initState() {
+  S = {
+    cards: seed(),
+    openId: null,
+    mode: "edit",
+    showVars: false,
+    unlocked: null,        // 目前開啟的機密卡是否已在編輯器解鎖（存明文）
+    secForm: null,         // 'set' | 'change' | 'remove' | null
+    grants: {},            // cardId -> 到期時間戳
+    pending: null,         // 等待授權的 IDE 請求
+    connected: false,      // MCP 伺服器是否啟動（預設關，這是實情）
+    done: { copy: false, mcp: false, hide: false, secret: false },
+    hidEver: false,        // 曾經隱藏過某張卡（供 step 3 的第二段條件）
+    busy: false
+  };
+}
+
+/* ==========================================================================
+   2. 變數工具（對齊 App 的 utils/variables）
+   ========================================================================== */
+const VAR_RE = /\{\{\s*([^{}]+?)\s*\}\}/g;
+
+function extractVariables(text) {
+  const out = [];
+  let m;
+  VAR_RE.lastIndex = 0;
+  while ((m = VAR_RE.exec(text)) !== null) {
+    const name = m[1].trim();
+    if (name && !out.includes(name)) out.push(name);
+  }
+  return out;
+}
+function replaceVariables(text, values) {
+  return text.replace(VAR_RE, (full, raw) => {
+    const v = values[raw.trim()];
+    return (v != null && v !== "") ? v : full;   // 未填 → 保留原 token
+  });
+}
+const escapeHtml = (s) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/* 內容編輯區的高亮：把 {{變數}} 依「有沒有填值」上不同顏色 */
+function highlightContent(text, values) {
+  let out = "", last = 0, m;
+  VAR_RE.lastIndex = 0;
+  while ((m = VAR_RE.exec(text)) !== null) {
+    out += escapeHtml(text.slice(last, m.index));
+    const name = m[1].trim();
+    const filled = values[name] != null && values[name] !== "";
+    out += '<span class="tok ' + (filled ? "filled" : "unfilled") + '">' + escapeHtml(m[0]) + "</span>";
+    last = m.index + m[0].length;
+  }
+  out += escapeHtml(text.slice(last));
+  return out + "\n";      // 尾巴補一行，讓捲動高度與 textarea 對齊
+}
+
+async function copyText(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.cssText = "position:fixed;top:-1000px;opacity:0";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      ta.remove();
+      if (!ok) throw new Error("execCommand failed");
+    }
+  } catch (err) {
+    toast("這個瀏覽器擋下了複製，請手動選取");
+    return false;
+  }
+  const left = extractVariables(text).length;
+  toast(left ? "已複製（還有 " + left + " 個變數沒填）" : "已複製 · 變數已代入");
+  markDone("copy");
+  return true;
+}
+
+const cardById = (id) => S.cards.find((c) => c.id === id);
+const grantLeft = (id) => Math.max(0, (S.grants[id] || 0) - Date.now());
+const fmtLeft = (ms) => {
+  const s = Math.ceil(ms / 1000);
+  return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+};
+
+/* ==========================================================================
+   3. 卡片盒
+   ========================================================================== */
+function renderCards() {
+  const grid = $("cardGrid");
+  grid.textContent = "";
+
+  S.cards.forEach((c) => {
+    const card = el("div", "card");
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.style.cursor = "pointer";
+
+    const top = el("div", "card-top");
+    top.append(el("div", "card-title", c.title), el("span", "card-id", "#" + c.id));
+    card.append(top);
+
+    if (c.secret) {
+      const p = el("div", "card-preview locked");
+      p.append(svg("i-lock", "i-xs"), el("span", null, "內容已加密"));
+      card.append(p);
+    } else {
+      card.append(el("div", "card-preview", c.content));
+    }
+
+    const foot = el("div", "card-foot");
+    if (c.secret) {
+      const b = el("span", "badge badge-secret");
+      b.append(svg("i-lock", "i-xs"), el("span", null, "機密"));
+      foot.append(b);
+    }
+    if (c.hidden) {
+      const b = el("span", "badge badge-hidden");
+      b.append(svg("i-eye-off", "i-xs"), el("span", null, "對 AI 隱藏"));
+      foot.append(b);
+    }
+    const nVars = extractVariables(c.content).length;
+    if (nVars && !c.secret) {
+      foot.append(el("span", "badge badge-var", nVars + " 個變數"));
+    }
+    const left = grantLeft(c.id);
+    if (left > 0) {
+      const b = el("span", "badge badge-grant");
+      b.append(svg("i-key", "i-xs"), el("span", null, "授權窗 " + fmtLeft(left)));
+      const rv = el("button", "btn btn-ghost btn-sm", "撤銷");
+      rv.style.padding = "0 4px";
+      rv.style.color = "rgb(var(--amber))";
+      rv.addEventListener("click", (e) => {
+        e.stopPropagation();
+        delete S.grants[c.id];
+        toast("已撤銷授權窗");
+        renderCards();
+      });
+      foot.append(b, rv);
+    }
+    foot.append(el("span", "grow"));
+
+    // 一鍵複製：複製的是「代入變數後」的成品。
+    // 機密卡要先解鎖才給複製；被隱藏的卡照樣能複製——隱藏只對 AI，不影響你自己用。
+    const cp = el("button", "card-copy");
+    cp.append(svg("i-copy", "i-sm"));
+    if (c.secret) {
+      cp.disabled = true;
+      cp.title = "機密卡片：請打開卡片、輸入密碼後再複製";
+    } else {
+      cp.title = "複製內容（變數會自動代入）";
+      cp.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const ok = await copyText(replaceVariables(c.content, c.values));
+        if (!ok) return;
+        cp.classList.add("done");
+        cp.firstElementChild.firstElementChild.setAttribute("href", "#i-check");
+        setTimeout(() => {
+          cp.classList.remove("done");
+          cp.firstElementChild.firstElementChild.setAttribute("href", "#i-copy");
+        }, 1000);
+      });
+    }
+    foot.append(cp);
+    card.append(foot);
+
+    const open = () => openEditor(c.id);
+    card.addEventListener("click", open);
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
+    });
+    grid.append(card);
+  });
+}
+
+/* ==========================================================================
+   4. 卡片編輯器
+   ========================================================================== */
+function openEditor(id) {
+  S.openId = id;
+  S.mode = "edit";
+  S.unlocked = null;
+  S.secForm = null;
+  const c = cardById(id);
+  $("editorOverlay").hidden = false;
+  $("edTitle").value = c.title;
+  $("editorTa").value = c.secret ? "" : c.content;   // 機密卡未解鎖：明文不進 DOM
+  ["pwNew","pwNew2","pwOldC","pwNewC","pwNewC2","pwOldR","pwUnlock"].forEach((k) => ($(k).value = ""));
+  ["errSet","errChange","errRemove","errUnlock"].forEach((k) => ($(k).hidden = true));
+  renderEditor();
+}
+
+function closeEditor() {
+  S.openId = null;
+  S.unlocked = null;        // 關閉即清除解密明文（對齊真實 App）
+  S.secForm = null;
+  $("editorOverlay").hidden = true;
+}
+
+function renderEditor() {
+  const c = cardById(S.openId);
+  if (!c) return;
+
+  $("edHeadTitle").textContent = c.secret ? "編輯卡片（機密）" : "編輯卡片";
+  $("edHeadId").textContent = "#" + c.id;
+
+  /* --- 機密區塊 --- */
+  $("secBox").classList.toggle("on", c.secret);
+  $("secIcon").firstElementChild.setAttribute("href", c.secret ? "#i-lock" : "#i-unlock");
+  $("secTitle").textContent = c.secret ? "機密卡片（內容已加密）" : "一般卡片";
+
+  const acts = $("secActions");
+  acts.textContent = "";
+  if (!c.secret) {
+    acts.append(mkBtn("設為機密", "btn btn-ghost btn-sm btn-orange", () => setSecForm("set")));
+  } else {
+    acts.append(
+      mkBtn("變更密碼", "btn btn-ghost btn-sm", () => setSecForm("change")),
+      mkBtn("移除密碼", "btn btn-ghost btn-sm", () => setSecForm("remove"))
+    );
+  }
+  $("formSet").hidden    = S.secForm !== "set";
+  $("formChange").hidden = S.secForm !== "change";
+  $("formRemove").hidden = S.secForm !== "remove";
+  $("setVarHint").hidden = extractVariables(c.content).length === 0;
+
+  /* --- AI 可見性 --- */
+  $("visIcon").firstElementChild.setAttribute("href", c.hidden ? "#i-eye-off" : "#i-eye");
+  $("visIcon").style.color = c.hidden ? "rgb(var(--amber))" : "rgb(var(--text-secondary))";
+  $("visHint").textContent = c.hidden
+    ? "AI 看不到這張卡（連名稱都不會出現）"
+    : "AI 看得到名稱與描述；機密內容仍需你授權才會釋放";
+  $("visBtn").textContent = c.hidden ? "對 AI 顯示" : "對 AI 隱藏";
+
+  /* --- 內容區 --- */
+  const locked = c.secret && S.unlocked === null;
+  const unlocked = c.secret && S.unlocked !== null;
+  $("plainContent").hidden  = c.secret;
+  $("lockedPane").hidden    = !locked;
+  $("unlockedPane").hidden  = !unlocked;
+  $("modeBar").style.visibility = c.secret ? "hidden" : "visible";
+  $("varToggle").parentElement.style.visibility = locked ? "hidden" : "visible";
+  $("copyBar").style.visibility = locked ? "hidden" : "visible";
+  $("edSave").disabled = locked;
+
+  if (unlocked) $("unlockedText").textContent = S.unlocked;
+
+  if (!c.secret) {
+    $("modeBar").querySelectorAll(".pill").forEach((p) =>
+      p.setAttribute("aria-pressed", String(p.dataset.mode === S.mode)));
+    const showPreview = S.mode === "preview";
+    $("editorWrap").hidden = showPreview;
+    $("previewPane").hidden = !showPreview;
+    $("editorHl").innerHTML = highlightContent($("editorTa").value, c.values);
+    if (showPreview) renderPreview();
+  }
+
+  /* --- 變數面板 --- */
+  $("varToggle").setAttribute("aria-pressed", String(S.showVars));
+  const canVars = !c.secret || unlocked;
+  $("varPanel").hidden = !(S.showVars && canVars);
+  if (S.showVars && canVars) renderVarPanel();
+}
+
+function mkBtn(text, cls, fn) {
+  const b = el("button", cls, text);
+  b.addEventListener("click", fn);
+  return b;
+}
+function setSecForm(kind) {
+  S.secForm = S.secForm === kind ? null : kind;
+  ["errSet","errChange","errRemove"].forEach((k) => ($(k).hidden = true));
+  renderEditor();
+}
+
+function renderPreview() {
+  const c = cardById(S.openId);
+  const pane = $("previewPane");
+  pane.innerHTML = highlightContent(
+    replaceVariables($("editorTa").value, c.values), c.values
+  );
+}
+
+function renderVarPanel() {
+  const c = cardById(S.openId);
+  const source = (c.secret && S.unlocked !== null) ? S.unlocked : $("editorTa").value;
+  const names = extractVariables(source);
+  const list = $("varList");
+  list.textContent = "";
+  $("varCount").textContent = String(names.length);
+
+  if (!names.length) {
+    const e = el("div", "var-empty");
+    e.append(svg("i-tag", "i-lg"), el("div", null, "這張卡片還沒有變數"),
+             el("div", null, "在內容裡打 {{名稱}} 就會出現在這裡"));
+    e.querySelectorAll("div")[1].style.fontSize = "11px";
+    list.append(e);
+    return;
+  }
+
+  names.forEach((name) => {
+    const row = el("div", "var-row");
+    const label = el("div", "var-name");
+    label.append(svg("i-tag", "i-xs"), el("span", null, "{{" + name + "}}"));
+    const input = el("input", "ctl");
+    input.type = "text";
+    input.placeholder = "預設值…";
+    input.value = c.values[name] || "";
+    input.addEventListener("input", () => {
+      c.values[name] = input.value;
+      $("editorHl").innerHTML = highlightContent($("editorTa").value, c.values);
+      if (S.mode === "preview") renderPreview();
+      renderCards();
+    });
+    row.append(label, input);
+    list.append(row);
+  });
+}
+
+/* ==========================================================================
+   5. IDE 視窗
+   ========================================================================== */
+function renderMcp() {
+  const on = S.connected;
+  $("mcpBar").classList.toggle("on", on);
+  $("mcpLed").classList.toggle("on", on);
+  $("mcpHint").textContent = on
+    ? "運行中 · http://127.0.0.1:8765/sse —— 已授權的客戶端可以列出並取用卡片"
+    : "尚未啟動 —— AI 客戶端現在連不到你的任何卡片";
+  const btn = $("mcpBtn");
+  btn.textContent = on ? "停止伺服器" : "啟動伺服器";
+  btn.className = on ? "btn btn-secondary btn-sm" : "btn btn-primary btn-sm";
+  const conn = $("ideConn");
+  conn.firstElementChild.classList.toggle("on", on);
+  conn.lastElementChild.textContent = on ? "已連上 PromptBox MCP" : "未連線";
+}
+
+function toggleMcp() {
+  S.connected = !S.connected;
+  if (S.connected) {
+    markDone("mcp");
+    toast("伺服器已啟動：IDE 那邊的燈轉綠了");
+  } else {
+    S.grants = {};   // 伺服器停掉，授權窗一併失效
+    toast("伺服器已停止，授權窗一併失效");
+  }
+  renderMcp();
+  renderCards();
+}
+
+const visibleCards = () => S.cards.filter((c) => !c.hidden);
+
+function renderChips() {
+  const bar = $("ideChips");
+  bar.textContent = "";
+
+  const listChip = el("button", "chip");
+  listChip.append(svg("i-list", "i-sm"), el("span", null, "列出可用的提示詞"));
+  listChip.addEventListener("click", () => cmdList());
+  bar.append(listChip);
+
+  visibleCards().forEach((c) => {
+    const chip = el("button", "chip");
+    chip.append(svg(c.secret ? "i-lock" : "i-doc", "i-sm" + (c.secret ? " lk" : "")));
+    chip.append(el("span", null, "取用「" + c.title + "」"));
+    chip.addEventListener("click", () => cmdGet(c.id));
+    bar.append(chip);
+  });
+
+  bar.querySelectorAll(".chip").forEach((b) => (b.disabled = S.busy));
+}
+
+function logNode(node) {
+  const log = $("ideLog");
+  const empty = log.querySelector(".ide-empty");
+  if (empty) empty.remove();
+  log.append(node);
+  log.scrollTop = log.scrollHeight;
+  return node;
+}
+
+function logUser(text) {
+  const n = el("div", "ide-user");
+  n.append(el("span", "caret", "›"), el("span", null, text));
+  return logNode(n);
+}
+
+/** 工具呼叫區塊：回傳 { setStatus, setBody } */
+function logTool(call) {
+  const box = el("div", "ide-tool");
+  const head = el("div", "th");
+  head.append(svg("i-terminal", "i-xs"), el("span", null, "promptbox · " + call));
+  const status = el("span", "wait", "呼叫中…");
+  head.append(status);
+  const body = el("pre", "tb");
+  box.append(head, body);
+  logNode(box);
+  return {
+    status(cls, text) { status.className = cls; status.textContent = text; $("ideLog").scrollTop = 1e9; },
+    body, box
+  };
+}
+
+function typeInto(node, text, speed) {
+  return new Promise((resolve) => {
+    const caret = el("span", "cursor");
+    node.append(caret);
+    let i = 0;
+    const tick = () => {
+      if (i >= text.length) { caret.remove(); resolve(); return; }
+      const step = Math.max(1, Math.round(text.length / 240));
+      caret.before(document.createTextNode(text.slice(i, i + step)));
+      i += step;
+      $("ideLog").scrollTop = 1e9;
+      setTimeout(tick, speed || 12);
+    };
+    setTimeout(tick, 120);
+  });
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function setBusy(v) { S.busy = v; renderChips(); }
+
+/** 未連線：不是把按鈕變灰，而是讓它回一個真正的失敗訊息——點了才知道為什麼要連線 */
+async function failDisconnected(call, ask) {
+  logUser(ask);
+  const t = logTool(call);
+  await sleep(340);
+  t.status("no", "✕ 連線失敗");
+  t.body.append(el("div", "dim", "ECONNREFUSED 127.0.0.1:8765"),
+                el("div", "dim", "找不到 PromptBox MCP 伺服器。"));
+  const say = el("div", "ide-say");
+  logNode(say);
+  await typeInto(say, "我連不到你的 PromptBox。請在左邊按「啟動伺服器」再試一次——或者直接把卡片內容複製、貼到下面那一格給我，那條路不需要連線。");
+}
+
+/** 貼上區：永遠可用，不受連線狀態影響——這正是它要證明的事 */
+async function submitPaste() {
+  if (S.busy) return;
+  const inp = $("pasteInput");
+  const text = inp.value;
+  if (!text.trim()) return;
+  setBusy(true);
+  inp.value = "";
+  logUser("（貼上一段內容）");
+  const box = el("div", "ide-paste");
+  const ph = el("div", "ph");
+  ph.append(svg("i-copy", "i-xs"), el("span", null, "從剪貼簿貼上 · " + text.length + " 字"));
+  box.append(ph, el("pre", null, text));
+  logNode(box);
+  const say = el("div", "ide-say");
+  logNode(say);
+  await typeInto(say, "收到，我就照這段內容進行。這一段完全沒有經過 MCP——不連線也能用。");
+  setBusy(false);
+}
+
+/* ---- 指令：列出提示詞 ---- */
+async function cmdList() {
+  if (S.busy) return;
+  setBusy(true);
+  if (!S.connected) {
+    await failDisconnected("list_prompts()", "列出我可以用的提示詞");
+    setBusy(false);
+    return;
+  }
+  logUser("列出我可以用的提示詞");
+  const t = logTool("list_prompts()");
+  await sleep(420);
+
+  const vis = visibleCards();
+  const hiddenCount = S.cards.length - vis.length;
+  t.status("ok", "✓ " + vis.length + " 筆");
+
+  const lines = [];
+  vis.forEach((c) => {
+    lines.push({ txt: "#" + c.id + "  " + c.title + (c.secret ? "   🔒 需授權" : ""), lock: c.secret });
+  });
+  lines.forEach((l) => {
+    const row = el("div", l.lock ? "lock" : null, l.txt);
+    t.body.append(row);
+  });
+  if (hiddenCount > 0) {
+    t.body.append(el("div", "dim", "\n（共 " + S.cards.length + " 張卡片，其中 " + hiddenCount + " 張未出現在這份清單裡——AI 端沒有任何線索知道它們存在）"));
+    if (S.hidEver) markDone("hide");
+  }
+
+  const say = el("div", "ide-say");
+  logNode(say);
+  await typeInto(say,
+    hiddenCount > 0
+      ? "我看到 " + vis.length + " 個可用的提示詞。要我取用哪一個？"
+      : "我看到 " + vis.length + " 個可用的提示詞，全部都可以取用。要用哪一個？");
+  setBusy(false);
+}
+
+/* ---- 指令：取用某張卡 ---- */
+async function cmdGet(id) {
+  if (S.busy) return;
+  const c = cardById(id);
+  if (!c || c.hidden) return;
+  setBusy(true);
+  if (!S.connected) {
+    await failDisconnected("get_prompt({ id: " + c.id + " })", "幫我套用「" + c.title + "」");
+    setBusy(false);
+    return;
+  }
+  logUser("幫我套用「" + c.title + "」");
+  const t = logTool("get_prompt({ id: " + c.id + " })");
+  await sleep(380);
+
+  if (!c.secret) {
+    t.status("ok", "✓ 已取得");
+    deliver(t, c, c.content);
+    const say = el("div", "ide-say");
+    logNode(say);
+    await typeInto(say, "拿到了，我就照這份內容進行。");
+    setBusy(false);
+    return;
+  }
+
+  /* 機密卡：先看授權窗，沒有就請 App 端問人 */
+  if (grantLeft(c.id) > 0) {
+    t.status("ok", "✓ 已釋放（授權窗）");
+    t.body.append(el("div", "dim", "授權窗生效中（剩 " + fmtLeft(grantLeft(c.id)) + "），本次未再打擾使用者。\n"));
+    deliver(t, c, c.content);
+    const say = el("div", "ide-say");
+    logNode(say);
+    await typeInto(say, "已取得機密內容。這次沒有跳授權，是因為你先前勾了 10 分鐘授權窗。");
+    setBusy(false);
+    return;
+  }
+
+  t.status("wait", "⏳ 等待使用者授權");
+  t.body.append(el("div", "lock", "這張卡片是機密卡片。\n伺服器不會直接回傳內容——"),
+                el("div", "dim", "PromptBox 已在使用者的桌面跳出授權視窗，等待人工放行。"));
+
+  const decision = await askConsent(c);
+
+  if (decision.ok) {
+    t.status("ok", "✓ 已釋放");
+    if (decision.grant) {
+      t.body.append(el("div", "dim", "\n使用者授予 10 分鐘授權窗。"));
+    }
+    t.body.append(el("div", null, "\n"));
+    deliver(t, c, decision.plain);
+    markDone("secret");
+    const say = el("div", "ide-say");
+    logNode(say);
+    await typeInto(say, "已取得機密內容。整段解密只發生在你按下「允許」之後，密碼從頭到尾沒有離開過你的機器。");
+  } else {
+    t.status("no", "✕ 已拒絕");
+    t.body.append(el("div", "dim", "\nCONSENT_DENIED — 使用者拒絕了這次釋放。"));
+    const say = el("div", "ide-say");
+    logNode(say);
+    await typeInto(say, "使用者拒絕了這次請求，我沒有拿到任何內容。要改用別的提示詞嗎？");
+  }
+  setBusy(false);
+}
+
+/** 把「代入變數後」的內容印進工具回傳區 */
+function deliver(t, c, rawContent) {
+  const filled = replaceVariables(rawContent, c.values);
+  const unfilled = extractVariables(filled);
+  t.body.append(el("div", "hi", "title: " + c.title));
+  const names = extractVariables(rawContent);
+  if (names.length) {
+    const shown = names.map((n) => n + "=" + (c.values[n] ? '"' + c.values[n] + '"' : "(未填)")).join(", ");
+    t.body.append(el("div", "dim", "variables: " + shown));
+  }
+  t.body.append(el("div", "dim", "―".repeat(24)));
+  t.body.append(el("div", null, filled));
+  if (unfilled.length) {
+    t.body.append(el("div", "dim", "\n（" + unfilled.length + " 個變數沒填值，原樣保留 token）"));
+  }
+}
+
+/* ---- 授權：Promise 化的 App 側彈窗 ---- */
+function askConsent(card) {
+  return new Promise((resolve) => {
+    S.pending = { card, resolve };
+    $("csCard").textContent = card.title;
+    $("csToken").textContent = TOKEN_NAME;
+    $("csPw").value = "";
+    $("csGrant").checked = false;      // 預設不勾：放寬必須是主動的動作
+    $("csErr").hidden = true;
+    $("consentOverlay").hidden = false;
+    setTimeout(() => $("csPw").focus(), 60);
+  });
+}
+
+function consentAllow() {
+  const p = S.pending;
+  if (!p) return;
+  const pw = $("csPw").value;
+  if (!pw) { showErr("csErr", "請輸入密碼"); return; }
+  if (pw !== p.card.password) {
+    showErr("csErr", "密碼錯誤，請重試");
+    $("csPw").value = "";
+    return;
+  }
+  const grant = $("csGrant").checked;
+  if (grant) S.grants[p.card.id] = Date.now() + GRANT_MS;
+  $("consentOverlay").hidden = true;
+  S.pending = null;
+  renderCards();
+  p.resolve({ ok: true, plain: p.card.content, grant });
+}
+
+function consentDeny() {
+  const p = S.pending;
+  if (!p) return;
+  $("consentOverlay").hidden = true;
+  S.pending = null;
+  p.resolve({ ok: false });
+}
+
+function showErr(id, msg) { const n = $(id); n.textContent = msg; n.hidden = false; }
+
+/* ==========================================================================
+   6. 引導清單
+   ========================================================================== */
+function renderGuide() {
+  const body = $("guideBody");
+  body.textContent = "";
+  let n = 0;
+  STEPS.forEach((s) => {
+    const done = S.done[s.key];
+    if (done) n++;
+    const row = el("div", "step");
+    row.dataset.done = String(done);
+    const mark = el("span", "mark");
+    mark.append(svg("i-check", "i-xs"));
+    row.append(mark, el("span", "txt", s.text));
+    body.append(row);
+  });
+  $("guideCount").textContent = n + "/4";
+  if (n === STEPS.length) {
+    const d = el("div", "guide-done",
+      "四件事都看過了。這就是 PromptBox 的全部主張：卡片在你手上，AI 拿得到多少，每一項都由你決定。");
+    body.append(d);
+  }
+}
+
+function markDone(key) {
+  if (!(key in S.done) || S.done[key]) return;
+  S.done[key] = true;
+  renderGuide();
+  // copy / mcp 這兩步的動作本身已經有 toast，不重複報一次
+  if (key === "hide" || key === "secret") toast("進度 +1");
+}
+
+/* ==========================================================================
+   7. Toast / 主題 / 綁定
+   ========================================================================== */
+let toastTimer = null;
+function toast(msg) {
+  $("toastText").textContent = msg;
+  $("toast").classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $("toast").classList.remove("show"), 2000);
+}
+
+function applyTheme(dark) {
+  document.documentElement.classList.toggle("dark", dark);
+  $("themeIcon").firstElementChild.setAttribute("href", dark ? "#i-sun" : "#i-moon");
+}
+
+function bind() {
+  /* 主題 / 重置 */
+  $("themeBtn").addEventListener("click", () =>
+    applyTheme(!document.documentElement.classList.contains("dark")));
+  $("resetBtn").addEventListener("click", () => {
+    initState();
+    $("editorOverlay").hidden = true;
+    $("consentOverlay").hidden = true;
+    $("ideLog").textContent = "";
+    const e = el("div", "ide-empty");
+    e.append(svg("i-terminal", "i-lg"));
+    const d = el("div");
+    d.append(document.createTextNode("這是一個 AI 客戶端。"), el("br"),
+             document.createTextNode("先在左邊啟動 MCP 伺服器，"), el("br"),
+             document.createTextNode("或直接把複製好的卡片內容貼進來。"));
+    e.append(d);
+    $("ideLog").append(e);
+    $("pasteInput").value = "";
+    renderAll();
+    toast("已回到初始狀態");
+  });
+
+  /* MCP 伺服器開關 */
+  $("mcpBtn").addEventListener("click", toggleMcp);
+
+  /* 貼上區 */
+  $("pasteBtn").addEventListener("click", submitPaste);
+  $("pasteInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); submitPaste(); }
+  });
+
+  /* 編輯器內的複製鍵：機密卡解鎖後複製明文，一般卡複製當下編輯中的內容 */
+  $("copyBtn").addEventListener("click", async () => {
+    const c = cardById(S.openId);
+    if (!c) return;
+    const src = (c.secret && S.unlocked !== null) ? S.unlocked : $("editorTa").value;
+    if (!(await copyText(replaceVariables(src, c.values)))) return;
+    $("copyIcon").firstElementChild.setAttribute("href", "#i-check");
+    $("copyLabel").textContent = "已複製";
+    setTimeout(() => {
+      $("copyIcon").firstElementChild.setAttribute("href", "#i-copy");
+      $("copyLabel").textContent = "複製";
+    }, 1000);
+  });
+
+  /* 編輯器：關閉 */
+  $("edCloseBtn").addEventListener("click", closeEditor);
+  $("edCancel").addEventListener("click", closeEditor);
+  $("editorOverlay").addEventListener("mousedown", (e) => {
+    if (e.target === $("editorOverlay")) closeEditor();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (!$("consentOverlay").hidden) return;   // 授權窗必須明確選擇，不能用 Esc 溜掉
+    if (!$("editorOverlay").hidden) closeEditor();
+  });
+
+  /* 編輯器：標題 / 內容 */
+  $("edTitle").addEventListener("input", () => {
+    const c = cardById(S.openId); if (!c) return;
+    c.title = $("edTitle").value;
+    renderCards(); renderChips();
+  });
+  const ta = $("editorTa");
+  ta.addEventListener("input", () => {
+    const c = cardById(S.openId); if (!c) return;
+    c.content = ta.value;
+    $("editorHl").innerHTML = highlightContent(ta.value, c.values);
+    if (S.mode === "preview") renderPreview();
+    if (S.showVars) renderVarPanel();
+    $("setVarHint").hidden = extractVariables(ta.value).length === 0;
+    renderCards();
+  });
+  ta.addEventListener("scroll", () => { $("editorHl").scrollTop = ta.scrollTop; });
+
+  /* Edit / Preview */
+  $("modeBar").addEventListener("click", (e) => {
+    const b = e.target.closest(".pill"); if (!b) return;
+    S.mode = b.dataset.mode;
+    renderEditor();
+  });
+
+  /* 變數面板開關 */
+  $("varToggle").addEventListener("click", () => { S.showVars = !S.showVars; renderEditor(); });
+  $("varClose").addEventListener("click", () => { S.showVars = false; renderEditor(); });
+
+  /* AI 可見性 */
+  $("visBtn").addEventListener("click", () => {
+    const c = cardById(S.openId); if (!c) return;
+    c.hidden = !c.hidden;
+    if (c.hidden) S.hidEver = true;
+    renderEditor(); renderCards(); renderChips();
+    toast(c.hidden ? "已對 AI 隱藏：去 IDE 重列一次清單看看" : "已對 AI 顯示");
+  });
+
+  /* 機密：設定 / 變更 / 移除 / 解鎖 */
+  document.querySelectorAll("[data-sec-cancel]").forEach((b) =>
+    b.addEventListener("click", () => { S.secForm = null; renderEditor(); }));
+
+  $("doSet").addEventListener("click", () => {
+    const c = cardById(S.openId);
+    const a = $("pwNew").value, b = $("pwNew2").value;
+    if (!a) return showErr("errSet", "請輸入密碼");
+    if (a !== b) return showErr("errSet", "兩次輸入的密碼不一致");
+    c.secret = true; c.password = a;
+    $("editorTa").value = "";              // 加密當下就把明文清出 DOM
+    S.secForm = null; S.unlocked = null; S.showVars = false;
+    $("pwNew").value = $("pwNew2").value = ""; $("errSet").hidden = true;
+    renderEditor(); renderCards(); renderChips();
+    toast("已設為機密：去 IDE 取用它試試");
+  });
+
+  $("doChange").addEventListener("click", () => {
+    const c = cardById(S.openId);
+    const o = $("pwOldC").value, a = $("pwNewC").value, b = $("pwNewC2").value;
+    if (o !== c.password) return showErr("errChange", "舊密碼錯誤");
+    if (!a) return showErr("errChange", "請輸入新密碼");
+    if (a !== b) return showErr("errChange", "兩次輸入的密碼不一致");
+    c.password = a;
+    delete S.grants[c.id];                 // 換密碼即撤銷既有授權窗
+    S.secForm = null;
+    $("pwOldC").value = $("pwNewC").value = $("pwNewC2").value = ""; $("errChange").hidden = true;
+    renderEditor(); renderCards();
+    toast("密碼已變更，既有授權窗一併失效");
+  });
+
+  $("doRemove").addEventListener("click", () => {
+    const c = cardById(S.openId);
+    if ($("pwOldR").value !== c.password) return showErr("errRemove", "密碼錯誤");
+    c.secret = false; c.password = null;
+    delete S.grants[c.id];
+    S.secForm = null; S.unlocked = null;
+    $("pwOldR").value = ""; $("errRemove").hidden = true;
+    $("editorTa").value = c.content;
+    renderEditor(); renderCards(); renderChips();
+    toast("已還原為一般卡片");
+  });
+
+  const tryUnlock = () => {
+    const c = cardById(S.openId);
+    if ($("pwUnlock").value !== c.password) {
+      showErr("errUnlock", "密碼錯誤");
+      $("pwUnlock").value = "";
+      return;
+    }
+    S.unlocked = c.content;
+    $("pwUnlock").value = ""; $("errUnlock").hidden = true;
+    renderEditor();
+  };
+  $("doUnlock").addEventListener("click", tryUnlock);
+  $("pwUnlock").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); tryUnlock(); } });
+
+  /* 儲存（示範裡改動本來就即時生效，這裡只給一個收尾動作） */
+  $("edSave").addEventListener("click", () => {
+    const c = cardById(S.openId);
+    if (!c.title.trim()) { toast("標題不能空白"); return; }
+    closeEditor(); renderCards(); renderChips();
+    toast("已儲存");
+  });
+
+  /* 授權彈窗 */
+  $("csAllow").addEventListener("click", consentAllow);
+  $("csDeny").addEventListener("click", consentDeny);
+  $("csPw").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); consentAllow(); } });
+
+  /* 引導清單收合 */
+  $("guideHead").addEventListener("click", () => {
+    const g = $("guide");
+    g.dataset.open = g.dataset.open === "true" ? "false" : "true";
+  });
+}
+
+/* ==========================================================================
+   8. 啟動
+   ========================================================================== */
+function renderAll() {
+  renderMcp();
+  renderCards();
+  renderChips();
+  renderGuide();
+  if (S.openId != null) renderEditor();
+}
+
+initState();
+bind();
+applyTheme(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+renderAll();
+
+/* 授權窗倒數：每秒更新卡片上的剩餘時間，到期自動消失 */
+setInterval(() => {
+  const ids = Object.keys(S.grants);
+  if (!ids.length) return;
+  let changed = false;
+  ids.forEach((k) => { if (grantLeft(Number(k)) <= 0) { delete S.grants[k]; changed = true; } });
+  renderCards();
+  if (changed) toast("授權窗已到期");
+}, 1000);
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "demo": {
+    "meta": {
+      "title": "Interactive Demo — PromptBox",
+      "description": "No install required. Walk through PromptBox in your browser: card variables, starting the MCP server, hiding cards from AI, and consent-gated release of secret cards."
+    },
+    "hero": {
+      "badge": "Interactive demo",
+      "title": "Try it before you install it",
+      "lead": "PromptBox is on the left, an external AI client on the right. Four steps show you exactly how it is decided what AI can and cannot reach — all running in your browser, nothing is sent anywhere."
+    },
+    "disclaimer": {
+      "title": "An interactive illustration, not the actual app",
+      "body": "The flow is simplified to explain the concept: tool names, ports and connection details differ from the real MCP interface. The demo does no real encryption — any password you type stays in this browser tab's memory and is gone when you close it. The demo interface is currently in Traditional Chinese only."
+    },
+    "mobile": {
+      "title": "This demo needs a desktop-width screen",
+      "body": "The demo is two side-by-side windows and gets cropped on phones. Please open this page on a computer, or see the screenshot below.",
+      "imageAlt": "The PromptBox interactive demo: card box on the left, external AI client on the right"
+    },
+    "frameTitle": "PromptBox interactive demo",
+    "cta": {
+      "title": "Seen enough? Get the real one",
+      "body": "Everything in the demo is a real feature of the app. Encryption is free forever, with no limits.",
+      "toDownload": "Download free",
+      "toPricing": "See pricing"
+    }
+  }
+}

@@ -2,6 +2,7 @@
   "common": {
     "nav": {
       "home": "Home",
+      "demo": "Interactive Demo",
       "download": "Free Download",
       "pricing": "Pricing",
       "docs": "Manual",

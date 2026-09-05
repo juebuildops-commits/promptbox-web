@@ -1,0 +1,29 @@
+{
+  "demo": {
+    "meta": {
+      "title": "",
+      "description": ""
+    },
+    "hero": {
+      "badge": "",
+      "title": "",
+      "lead": ""
+    },
+    "disclaimer": {
+      "title": "",
+      "body": ""
+    },
+    "mobile": {
+      "title": "",
+      "body": "",
+      "imageAlt": ""
+    },
+    "frameTitle": "",
+    "cta": {
+      "title": "",
+      "body": "",
+      "toDownload": "",
+      "toPricing": ""
+    }
+  }
+}

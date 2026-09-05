@@ -35,6 +35,7 @@ export default defineNuxtConfig({
         files: [
           'zh-TW/common.json',
           'zh-TW/home.json',
+          'zh-TW/demo.json',
           'zh-TW/download.json',
           'zh-TW/pricing.json',
           'zh-TW/changelog.json',
@@ -52,6 +53,7 @@ export default defineNuxtConfig({
         files: [
           'en/common.json',
           'en/home.json',
+          'en/demo.json',
           'en/download.json',
           'en/pricing.json',
           'en/changelog.json',
@@ -132,7 +134,10 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/en', '/enterprise', '/en/enterprise'],
+      //    🔴 `/en/demo`（2026-09-05）同理，但原因不同：`/demo` 在 zh-TW 有導覽連結，
+      //    英文版**刻意沒有**（webplan/模擬試用頁.md D5），它唯一的入口是首頁那一段的 CTA。
+      //    哪天首頁那段被改掉或藏起來，`/en/demo` 就會無聲地變成 404 —— 明列一條擋住這件事。
+      routes: ['/', '/en', '/enterprise', '/en/enterprise', '/en/demo'],
     },
   },
 

@@ -43,6 +43,14 @@
         "aiToolsBody": "只有你複製或釋放的那份內容，才會進到 ChatGPT / Claude / GEMINI。"
       }
     },
+    "demo": {
+      "eyebrow": "互動示範",
+      "title": "上面那張流程圖，你可以自己動手走一遍",
+      "body": "不用安裝、不用註冊。在瀏覽器裡打開一個模擬的 PromptBox 與一個模擬的 AI 客戶端，親手把一張卡片設成機密，再讓 AI 來要它 —— 看看授權那一刻長什麼樣。",
+      "cta": "開始模擬試用",
+      "note": "不用安裝，在瀏覽器裡直接跑。",
+      "imageAlt": "PromptBox 模擬試用的畫面：左邊是卡片盒，右邊是外部 AI 客戶端"
+    },
     "advanced": {
       "title": "Advanced",
       "subtitle": "不只是收納盒，更是機密 Context 保險庫",

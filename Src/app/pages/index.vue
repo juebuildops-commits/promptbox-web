@@ -203,6 +203,53 @@ useHead({
     </div>
   </section>
 
+  <!--
+    ========== 模擬試用入口（2026-09-05）==========
+    刻意接在 Privacy & Security 之後：上一節那張「本機 → AI」的流程圖是靜態的，
+    這一段就是它的互動版本，順序是「看懂 → 動手試 → 下載」。
+
+    🔴 **只放截圖，不 inline demo 本體**（webplan/模擬試用頁.md D8）。
+       demo 是 80K 的 HTML + 一大坨 JS，首頁是全站 LCP 最敏感的一頁，
+       而 webplan/效能待改清單.md 的 E1–E7 都還沒動工。首頁只付一張圖的成本。
+    🔴 這段**兩個語系都出現**（不像主導覽只給 zh-TW）—— 因為首頁結構不該
+       因語言而缺一塊。代價是英文讀者會進到中文 demo，所以 `note` 那一行
+       的英文版有寫明介面語言，不要把它翻成跟中文一樣的意思。
+  -->
+  <section class="py-20 max-md:py-15" aria-labelledby="demo-title">
+    <div class="max-w-[1920px] mx-auto px-6 md:px-12 xl:px-24 2xl:px-60">
+      <div class="grid grid-cols-2 max-lg:grid-cols-1 gap-12 max-lg:gap-8 items-center">
+
+        <div class="flex flex-col gap-5">
+          <p class="font-sans font-bold text-sm tracking-wider uppercase text-brand">{{ $t('home.demo.eyebrow') }}</p>
+          <h2 id="demo-title" class="font-sans font-black text-[40px] max-md:text-[32px] max-sm:text-[26px] leading-tight text-ink-900">{{ $t('home.demo.title') }}</h2>
+          <p class="text-ink-700 text-base leading-relaxed">{{ $t('home.demo.body') }}</p>
+
+          <div class="flex flex-col gap-2.5 items-start">
+            <NuxtLink
+              class="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-pill bg-brand hover:bg-brand-hover text-white font-sans font-bold text-lg leading-snug transition duration-150 active:translate-y-px shadow-btn"
+              :to="localePath('/demo')"
+            >
+              <span>{{ $t('home.demo.cta') }}</span>
+            </NuxtLink>
+            <p class="text-ink-500 text-sm">{{ $t('home.demo.note') }}</p>
+          </div>
+        </div>
+
+        <NuxtLink :to="localePath('/demo')" class="block rounded-2xl overflow-hidden border border-line-200 shadow-sm hover:shadow-xl transition-shadow duration-150">
+          <img
+            class="w-full h-auto object-contain"
+            src="/assets/ExImg/demo-preview.png"
+            :alt="$t('home.demo.imageAlt')"
+            width="1920"
+            height="1040"
+            loading="lazy"
+          >
+        </NuxtLink>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ========== Figma 14:139：ADVANCED ========== -->
   <section class="py-20 max-md:py-15 bg-surface-tint" id="advanced" aria-labelledby="advanced-title">
     <div class="max-w-[1920px] mx-auto px-6 md:px-12 xl:px-24 2xl:px-60">
