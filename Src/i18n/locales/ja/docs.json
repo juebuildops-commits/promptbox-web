@@ -1,12 +1,12 @@
 {
   "docs": {
     "meta": {
-      "title": "",
-      "description": ""
+      "title": "PromptBox マニュアル — 基本操作と応用機能",
+      "description": "PromptBox の使い方：はじめかた、カード管理、フォルダとタグ、変数テンプレート、機密カード、カード連結、MCP 連携、トラブルシューティング。"
     },
-    "sidebarHeading": "",
-    "sidebarAria": "",
-    "title": "",
-    "lead": ""
+    "sidebarHeading": "マニュアルの章",
+    "sidebarAria": "目次",
+    "title": "PromptBox マニュアル",
+    "lead": "インストールから、機密コンテキストの保管庫と MCP 連携まで。このマニュアルが PromptBox を使い切るところまでご案内します。"
   }
 }

@@ -1,22 +1,22 @@
 {
   "changelog": {
     "meta": {
-      "title": "",
-      "description": ""
+      "title": "変更履歴 — PromptBox リリースの記録",
+      "description": "PromptBox の変更履歴：v1.0 から v3.2.3 まで、すべての機能追加とバージョンの歩み。"
     },
     "hero": {
-      "badge": "",
-      "titleLead": "",
-      "titleAccent": "",
-      "lead": "",
-      "leadLink": "",
-      "leadTail": ""
+      "badge": "📜 リリースの歩みと機能アップデート",
+      "titleLead": "バージョン",
+      "titleAccent": "変更履歴",
+      "lead": "PromptBox のこれまでの歩みは、すべてここに記録しています。新しいリリースをいち早く知りたい方は",
+      "leadLink": "新バージョンの通知を購読",
+      "leadTail": "してください。実際にリリースがあるときにしか、メールはお送りしません。"
     },
-    "latestBadge": "",
-    "legacyHeading": "",
+    "latestBadge": "最新バージョン",
+    "legacyHeading": "これまでのバージョン",
     "cta": {
-      "title": "",
-      "body": ""
+      "title": "最新バージョンを使ってみる",
+      "body": "v3.7.1 を公開中です。高速・安全・100% 完全オフラインのプロンプト管理をお試しください。"
     }
   }
 }
