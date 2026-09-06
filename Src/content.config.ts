@@ -35,5 +35,24 @@ export default defineContentConfig({
         beta: z.boolean().optional(),
       }),
     }),
+
+    // 🔴 /about 一節一檔。與 docs / changelog 同樣走 content —— 這是刻意的：
+    //    D-16 把「版面三語、content 只有 zh-TW」訂為分界，本頁 95% 是長篇敘事，
+    //    放進語系檔等於欠下一整頁的英文翻譯債（`check:i18n` 對 en 不允許空字串）。
+    //    放這裡則沿用 changelog / docs 已經在用的 <ContentLocaleNotice /> 路徑。
+    //    要出英文版＝把這幾支 md 翻好、改成 about/{locale}/**.md 兩層，再改頁面查詢。
+    about: defineCollection({
+      type: 'page',
+      source: 'about/**.md',
+      schema: z.object({
+        title: z.string(),
+        /** 側欄／目錄標籤，比 title 短 */
+        navLabel: z.string(),
+        /** 對應 style.css 的 .icon--* */
+        icon: z.string(),
+        /** section id，同時是頁內錨點 */
+        anchor: z.string(),
+      }),
+    }),
   },
 })

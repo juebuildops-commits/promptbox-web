@@ -34,6 +34,7 @@ export default defineNuxtConfig({
         name: '繁體中文',
         files: [
           'zh-TW/common.json',
+          'zh-TW/about.json',
           'zh-TW/home.json',
           'zh-TW/demo.json',
           'zh-TW/download.json',
@@ -52,6 +53,7 @@ export default defineNuxtConfig({
         name: 'English',
         files: [
           'en/common.json',
+          'en/about.json',
           'en/home.json',
           'en/demo.json',
           'en/download.json',

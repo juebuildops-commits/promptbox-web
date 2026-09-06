@@ -1,0 +1,16 @@
+{
+  "about": {
+    "meta": {
+      "title": "關於 PromptBox — 這是誰做的",
+      "description": "一個要你把 API key 交出來保管的軟體，該說得出是誰做的。這頁講動機、講架構，也講它沒有保護到的地方，以及我不會說的那幾句話。"
+    },
+    "hero": {
+      "badge": "👤 關於 PromptBox",
+      "titleLead": "這是誰做的、",
+      "titleAccent": "哪些地方可以查證",
+      "lead": "這頁不談功能。它談的是：一個要你把 API key 交出來保管的軟體，憑什麼讓你放心——以及它做不到什麼。"
+    },
+    "tocHeading": "這頁講四件事",
+    "signoff": "—— PromptBox 的作者"
+  }
+}

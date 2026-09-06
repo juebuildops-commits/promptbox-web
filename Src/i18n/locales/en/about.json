@@ -1,0 +1,16 @@
+{
+  "about": {
+    "meta": {
+      "title": "About PromptBox — who built it",
+      "description": "Software that asks to hold your API keys should be able to say who built it. This page covers the motivation, the architecture, the boundaries it does not protect, and the claims I refuse to make."
+    },
+    "hero": {
+      "badge": "👤 About PromptBox",
+      "titleLead": "Who built this, and",
+      "titleAccent": "what you can verify",
+      "lead": "This page is not about features. It is about why a tool that asks you to hand over your API keys deserves that trust — and what it cannot do."
+    },
+    "tocHeading": "Four things this page covers",
+    "signoff": "— the author of PromptBox"
+  }
+}

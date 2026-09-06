@@ -371,3 +371,51 @@ code {
   font-size: 0.875rem;
   line-height: 1.6;
 }
+
+/* ---------- about 章節內文 ---------- */
+/* docs-prose 的字彙不夠用：/about 有 h3 之外的段落節奏、blockquote，
+   以及三張手刻 HTML 表格（表格本身吃 md 裡的 Tailwind class，這裡只補間距）。
+   一樣不引入 @tailwindcss/typography —— 理由同上方 docs-prose 的註解。 */
+.about-prose > *:first-child { margin-top: 0; }
+
+.about-prose h3 {
+  margin: 1.5rem 0 0;
+  font-weight: 700;
+  font-size: 1.375rem;
+  line-height: 1.9rem;
+  color: var(--color-ink-900);
+  scroll-margin-top: 5rem;
+}
+
+.about-prose p {
+  margin: 0;
+}
+
+.about-prose ul,
+.about-prose ol {
+  margin: 0;
+  padding-left: 1.375rem;
+}
+.about-prose ul { list-style-type: disc; }
+.about-prose ol { list-style-type: decimal; }
+.about-prose li + li { margin-top: 0.625rem; }
+.about-prose li::marker { color: var(--color-brand); }
+
+/* 「具體價格在定價頁」這類旁白。刻意做成低調的側欄註記，
+   不用 notice —— notice 在本頁已經是「這段話很重要」的專用訊號。 */
+.about-prose blockquote {
+  margin: 0;
+  padding: 0.875rem 1.25rem;
+  border-left: 3px solid var(--color-brand-border-strong);
+  border-radius: 0 12px 12px 0;
+  background-color: var(--color-surface-subtle);
+  color: var(--color-ink-600);
+  font-size: 0.9375rem;
+}
+.about-prose blockquote p + p { margin-top: 0.5rem; }
+
+.about-prose strong { color: var(--color-ink-900); }
+
+/* 表格內的 strong 不再加深 —— 表格底色已經是 surface-page，
+   再壓深會讓整張表看起來全部都是重點。 */
+.about-prose table strong { color: inherit; }
