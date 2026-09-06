@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PRICES, SHOW_LIFETIME, TOKENS, VAR_TOKEN } from '~/utils/pricing'
+import { PRICES, SHOW_LIFETIME, SHOW_TWO_YEAR, TOKENS, VAR_TOKEN } from '~/utils/pricing'
 
 /**
  * F2 收尾：階段一把 `alert('線上金流（Paddle）即將開放！…')` 改成不綁廠商的
@@ -367,9 +367,14 @@ useHead({
   <!-- ========== 促銷與續訂優惠說明 ========== -->
   <section class="py-12 bg-surface-subtle border-y border-line-200">
     <div class="max-w-[1920px] mx-auto px-6 md:px-12 xl:px-24 2xl:px-60">
-      <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+      <!-- 🔴 欄數跟著 SHOW_TWO_YEAR 走：少一張卡卻留 3 欄會在最後留一個空格 -->
+      <div class="max-w-4xl mx-auto grid grid-cols-1 gap-6 text-sm" :class="SHOW_TWO_YEAR ? 'md:grid-cols-3' : 'md:grid-cols-2'">
 
-        <div class="p-6 bg-surface-card rounded-xl border border-line-200 flex flex-col gap-2">
+        <!--
+          1. 連買 2 年送 1 年 —— 🔴 SHOW_TWO_YEAR=false 期間整張卡不渲染，見 utils/pricing.ts 的旗標註解。
+             那是**暫緩不是取消**：語系檔的四個 key 與 PRICES.proTwoYear / bundleMonths 都刻意留著。
+        -->
+        <div v-if="SHOW_TWO_YEAR" class="p-6 bg-surface-card rounded-xl border border-line-200 flex flex-col gap-2">
           <div class="flex items-center gap-2 text-brand font-bold text-base">
             <span class="icon icon--gift" />
             <span>{{ $t('pricing.promo.twoYear.title') }}</span>

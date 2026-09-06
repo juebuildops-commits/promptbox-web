@@ -51,11 +51,11 @@
       },
       "i3": {
         "claim": "“Upgrade and all your data becomes encrypted”",
-        "body": "Whole-database encryption at rest is already complete, uncapped and permanent in the free version. Pro sells scale and release safeguards, not stronger encryption — and variable default values are stored as plaintext in both."
+        "body": "Whole-database encryption at rest is already complete, uncapped and permanent in the free version. Pro sells scale and release safeguards, not stronger encryption — the dividing line is whether a card has a password, not whether you are on Free or Pro: variable values on secret cards are protected the same on both, and on ordinary cards they are plaintext on both."
       },
       "i4": {
         "claim": "“Set a password and the whole card is hidden”",
-        "body": "The password protects the card's content. Card names, descriptions and variable names are not covered by it, so avoid putting hints about a secret into those names. What we do guarantee: the content reaches an AI only after you allow it, every single time."
+        "body": "The password protects the card's content and its variables — content, variable names and variable default values are all encrypted under that one password. What it does not cover is the card's name and description: anyone who can open the app can read them, so avoid putting hints about the card's purpose into the title or the description. What we do guarantee: the content reaches an AI only after you allow it, every single time."
       },
       "i5": {
         "claim": "“Fully offline” — said on its own",

@@ -22,7 +22,11 @@ export const PRICES = {
   proStandard: 39,
   /** 標準續訂價（USD / 年） */
   proRenewStandard: 27,
-  /** 連買 2 年送 1 年的一次付款金額（USD） */
+  /**
+   * 連買 2 年送 1 年的一次付款金額（USD）。
+   * 🔴 目前**沒有任何頁面引用它** —— 促銷卡由 `SHOW_TWO_YEAR` 關掉。常數與語系檔
+   *    刻意都留著，因為那是「暫緩」不是「取消」，見下方旗標註解。
+   */
   proTwoYear: 46,
   /** 永久更新權一次買斷（USD） */
   lifetime: 109,
@@ -56,7 +60,7 @@ export const PRICES = {
   sponsorSeats: 25,
   /** 首購含更新權月數 */
   updateMonths: 12,
-  /** 連買 2 年送 1 年實得更新權月數 */
+  /** 連買 2 年送 1 年實得更新權月數。🔴 與 `proTwoYear` 同一個狀態：暫緩中、未被引用 */
   bundleMonths: 36,
 } as const
 
@@ -90,6 +94,21 @@ export const FREE_QUOTA = {
  *    改成階梯三個值，而且有兩句文案是被改寫過的（原文存在那份清單裡）。
  */
 export const SHOW_LIFETIME = false
+
+/**
+ * 🔴 「連買 2 年送 1 年」促銷是否對外顯示。**2026-09-06 創辦人裁示：暫緩，不是取消。**
+ *
+ * 理由是**發表期的版面焦點**：早鳥 $19 是現在唯一要讀者記住的數字，同一區再擺一個
+ * 「$46 換 36 個月」的算式，等於要人在還沒決定要不要用之前先做一題數學。
+ *
+ * **恢復條件**：早鳥名額（`earlyBirdSeats`，150 名）登記額滿、該批名額處理完畢後上架。
+ *
+ * 🔴 `PRICES.proTwoYear`（$46）、`PRICES.bundleMonths`（36）與語系檔的
+ *    `pricing.promo.twoYear.*` 四個 key **刻意全部留著** —— 恢復時把這裡翻成 `true`
+ *    就還原版面，不必重新推導那兩個數字是怎麼來的。這是「暫緩」與「取消」的差別。
+ *    正本在 BRD-02 §3.2 促銷表（`Docs/refer/BRD/BRD-02_商業模式與定價.md`），該列已標 ⏸ 暫緩。
+ */
+export const SHOW_TWO_YEAR = false
 
 export const VAR_TOKEN = '{{variable}}'
 
