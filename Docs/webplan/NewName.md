@@ -144,7 +144,7 @@ T1／T2／T3 共 **6 處**，前置是「App repo 出一版用新名字的建置
 | **Logo 圖檔** | `Src/public/assets/icon.png`，被 header、footer 與 `nuxt.config.ts` 的 `rel="icon"` 三處引用**同一顆** | 換圖即可，**引用路徑不必動**（檔名是路徑，不是品牌）。三處會一起換 |
 | **字標排版** | 字標是純文字，`font-ui`（Inter／Noto Sans TC）+ `text-2xl` | 新名字長度不同 ⇒ 改完**要看 `max-lg` / `max-md` 斷點**。header 是 flex，字變長會擠掉導覽 |
 | **localStorage 鍵 `pb-theme` / `pb-analytics`** | `pb` = PromptBox 的縮寫，出現在 [`useTheme.ts`](../../Src/app/composables/useTheme.ts) `:19`、[`useAnalyticsConsent.ts`](../../Src/app/composables/useAnalyticsConsent.ts) `:15`、[`nuxt.config.ts`](../../Src/nuxt.config.ts) `:174`（防 FOUC 的同步 script）——**而且兩個鍵名都印在隱私頁上**（[`privacy.vue`](../../Src/app/pages/privacy.vue) `:140` `:143`） | 🔴 **需要拍板**，見下 |
-| **JSON-LD / `llms.txt`** | [Wishlist/forAI.md](../Wishlist/forAI.md) 已寫好素材（19 處 `PromptBox`，且自己標注網域待確認），**尚未實作** | ⚠️ **不要在改名前實作它** —— 那等於保證要再做一次 |
+| **JSON-LD / `llms.txt`** | [refer/forAI.md](../refer/forAI.md) 已寫好素材（19 處 `PromptBox`，且自己標注網域待確認），**尚未實作** | ⚠️ **不要在改名前實作它** —— 那等於保證要再做一次 |
 
 ### 🔴 待拍板：`pb-` 前綴要不要跟著改名
 
