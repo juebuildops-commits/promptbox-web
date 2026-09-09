@@ -1,10 +1,27 @@
 <script setup lang="ts">
-// FR-10：13 張版本卡改由 content/changelog/*.md 生成。
+// FR-10：版本卡改由 content/changelog/*.md 生成。
 // 順序以 date 字串反向排序推導 —— 涵蓋 "2026-08-11" 與 "2026-08-07 ~ 2026-08-11"
 // 兩種寫法，字典序剛好等同時序，因此 latest 不需要手動標記。
 const { data: entries } = await useAsyncData('changelog', () => queryCollection('changelog').all())
 
-const sorted = computed(() => [...(entries.value ?? [])].sort((x, y) => y.date.localeCompare(x.date)))
+// 🔴 同日發版會讓 date 打平（v3.9.1 與 v3.9.2 都是 2026-09-10），
+//    而「最新版本」徽章只認排序第一名 —— 打平時它會落到 queryCollection
+//    回傳順序的第一筆（stem 字典序），也就是**版號比較小**的那一版。
+//    ⇒ 平手時改比版號數字。用數字不用字串：字串比會讓 v3.9.10 排在 v3.9.9 前面。
+//    早期那幾筆是區間寫法（"v3.2.0 – v3.2.1"），取出的數字串一樣可比，
+//    何況它們日期各不相同，走不到這條分支。
+const versionParts = (v: string) => (v.match(/\d+/g) ?? []).map(Number)
+const byVersionDesc = (a: string, b: string) => {
+  const [pa, pb] = [versionParts(a), versionParts(b)]
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const d = (pb[i] ?? 0) - (pa[i] ?? 0)
+    if (d !== 0) return d
+  }
+  return 0
+}
+
+const sorted = computed(() => [...(entries.value ?? [])]
+  .sort((x, y) => y.date.localeCompare(x.date) || byVersionDesc(x.version, y.version)))
 const versions = computed(() => sorted.value.filter(e => !e.legacy))
 const legacy = computed(() => sorted.value.filter(e => e.legacy))
 

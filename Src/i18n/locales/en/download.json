@@ -9,6 +9,11 @@
       "titleLead": "Download",
       "lead": "Free to start. Every installer is published here on this site with a SHA-256 checksum you can verify yourself — encrypted locally, 100% offline."
     },
+    "desktopOnly": {
+      "cta": "Download on a computer",
+      "note": "PromptBox is a Windows desktop app — it cannot be installed on a phone or tablet, so there is no download button here. If you are on a computer, widen the browser window and the button will appear.",
+      "cardNote": "Phones and tablets cannot install it. Open this page on a computer, or widen the window, to download."
+    },
     "trust": {
       "aria": "Product guarantees",
       "t1": "Published by us · checksum included",

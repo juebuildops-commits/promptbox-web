@@ -5,9 +5,10 @@
       "description": "PromptBox 是專為 AI 時代打造的本地端提示詞管理器。SQLCipher 加密、變數樣板、卡片串聯、MCP IDE 整合，核心功能永久免費。"
     },
     "hero": {
-      "titleLead": "AI 時代的密碼管理器",
-      "titleAccent": "但存的是你的 prompt、設定與密鑰。",
-      "lead": "你的 context，存在你自己的電腦；任何 AI 都能用，任何廠商都拿不走。",
+      "titleLead": "專屬你的",
+      "titleAccent": "AI 指令收納櫃",
+      "lead": "將每一次成功的 AI 溝通，轉化為隨時可用的專屬樣板。",
+      "body": "採用高強度的本地端加密技術，讓你可以放心地把公司報告或私人數據做成提問格式，無須擔憂雲端外洩風險。",
       "imageAlt": "PromptBox 應用程式主畫面：左側為資料夾與標籤，右側為提示詞卡片列表",
       "floatTag": "本地端 AI ・ Prompt 管理工具"
     },

@@ -5,9 +5,10 @@
       "description": "PromptBox is a local-first prompt manager built for the AI era. SQLCipher encryption, variable templates, card chaining, MCP integration for your IDE — core features free forever."
     },
     "hero": {
-      "titleLead": "The password manager for the AI era",
-      "titleAccent": "— but for your prompts, settings and keys.",
-      "lead": "Your context lives on your own machine; any AI can use it, no vendor can take it.",
+      "titleLead": "Your own",
+      "titleAccent": "cabinet for AI prompts",
+      "lead": "Turn every AI exchange that worked into a template you can reuse any time.",
+      "body": "Strong on-device encryption lets you turn company reports or private data into prompts, without worrying about them leaking through the cloud.",
       "imageAlt": "The PromptBox main window: folders and tags on the left, prompt cards on the right",
       "floatTag": "Local-first AI prompt manager"
     },

@@ -25,17 +25,26 @@ useHead({
           <!-- 標題組 -->
           <div class="flex flex-col items-center gap-9 text-center">
             <div class="flex flex-col items-center gap-5">
+              <!--
+                標題組 2026-09-10 從兩層（主打句＋副標）改成三層：H1 / 副標 / 內文。
+                H1 因此只剩一行，原本用兩個 `block` **分行**的寫法拿掉了 ——
+                那個換行是版面決定、不是文案決定，語系檔裡不帶標籤這點不變。
+
+                改成與其餘七頁同一套兩色 H1：前半 ink-900、後半品牌色，中間那個空白
+                由樣板給（不寫進語系檔，否則 JSON 的前導空白遲早被 formatter 吃掉）。
+              -->
               <h1 class="font-sans font-black text-[54px] max-xl:text-[44px] max-md:text-[36px] max-sm:text-[28px] leading-[1.2] tracking-[0.0185em] text-brand">
-                <!--
-                  兩行是**版面決定，不是文案決定**：換行用 `block` 分行，
-                  不把 <br> 寫進語系檔 —— 訊息裡帶標籤就得改用 v-html，
-                  等於為了一個換行把 XSS 面打開，而且每個語系都要自己記得帶那顆標籤。
-                -->
-                <span class="block text-ink-900">{{ $t('home.hero.titleLead') }}</span>
-                <span class="block">{{ $t('home.hero.titleAccent') }}</span>
+                <span class="text-ink-900">{{ $t('home.hero.titleLead') }}</span> {{ $t('home.hero.titleAccent') }}
               </h1>
-              <p class="font-sans font-normal text-2xl max-md:text-xl max-sm:text-lg text-ink-800 leading-[1.2] tracking-[0.0417em]">
+              <p class="font-sans font-normal text-2xl max-md:text-xl max-sm:text-lg text-ink-800 leading-[1.3] tracking-[0.0417em]">
                 {{ $t('home.hero.lead') }}
+              </p>
+              <!--
+                內文比副標長，`max-w` 是為了不讓它在 2xl 螢幕上被拉成單行 ——
+                置中對齊的長行會讓每一行的起點都在跳，超過 40 個中文字就沒人讀得完。
+              -->
+              <p class="max-w-[42em] font-sans font-normal text-lg max-md:text-base text-ink-700 leading-relaxed tracking-[0.02em]">
+                {{ $t('home.hero.body') }}
               </p>
             </div>
           </div>

@@ -41,6 +41,28 @@ const WIN_ZIP = {
  */
 const MAC_READY: boolean = false
 
+/**
+ * 窄視窗不給下載鈕（2026-09-10 創辦人裁示）。
+ *
+ * 為什麼：PromptBox 是 Windows 桌面程式，手機與平板裝不起來。給一個按下去
+ * 拿到 111 MB 但永遠打不開的檔案，跟 `MAC_READY = false` 那裡的理由是同一條 ——
+ * 「下載不到東西的按鈕，比誠實說做不到傷害大」。
+ *
+ * 🔴 **判定走 CSS 斷點（`lg:` = 1024px），不是 JS 偵測 UA。**
+ *    這是創辦人在兩個方案之間挑的，兩者誤判方向相反，取捨已知並接受：
+ *      · 桌機把視窗拉窄 ⇒ **會被誤擋**（代價：由 `desktopOnly.note` 的第二句
+ *        「拉寬視窗就會出現」承擔 —— 那句話不是客套，是這個誤判唯一的出路）
+ *      · iPad 桌面版網站（寬度 ≥1024）⇒ **擋不到**
+ *    要改成看裝置就得回頭走 UA + `maxTouchPoints`，那是另一個決定，別順手改。
+ *    門檻沿用 `demo.vue` 已經寫死的 `(min-width: 1024px)`，全站只有一個「需要桌機寬度」的定義。
+ *
+ * 🔴 **實作是「換掉元素」，不是「把連結藏起來」。**
+ *    窄視窗下 DOM 裡根本沒有那三個 `href`，換上的是 `<button disabled>` 與純文字。
+ *    不要改成 `pointer-events: none` —— 那只擋滑鼠，Tab + Enter 照樣按得下去，
+ *    而且螢幕閱讀器還是會把它報成一個可用的連結。
+ *    副作用（已知）：Googlebot 以手機視埠算繪，索引到的是灰鈕文案而不是下載連結。
+ *    R2 的檔案位址本來就不是要被索引的頁面節點，`meta` 與其餘內容一個字都沒變。
+ */
 const macSoon = computed(() => !MAC_READY && os.value === 'mac')
 const heroHref = computed(() => (macSoon.value ? '#subscribe' : WIN_EXE.href))
 const heroLabel = computed(() => {
@@ -84,15 +106,26 @@ useHead({
           </p>
 
           <div class="flex flex-col items-center gap-3 w-full sm:w-auto">
+            <!-- ≥1024px：真的行動點 -->
             <a
-              class="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-pill bg-brand hover:bg-brand-hover text-white font-sans font-bold text-xl leading-snug transition duration-150 active:translate-y-px shadow-btn w-full sm:w-auto"
+              class="hidden lg:inline-flex items-center justify-center gap-3 px-10 py-5 rounded-pill bg-brand hover:bg-brand-hover text-white font-sans font-bold text-xl leading-snug transition duration-150 active:translate-y-px shadow-btn w-full sm:w-auto"
               data-os-cta
               :href="heroHref"
             >
               <span :class="['icon', macSoon ? 'icon--apple' : 'icon--computer']" aria-hidden="true" />
               <span data-os-label>{{ heroLabel }}</span>
             </a>
-            <span class="text-sm text-ink-500 font-sans" data-os-note>{{ heroNote }}</span>
+            <!-- <1024px：不是被停用的連結，是一顆真的停用鈕（見 script 的說明） -->
+            <button
+              type="button"
+              disabled
+              class="inline-flex lg:hidden items-center justify-center gap-3 px-10 py-5 rounded-pill bg-surface-muted border border-line-300 text-ink-500 font-sans font-bold text-xl leading-snug cursor-not-allowed w-full sm:w-auto"
+            >
+              <span class="icon icon--computer" aria-hidden="true" />
+              <span>{{ $t('download.desktopOnly.cta') }}</span>
+            </button>
+            <span class="hidden lg:inline text-sm text-ink-500 font-sans" data-os-note>{{ heroNote }}</span>
+            <span class="lg:hidden text-sm text-ink-500 font-sans text-center">{{ $t('download.desktopOnly.note') }}</span>
           </div>
 
         </div>
@@ -175,8 +208,9 @@ useHead({
           </div>
 
           <div class="pt-8 flex flex-col items-center gap-3">
+            <!-- ≥1024px：兩個真的下載連結 -->
             <a
-              class="inline-flex items-center justify-center gap-2 w-full py-4 px-6 rounded-md bg-brand hover:bg-brand-hover text-white font-sans font-bold text-base transition shadow-btn"
+              class="hidden lg:inline-flex items-center justify-center gap-2 w-full py-4 px-6 rounded-md bg-brand hover:bg-brand-hover text-white font-sans font-bold text-base transition shadow-btn"
               :href="WIN_EXE.href"
             >
               <span class="icon icon--computer" />
@@ -184,9 +218,25 @@ useHead({
               <span class="font-normal text-white/75">({{ WIN_EXE.size }})</span>
             </a>
             <a
-              class="text-sm text-ink-500 hover:text-brand underline underline-offset-4 transition-colors"
+              class="hidden lg:inline text-sm text-ink-500 hover:text-brand underline underline-offset-4 transition-colors"
               :href="WIN_ZIP.href"
             >{{ $t('download.platforms.win.ctaPortable') }} ({{ WIN_ZIP.size }})</a>
+
+            <!--
+              <1024px：換成停用鈕 + 灰掉的便攜版字樣 + 一句為什麼。
+              體積照舊印出來 —— 使用者要知道自己等一下回到電腦前要抓多大的東西。
+            -->
+            <button
+              type="button"
+              disabled
+              class="inline-flex lg:hidden items-center justify-center gap-2 w-full py-4 px-6 rounded-md bg-surface-muted border border-line-300 text-ink-500 font-sans font-bold text-base cursor-not-allowed"
+            >
+              <span class="icon icon--computer" aria-hidden="true" />
+              <span>{{ $t('download.desktopOnly.cta') }}</span>
+              <span class="font-normal">({{ WIN_EXE.size }})</span>
+            </button>
+            <span class="lg:hidden text-sm text-ink-400">{{ $t('download.platforms.win.ctaPortable') }} ({{ WIN_ZIP.size }})</span>
+            <span class="lg:hidden text-sm text-ink-500 text-center">{{ $t('download.desktopOnly.cardNote') }}</span>
           </div>
         </div>
 
