@@ -17,7 +17,15 @@ const localePath = useLocalePath()
  *
  * 🔴 `href` 與 `sha256` **必須成對更新** —— 校驗碼是印在頁面上的對外承諾
  *    （`download.checksum.*`），對不上比沒有更糟。
- *    目前這兩組已用 R2 的 ETag（單段上傳 ⇒ 等於物件 MD5）驗證過與本機建置產物位元組相同。
+ *    2026-09-10（v3.9.2）這兩組是**整顆下載回來實算 SHA-256** 與下面的常數比對過的。
+ *    ⚠️ 不要退回只比 ETag：ETag 是 MD5，與頁面上印的 SHA-256 是**兩種雜湊**，
+ *    ETag 相符證明得了「線上檔案 = 本機產物」，證明不了「印出去的校驗碼是對的」。
+ *
+ * 🔴 檔名與路徑**推導不出來，只能照建置產物逐字抄**：
+ *    R2 路徑自 v3.9.2 起多一層版本資料夾（`/V3.9.2/`），而兩顆檔案的命名規則還不一致
+ *    （`PromptBox-Setup-3.9.2.exe` 對 `PromptBox-3.9.2-win.zip`；v3.7.1 時的 zip 又叫 `promptbox-v3.7.1.zip`）。
+ *    ⇒ ⛔ 不要為了「乾淨」把版號抽成常數再組字串 —— 那會讓下一個人只改版號、而 `sha256` 停在舊值，
+ *    正是這條紅線要擋的事。
  *
  * 🔴 `pub-*.r2.dev` 是 Cloudflare 的公用開發網址，官方不建議正式環境長期依賴。
  *    網域到位後（前置鏈 P6）改綁自訂網域，一樣只動這幾行。
@@ -25,14 +33,14 @@ const localePath = useLocalePath()
 const R2 = 'https://pub-c877572083874aada08b285a742dce71.r2.dev'
 
 const WIN_EXE = {
-  href: `${R2}/PromptBox-Setup-3.7.1.exe`,
+  href: `${R2}/V3.9.2/PromptBox-Setup-3.9.2.exe`,
   size: '111 MB',
-  sha256: '0b61dc4ece4e0a3e62ed294c3528d70c8d3ef6c53b89780e03cb1b09e3cdadf3',
+  sha256: '12ff0c2ddb911129228716d52b11a94d8cea98b2e7330bb8fcc34ffbb5ed3a28',
 }
 const WIN_ZIP = {
-  href: `${R2}/promptbox-v3.7.1.zip`,
+  href: `${R2}/V3.9.2/PromptBox-3.9.2-win.zip`,
   size: '153 MB',
-  sha256: '58829bbeaf57afca7c0b08b67677de1986e82f185a9c4c2ae18456bca6fa8e2b',
+  sha256: 'b9019a0100ee7f712381e1895634499c9f577aec96114ca6277832ed731423eb',
 }
 
 /**
@@ -321,11 +329,11 @@ useHead({
         <div class="flex flex-col gap-2 text-xs text-ink-500 border-t border-line-200 pt-4">
           <p>
             <span class="font-sans font-bold text-ink-700">{{ $t('download.checksum.verifyWin') }}</span>
-            <code class="select-all ml-2">Get-FileHash .\PromptBox-Setup-3.7.1.exe -Algorithm SHA256</code>
+            <code class="select-all ml-2">Get-FileHash .\PromptBox-Setup-3.9.2.exe -Algorithm SHA256</code>
           </p>
           <p>
             <span class="font-sans font-bold text-ink-700">{{ $t('download.checksum.verifyUnix') }}</span>
-            <code class="select-all ml-2">shasum -a 256 PromptBox-Setup-3.7.1.exe</code>
+            <code class="select-all ml-2">shasum -a 256 PromptBox-Setup-3.9.2.exe</code>
           </p>
         </div>
       </div>

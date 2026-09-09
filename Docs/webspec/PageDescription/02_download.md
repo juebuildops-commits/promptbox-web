@@ -28,9 +28,9 @@
 
 | 資訊實體 | 內容 |
 | --- | --- |
-| **版本識別** | 當前發行版本 v3.7.1 |
-| **檔案實體 ①** | Windows 安裝版 `PromptBox-Setup-3.7.1.exe`，111 MB，附完整 SHA-256 |
-| **檔案實體 ②** | Windows 免安裝便攜版 `promptbox-v3.7.1.zip`，153 MB，附完整 SHA-256 |
+| **版本識別** | 當前發行版本 **v3.9.2**（2026-09-10 自 v3.7.1 更新，缺口 7 同日結案） |
+| **檔案實體 ①** | Windows 安裝版 `PromptBox-Setup-3.9.2.exe`，111 MB（116,589,636 bytes），附完整 SHA-256 |
+| **檔案實體 ②** | Windows 免安裝便攜版 `PromptBox-3.9.2-win.zip`，153 MB（160,718,477 bytes），附完整 SHA-256。<br>🔴 **檔名與網址推導不出來**：兩顆的命名規則不一致（`PromptBox-Setup-…exe` 對 `PromptBox-…-win.zip`，而 v3.7.1 的 zip 又叫 `promptbox-v3.7.1.zip`），R2 路徑自本版起還多一層 `/V3.9.2/` ⇒ 換版只能照 App 建置產物逐字抄，不得把版號抽成常數再組字串 |
 | **檔案實體 ③（缺位）** | macOS 安裝映像檔——規格已列（Apple Silicon 與 Intel 雙架構、Keychain 整合），但實體不存在，狀態標記為「即將推出」 |
 | **交付閘門（視窗寬度）** | **2026-09-10 新增**：視窗寬度 <1024px 時，hero 主鈕、Windows `.exe` 鈕、便攜版 `.zip` 連結三者全部改為停用態，附一句說明「PromptBox 是 Windows 桌面程式，手機與平板裝不起來；若你在用電腦，把視窗拉寬按鈕就會出現」。<br>🔴 **判定是視窗寬度（Tailwind `lg:` = 1024px），不是裝置偵測** —— 兩案的誤判方向相反，創辦人裁示採寬度：桌機拉窄視窗**會被誤擋**（出路就是那句「拉寬」），iPad 桌面版網站（≥1024px）**擋不到**。門檻沿用 `demo.vue` 的 `(min-width: 1024px)`，全站只有一個「需要桌機寬度」的定義 |
 | **完整性驗證程序** | 兩條可複製的雜湊計算指令（Windows PowerShell `Get-FileHash`；macOS / Linux `shasum`） |

@@ -43,8 +43,8 @@
 
 | # | 位置 | 為什麼不能跟著改 | 該怎麼處理 |
 | --- | --- | --- | --- |
-| **T1** | [`app/pages/download.vue`](../../Src/app/pages/download.vue) `:28` `:33`<br>`PromptBox-Setup-3.7.1.exe`／`promptbox-v3.7.1.zip` | 這是 **R2 上實體檔案的檔名**，由 App repo 的建置產物決定，不是官網說了算。改了 `href` 就 404 | 🔴 等 App 出新名字的建置，`href` 與 `sha256` **成對更新**（[CLAUDE.md 紅線 5](../../CLAUDE.md)） |
-| **T2** | 同上 `:274` `:278`<br>`Get-FileHash .\PromptBox-Setup-3.7.1.exe`／`shasum -a 256 …` | 校驗指令範例裡的檔名**必須與真實檔名逐字相同**，否則使用者照抄會失敗 | 同 T1，與 `href`／`sha256` 同一批動 |
+| **T1** | [`app/pages/download.vue`](../../Src/app/pages/download.vue) `:36` `:41`<br>`PromptBox-Setup-3.9.2.exe`／`PromptBox-3.9.2-win.zip`（R2 路徑自 v3.9.2 起多一層 `/V3.9.2/`） | 這是 **R2 上實體檔案的檔名**，由 App repo 的建置產物決定，不是官網說了算。改了 `href` 就 404 | 🔴 等 App 出新名字的建置，`href` 與 `sha256` **成對更新**（[CLAUDE.md 紅線 5](../../CLAUDE.md)） |
+| **T2** | 同上 `:332` `:336`<br>`Get-FileHash .\PromptBox-Setup-3.9.2.exe`／`shasum -a 256 …` | 校驗指令範例裡的檔名**必須與真實檔名逐字相同**，否則使用者照抄會失敗 | 同 T1，與 `href`／`sha256` 同一批動 |
 | **T3** | [`content/docs/9.install-safety.md`](../../Src/content/docs/9.install-safety.md) `:45` `:50` | 同 T2 的**第二份**（手冊裡也印了一次同樣的指令） | 同 T1。**兩份要一起改**，漏一份就是兩個檔名並存 |
 | **T4** | [`app/pages/download.vue`](../../Src/app/pages/download.vue) `:383`<br>HTML 註解裡的 `promptbox.db.plain.bak` | 這句是**改名沿革的紀錄**（「v3.7.2 起由 `promptbox.db.plain.bak` 改名」）。舊值就是它的內容，改掉等於刪掉紀錄 | ❌ 不動 |
 | **T5** | [`public/demo-app/index.html`](../../Src/public/demo-app/index.html) `:1459`<br>`"promptbox · " + call` | 這是模擬 IDE 顯示 MCP tool call 的**來源標籤**，對應 **MCP server name**，凍結值是 `vault`，**不是新品牌名** | ⚠️ **改成 `vault`，而且不必等改名** —— 它現在就跟 App 對不上。W2 已把 [`content/docs/7.mcp.md`](../../Src/content/docs/7.mcp.md) 的設定鍵改成 `vault`，**這一處漏了** |
@@ -115,7 +115,8 @@
 T1／T2／T3 共 **6 處**，前置是「App repo 出一版用新名字的建置」。
 🔴 **`href` 與 `sha256` 必須成對更新**，對不上比沒有更糟（[CLAUDE.md 紅線 5](../../CLAUDE.md)）。
 
-> 在新建置出來之前，官網照舊掛 `3.7.1` 的檔名是**正確的**，不是漏改。
+> 在新建置出來之前，官網照舊掛 `3.9.2` 的檔名是**正確的**，不是漏改。
+> 📌 2026-09-10 已隨 v3.9.2 換過一輪 —— 那次證實 T1／T2／T3 六處**確實要一起動**，且檔名推導不出來（兩顆的命名規則不一致）。
 
 ### 4-2　網域（等 P6，跟改名是兩條線）
 
