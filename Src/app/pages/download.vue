@@ -17,7 +17,8 @@ const localePath = useLocalePath()
  *
  * 🔴 `href` 與 `sha256` **必須成對更新** —— 校驗碼是印在頁面上的對外承諾
  *    （`download.checksum.*`），對不上比沒有更糟。
- *    2026-09-10（v3.9.2）這兩組是**整顆下載回來實算 SHA-256** 與下面的常數比對過的。
+ *    2026-09-10（v3.9.2）起，每一組都是**整顆下載回來實算 SHA-256** 與下面的常數比對過的；
+ *    現行這組是 2026-09-12（v3.9.4），由創辦人實算比對。
  *    ⚠️ 不要退回只比 ETag：ETag 是 MD5，與頁面上印的 SHA-256 是**兩種雜湊**，
  *    ETag 相符證明得了「線上檔案 = 本機產物」，證明不了「印出去的校驗碼是對的」。
  *
@@ -33,14 +34,14 @@ const localePath = useLocalePath()
 const R2 = 'https://pub-c877572083874aada08b285a742dce71.r2.dev'
 
 const WIN_EXE = {
-  href: `${R2}/V3.9.2/PromptBox-Setup-3.9.2.exe`,
-  size: '111 MB',
-  sha256: '12ff0c2ddb911129228716d52b11a94d8cea98b2e7330bb8fcc34ffbb5ed3a28',
+  href: `${R2}/V3.9.4/PromptBox-Setup-3.9.4.exe`,
+  size: '116.6 MB',
+  sha256: 'beaf83fd32b8520c8ea5f5017730d23e5f34f6453d473d22355a6f99c096b2b1',
 }
 const WIN_ZIP = {
-  href: `${R2}/V3.9.2/PromptBox-3.9.2-win.zip`,
-  size: '153 MB',
-  sha256: 'b9019a0100ee7f712381e1895634499c9f577aec96114ca6277832ed731423eb',
+  href: `${R2}/V3.9.4/PromptBox-3.9.4-win.zip`,
+  size: '160.7 MB',
+  sha256: 'a12ba94ff8499672c42671bfcde2aaa5b0dac87113bf8849a1dfd86fe2d23ede',
 }
 
 /**
@@ -329,11 +330,11 @@ useHead({
         <div class="flex flex-col gap-2 text-xs text-ink-500 border-t border-line-200 pt-4">
           <p>
             <span class="font-sans font-bold text-ink-700">{{ $t('download.checksum.verifyWin') }}</span>
-            <code class="select-all ml-2">Get-FileHash .\PromptBox-Setup-3.9.2.exe -Algorithm SHA256</code>
+            <code class="select-all ml-2">Get-FileHash .\PromptBox-Setup-3.9.4.exe -Algorithm SHA256</code>
           </p>
           <p>
             <span class="font-sans font-bold text-ink-700">{{ $t('download.checksum.verifyUnix') }}</span>
-            <code class="select-all ml-2">shasum -a 256 PromptBox-Setup-3.9.2.exe</code>
+            <code class="select-all ml-2">shasum -a 256 PromptBox-Setup-3.9.4.exe</code>
           </p>
         </div>
       </div>

@@ -2,10 +2,10 @@
   "download": {
     "meta": {
       "title": "Download PromptBox — Windows",
-      "description": "Download PromptBox v3.9.2 free for Windows 10/11; the macOS build is coming soon. Installer and portable builds, encrypted local storage, 100% offline."
+      "description": "Download PromptBox v3.9.4 free for Windows 10/11; the macOS build is coming soon. Installer and portable builds, encrypted local storage, 100% offline."
     },
     "hero": {
-      "badge": "✨ Latest release v3.9.2",
+      "badge": "✨ Latest release v3.9.4",
       "titleLead": "Download",
       "lead": "Free to start. Every installer is published here on this site with a SHA-256 checksum you can verify yourself — encrypted locally, 100% offline."
     },
