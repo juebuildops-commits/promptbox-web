@@ -61,7 +61,7 @@
         "imageAlt": "PromptBox 的機密卡片畫面：卡片顯示鎖定狀態與對 AI 的可見性切換",
         "b1": "資料庫整庫靜態加密（SQLCipher + OS Keychain）",
         "b2": "AES-256-GCM 卡片級加密",
-        "b3": "卡片一鍵鎖定；關掉眼睛後，AI 連這張卡存在都不知道"
+        "b3": "一鍵「對 AI 隱藏」：關掉眼睛後，AI 連這張卡存在都不知道"
       },
       "row2": {
         "title": "MCP 整合，IDE 直接取用你的 Prompt",

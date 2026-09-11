@@ -61,7 +61,7 @@
         "imageAlt": "A PromptBox secret card: its locked state and the visible-to-AI toggle",
         "b1": "Whole-database encryption at rest (SQLCipher + OS keychain)",
         "b2": "AES-256-GCM encryption per card",
-        "b3": "Lock a card in one click; with the eye off, the AI does not even know it exists"
+        "b3": "\"Hide from AI\" in one click: with the eye off, the AI does not even know the card exists"
       },
       "row2": {
         "title": "MCP integration: your IDE reads your prompts directly",
