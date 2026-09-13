@@ -41,8 +41,7 @@
       "contact": "Contact",
       "privacy": "Privacy",
       "copyright": "© 2026 PromptBox. All rights reserved.",
-      "tagline": "Stored locally · Encrypted at rest · Your prompts belong to you",
-      "notDoing": "What we don't do"
+      "tagline": "Stored locally · Encrypted at rest · Your prompts belong to you"
     },
     "os": {
       "ctaDefault": "Download free",

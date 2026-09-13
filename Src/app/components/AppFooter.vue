@@ -21,13 +21,9 @@ const NAV = [
   { to: '/pricing', key: 'common.footer.buy' },
   { to: '/docs', key: 'common.footer.docs' },
   { to: '/changelog', key: 'common.footer.changelog' },
-  // 2026-09-07：/about 上線，接手「我們不做什麼」被撤下之後留下的信任敘事缺口。
+  // 2026-09-07：/about 上線，接手已下架並徹底清理之「我們不做什麼」留下的信任敘事缺口。
   // 🔴 主導覽刻意不放 —— 桌機 nav 在 lg（1024-1279px）已經是滿的，第 7 項會擠出去。
   { to: '/about', key: 'common.footer.about' },
-  // 2026-09-03 下架：「我們不做什麼」語氣太死，暫時撤出頁尾導覽。
-  // 頁面與 /what-we-dont-do 路由都還在，語系鍵 common.footer.notDoing 也留著 ——
-  // 這是暫時下架，要復原就把下面這行的註解拿掉。
-  // { to: '/what-we-dont-do', key: 'common.footer.notDoing' },
   { to: '/privacy', key: 'common.footer.privacy' },
 ]
 

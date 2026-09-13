@@ -6,9 +6,9 @@
     },
     "hero": {
       "titleLead": "專屬你的",
-      "titleAccent": "AI 指令收納櫃",
+      "titleAccent": "AI 指令保險庫",
       "lead": "將每一次成功的 AI 溝通，轉化為隨時可用的專屬樣板。",
-      "body": "採用高強度的本地端加密技術，讓你可以放心地把公司報告或私人數據做成提問格式，無須擔憂雲端外洩風險。",
+      "body": "採用 SQLCipher 與 AES-256 雙層加密技術。你的 Context 存在你自己的電腦，任何廠商都拿不走。",
       "imageAlt": "PromptBox 應用程式主畫面：左側為資料夾與標籤，右側為提示詞卡片列表",
       "floatTag": "本地端 AI ・ Prompt 管理工具"
     },

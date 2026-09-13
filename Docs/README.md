@@ -60,7 +60,7 @@
 
 | 文件 | 鏡射什麼 |
 | --- | --- |
-| [PageDescription/](webspec/PageDescription/) | 十個路由的資訊架構與意圖分析（2026-08-30 增 `/what-we-dont-do`、2026-08-31 增 `/enterprise`、2026-09-05 增 `/demo`、2026-09-07 增 `/about`）。**這個網站唯一的架構記錄，正本只有這一份** |
+| [PageDescription/](webspec/PageDescription/) | 九個路由的資訊架構與意圖分析（2026-08-31 增 `/enterprise`、2026-09-05 增 `/demo`、2026-09-07 增 `/about`；原 `/what-we-dont-do` 於 2026-09-14 徹底移除）。**這個網站唯一的架構記錄，正本只有這一份** |
 | [主張與依據.md](webspec/主張與依據.md) | 對外主張 ↔ 可查證依據 ↔ 目前狀態。主張來源是 PageDescription 的「核心內容映射」 |
 | [systemV2.md](webspec/systemV2.md) | 官網的 design token（從 `style.css` 逆向拆解）。⚠️ 與 App 那套不可互換 |
 
@@ -126,6 +126,6 @@
 
 | # | 債 | 影響 |
 | --- | --- | --- |
-| 1 | `refer/BRD/` 六份裡只有 BRD-02 有副本檔頭，其餘五份沒標快照日與正本位置 | 讀的人不知道它可能過期 |
+| 1 | `refer/BRD/` 六冊自 2026-08-30 起升格為**正本**（不再是副本）；當前債務轉為「2026-09-10 首頁換稿後與 BRD-01／BRD-00 定位語句之落差回寫」 | 見 [refer/BRD/BRD_000更改紀錄.md](refer/BRD/BRD_000更改紀錄.md) |
 | 2 | `refer/` 底下的連結指向 App repo 的路徑（`../ADR/`、`_archive/`、`Wishlist/`…） | **不是債，是副本的正常狀態** —— 改它會讓副本與正本對不上。`check:docs` 已明文豁免 `Docs/refer/` |
 | 3 | B5 護欄只釘住 `appId` 與 `productName` | 見 [主張與依據 §缺口 4](webspec/主張與依據.md) |
