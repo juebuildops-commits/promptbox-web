@@ -105,7 +105,7 @@
 | **關於 App 行為的文案**（不連網、加密、升級不掉資料） | [appsync/App事實依據.md](appsync/App事實依據.md) | 主張與依據對應列 |
 | **頁面加／刪區塊、改連結去向** | [webspec/PageDescription/](webspec/PageDescription/) 對應頁 + [systemV2.md](webspec/systemV2.md) | **PageDescription §2 §3 ＋ 主張與依據，兩份一起** |
 | **色、間距、圓角、字體** | [webspec/systemV2.md](webspec/systemV2.md) | systemV2 對應 token 表 |
-| **手冊／版本紀錄內容** | `Src/content/**.md`（唯一來源）；跑 `npm run check:content` | — |
+| **手冊／版本紀錄內容** | `Src/content/**.md`（唯一來源）；跑 `npm run check:content`；發版與日誌體例見 [發版與Changelog作業指引.md](發版與Changelog作業指引.md) | — |
 | **版面文案 key** | `Src/i18n/locales/**`；跑 `npm run check:i18n`（ja 是骨架也要補） | — |
 | **新增路由／API 端點／外部服務／環境變數** | [webplan/待討論問題.md](webplan/待討論問題.md) 的 D 清單 → **先在 webplan/ 開一份** | webplan 那份標 ✅ 已上線 |
 | **任何 App 也認得的字串**（appId、DB 檔名、MCP server 名、userData 路徑） | [appsync/身分字串凍結清單.md](appsync/身分字串凍結清單.md) | 🔴 **不要動。** 改了會讓既有使用者的資料變孤兒或永久解不開 |

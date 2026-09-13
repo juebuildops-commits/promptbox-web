@@ -14,6 +14,7 @@ Nuxt 4 官網。**架構說明在 [README.md](README.md)，不要在這裡複製
 | --- | --- |
 | 想知道網站怎麼跑 | [README.md](README.md) §四～§六（頁面／渲染／護欄） |
 | 要改一處 | [Docs/README.md](Docs/README.md) §二「要動 X，先看 Y，動完回寫 Z」 |
+| 發布新版本／改日誌 | [Docs/發版與Changelog作業指引.md](Docs/發版與Changelog作業指引.md) —— **閉環免跳轉清單** |
 | 要不要開一份新文件 | [Docs/文件規則.md](Docs/文件規則.md) §1 —— **預設是不開** |
 
 ---
@@ -42,14 +43,17 @@ Nuxt 4 官網。**架構說明在 [README.md](README.md)，不要在這裡複製
 
 ---
 
-## 機器不擋、只能靠人的兩件事
+## 機器不擋、只能靠人的三件事
 
 - **改頁面區塊或連結去向** ⇒ 回寫 [Docs/webspec/PageDescription/](Docs/webspec/PageDescription/)
   對應那一頁的 **§2 核心內容映射**、**§3 連結拓樸**，**＋** [主張與依據.md](Docs/webspec/主張與依據.md)，
-  **兩份一起**。三支護欄都不檢查這件事。
+  **兩份一起**。四支護欄都不檢查這件事。
 
 - **不要為了「先接起來」填假的環境變數**（尤其 `NUXT_PUBLIC_GTAG_ID`）。
   四個變數留空時對應功能會安全停用，文案自動改口 —— 那是刻意設計，不是待辦。
+
+- **日常任務與發版禁止向外遞迴追溯文件（Max Depth = 1）**。
+  歷史日誌、已結案缺口與既有依據視為已凍結之客觀事實；發版一律走 [發版與Changelog作業指引.md](Docs/發版與Changelog作業指引.md) 閉環清單，嚴禁順著 Markdown 連結無限翻查祖父級文件。
 
 ---
 
@@ -60,6 +64,6 @@ npm 指令一律在 `Src/` 裡跑，**不在 repo 根**。
 ```bash
 cd Src
 npm run dev
-npm run build        # check:content → check:i18n → check:docs → nuxt build
-npm run check:docs   # 三支護欄也可以單獨跑
+npm run build         # check:content → check:i18n → check:docs → check:release → nuxt build
+npm run check:release # 四支護欄也可以單獨跑（check:content / check:i18n / check:docs / check:release）
 ```

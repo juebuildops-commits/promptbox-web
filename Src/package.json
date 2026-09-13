@@ -4,13 +4,14 @@
   "type": "module",
   "scripts": {
     "dev": "nuxt dev",
-    "build": "node scripts/check-content.mjs && node scripts/check-i18n.mjs && node scripts/check-docs.mjs && nuxt build",
-    "generate": "node scripts/check-content.mjs && node scripts/check-i18n.mjs && node scripts/check-docs.mjs && nuxt generate",
+    "build": "node scripts/check-content.mjs && node scripts/check-i18n.mjs && node scripts/check-docs.mjs && node scripts/check-release.mjs && nuxt build",
+    "generate": "node scripts/check-content.mjs && node scripts/check-i18n.mjs && node scripts/check-docs.mjs && node scripts/check-release.mjs && nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "check:content": "node scripts/check-content.mjs",
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:docs": "node scripts/check-docs.mjs",
+    "check:release": "node scripts/check-release.mjs",
     "i18n:sync": "node scripts/check-i18n.mjs --sync"
   },
   "dependencies": {

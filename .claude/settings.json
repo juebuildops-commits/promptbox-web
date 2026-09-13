@@ -12,7 +12,9 @@
       "Bash(cd \"j:/desktopp/promptbox-web\" && find Docs -type f | sort && echo \"=== Src/docs ===\" && find Src/docs -type f 2>/dev/null && echo \"=== 有沒有 archive ===\" && ls .. 2>/dev/null | head -20)",
       "Read(//j/desktopp/**)",
       "Bash(python3 -)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   }
 }
