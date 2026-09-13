@@ -2,9 +2,9 @@
 
 @theme {
   /* Fonts */
-  --font-sans: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-  --font-ui: 'Inter', 'Noto Sans TC', sans-serif;
-  --font-accent: 'Big Shoulders', 'Big Shoulders Display', 'Noto Sans TC', sans-serif;
+  --font-sans: 'Noto Sans TC', 'PingFang TC', 'Hiragino Sans', 'Meiryo', 'Microsoft JhengHei', sans-serif;
+  --font-ui: 'Inter', 'Noto Sans TC', 'Hiragino Sans', 'Meiryo', sans-serif;
+  --font-accent: 'Big Shoulders', 'Big Shoulders Display', 'Noto Sans TC', 'Hiragino Sans', 'Meiryo', sans-serif;
 
   /* Colors */
   --color-brand: #009fb7;
