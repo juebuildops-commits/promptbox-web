@@ -41,7 +41,7 @@ const REFERENCE = 'zh-TW'
  *              (3) 在 nuxt.config.ts 的 `i18n.locales` 加一筆 ja
  *    三步缺一，這支腳本會擋下來。
  */
-const SKELETON = new Set(['ja'])
+const SKELETON = new Set([])
 
 const SYNC = process.argv.includes('--sync')
 

@@ -1,16 +1,16 @@
 {
   "about": {
     "meta": {
-      "title": "",
-      "description": ""
+      "title": "PromptBox について — 誰が作っているのか",
+      "description": "API キーの保管を任せるソフトウェアなら、誰が作っているのか言えるべきです。このページでは動機、アーキテクチャ、そして保護されない領域や、私が決して口にしない言葉について語ります。"
     },
     "hero": {
-      "badge": "",
-      "titleLead": "",
-      "titleAccent": "",
-      "lead": ""
+      "badge": "👤 PromptBox について",
+      "titleLead": "誰が作っているのか、",
+      "titleAccent": "どこを検証できるのか",
+      "lead": "このページでは機能については語りません。API キーを預けるソフトウェアとして、何が信頼の根拠となるのか——そして何ができないのかについて語ります。"
     },
-    "tocHeading": "",
-    "signoff": ""
+    "tocHeading": "このページで扱う 4 つのこと",
+    "signoff": "—— PromptBox 開発者"
   }
 }

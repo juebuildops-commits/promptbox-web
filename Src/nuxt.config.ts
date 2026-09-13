@@ -64,6 +64,24 @@ export default defineNuxtConfig({
           'en/enterprise.json',
         ],
       },
+      {
+        code: 'ja',
+        language: 'ja',
+        name: '日本語',
+        files: [
+          'ja/common.json',
+          'ja/about.json',
+          'ja/home.json',
+          'ja/demo.json',
+          'ja/download.json',
+          'ja/pricing.json',
+          'ja/changelog.json',
+          'ja/docs.json',
+          'ja/privacy.json',
+          'ja/subscribe.json',
+          'ja/enterprise.json',
+        ],
+      },
     ],
     // 🔴 關閉瀏覽器語言自動導向。開著會讓預繪好的 `/` 在英文瀏覽器上
     //    被 302 到 `/en`，與「網址即語言」的心智模型打架，也會讓
@@ -137,7 +155,16 @@ export default defineNuxtConfig({
       //    🔴 `/en/demo`（2026-09-05）同理，但原因不同：`/demo` 在 zh-TW 有導覽連結，
       //    英文版**刻意沒有**（webplan/模擬試用頁.md D5），它唯一的入口是首頁那一段的 CTA。
       //    哪天首頁那段被改掉或藏起來，`/en/demo` 就會無聲地變成 404 —— 明列一條擋住這件事。
-      routes: ['/', '/en', '/enterprise', '/en/enterprise', '/en/demo'],
+      routes: [
+        '/',
+        '/en',
+        '/ja',
+        '/enterprise',
+        '/en/enterprise',
+        '/ja/enterprise',
+        '/en/demo',
+        '/ja/demo',
+      ],
     },
   },
 

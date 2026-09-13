@@ -8,7 +8,7 @@
       "changelog": "変更履歴",
       "ariaMain": "メインナビゲーション",
       "ariaFooter": "フッターナビゲーション",
-      "demo": ""
+      "demo": "デモ体験"
     },
     "a11y": {
       "homeLink": "PromptBox ホーム",
@@ -37,7 +37,7 @@
       "buy": "購入",
       "docs": "マニュアル",
       "changelog": "変更履歴",
-      "about": "",
+      "about": "PromptBox について",
       "contact": "お問い合わせ",
       "privacy": "プライバシー",
       "copyright": "© 2026 PromptBox. All rights reserved.",

@@ -2,7 +2,7 @@
 
 # PromptBox 官網 — Design System V2 逆向拆解報告
 
-> **來源**：`Src/app/assets/css/style.css`（`@theme` + `html.dark`）、`Src/nuxt.config.ts`、`Src/app/pages/*.vue`、`Src/app/components/**/*.vue`、`Src/public/assets/*.svg`
+> **來源**：`Src/app/assets/css/style.css`（`@theme` + `html.dark`）、`Src/nuxt.config.ts`、`Src/app/pages/*.vue`、`Src/app/components/**/*.vue`、`Src/app/assets/icons/*.svg`
 > **交叉驗證**：`Src/.output/public/_nuxt/entry.*.css`（編譯產物），用於取得 Tailwind v4 預設值的實際數值，並判定哪些 token 已被 tree-shake（＝宣告但零使用）。
 > **技術棧**：Nuxt 4 + Tailwind CSS v4.3（`@theme` 區塊，hex 直存）+ `html.dark` class 切換。
 > **範圍**：僅視覺風格、微觀樣式與元件規範。不含巨觀排版、網格系統與結構定位。
@@ -349,7 +349,7 @@ Padding 一律以 CSS 縮寫順序記（垂直 水平）：
   background-color: currentColor;                    /* ← 顏色永遠等於文字色 */
   mask: var(--icon) center / contain no-repeat;
 }
-.icon--lock { --icon: url('/assets/icon-lock.svg'); }
+.icon--lock { --icon: url('../icons/icon-lock.svg'); }
 ```
 
 ⇒ 圖示不可能與相鄰文字脫色。`text-brand` 染品牌青、`text-amber-500` 染警告橘，全靠繼承。

@@ -90,23 +90,23 @@ body {
   mask: var(--icon) center / contain no-repeat;
 }
 
-.icon--lang    { --icon: url('/assets/icon-lang.svg'); }
-.icon--theme   { --icon: url('/assets/icon-theme.svg'); }
-.icon--apple   { --icon: url('/assets/icon-apple.svg'); }
-.icon--chevron { --icon: url('/assets/icon-chevron-up.svg'); }
+.icon--lang    { --icon: url('../icons/icon-lang.svg'); }
+.icon--theme   { --icon: url('../icons/icon-theme.svg'); }
+.icon--apple   { --icon: url('../icons/icon-apple.svg'); }
+.icon--chevron { --icon: url('../icons/icon-chevron-up.svg'); }
 
-.icon--storage { --icon: url('/assets/icon-storage.svg'); }
-.icon--lock    { --icon: url('/assets/icon-lock.svg'); }
-.icon--gift    { --icon: url('/assets/icon-gift.svg'); }
-.icon--devices { --icon: url('/assets/icon-devices.svg'); }
+.icon--storage { --icon: url('../icons/icon-storage.svg'); }
+.icon--lock    { --icon: url('../icons/icon-lock.svg'); }
+.icon--gift    { --icon: url('../icons/icon-gift.svg'); }
+.icon--devices { --icon: url('../icons/icon-devices.svg'); }
 
-.icon--check   { --icon: url('/assets/icon-check.svg'); }
-.icon--computer{ --icon: url('/assets/icon-computer.svg'); }
-.icon--flow    { --icon: url('/assets/icon-flow-arrow.svg'); }
+.icon--check   { --icon: url('../icons/icon-check.svg'); }
+.icon--computer{ --icon: url('../icons/icon-computer.svg'); }
+.icon--flow    { --icon: url('../icons/icon-flow-arrow.svg'); }
 
-.icon--openai  { --icon: url('/assets/logo-openai.svg'); }
-.icon--claude  { --icon: url('/assets/logo-claude.svg'); }
-.icon--gemini  { --icon: url('/assets/logo-gemini.svg'); }
+.icon--openai  { --icon: url('../icons/logo-openai.svg'); }
+.icon--claude  { --icon: url('../icons/logo-claude.svg'); }
+.icon--gemini  { --icon: url('../icons/logo-gemini.svg'); }
 
 /* Gradient Borders via CSS Mask */
 .gradient-border-card {
