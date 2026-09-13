@@ -81,7 +81,8 @@ useHead({
               class="w-full h-auto object-contain rounded-[6px]"
               src="/assets/ExImg/index-dark.png"
               :alt="$t('home.hero.imageAlt')"
-              width="1480" height="963"
+              width="1917" height="1017"
+              fetchpriority="high"
             >
             <span class="absolute hidden xl:inline-flex items-center gap-3 px-8 py-6 rounded-pill border border-brand-border text-ink-900 whitespace-nowrap z-2 font-sans font-bold text-xl max-xl:text-base max-xl:px-6 max-xl:py-4 leading-tight tracking-[0.05em] uppercase top-[15%] -right-12 2xl:-right-20 bg-[var(--glass-raised)] backdrop-blur-md shadow-sm">{{ $t('home.hero.floatTag') }}</span>
             <span class="absolute hidden xl:inline-flex items-center gap-3 px-8 py-6 rounded-pill border border-brand-border text-ink-900 whitespace-nowrap z-2 font-sans font-bold text-xl max-xl:text-base max-xl:px-6 max-xl:py-4 leading-tight tracking-[0.05em] uppercase top-[66%] -left-12 2xl:-left-20 bg-[var(--glass-raised-soft)] backdrop-blur-md shadow-sm">{{ $t('home.hero.floatTag') }}</span>
@@ -273,7 +274,7 @@ useHead({
           <!-- 列 1 -->
           <div class="flex flex-col lg:flex-row items-center gap-15 max-xl:gap-10 max-lg:gap-6">
             <div class="w-full lg:w-[600px] lg:shrink-0 p-1 rounded-md overflow-hidden aspect-[16/10] bg-surface-card border border-dashed border-ink-300 flex items-center justify-center text-ink-500 font-medium" role="img" :aria-label="$t('home.advanced.row1.imageAria')">
-              <img class="w-full h-auto rounded-[12px]" src="/assets/ExImg/encryption-status.webp" :alt="$t('home.advanced.row1.imageAlt')" width="1200" height="823" loading="lazy" decoding="async">
+              <img class="w-full h-auto rounded-[12px]" src="/assets/ExImg/encryption-status.webp" :alt="$t('home.advanced.row1.imageAlt')" width="1462" height="910" loading="lazy" decoding="async">
             </div>
             <div class="flex-1 min-w-0 flex flex-col justify-center gap-6">
               <h3 class="text-ink-800 font-sans font-bold text-[32px] max-sm:text-2xl leading-tight tracking-[0.0313em]">{{ $t('home.advanced.row1.title') }}</h3>
@@ -288,8 +289,7 @@ useHead({
           <!-- 列 2（反轉） -->
           <div class="flex flex-col lg:flex-row-reverse items-center gap-15 max-xl:gap-10 max-lg:gap-6">
             <div class="w-full lg:w-[600px] lg:shrink-0 p-1 rounded-md overflow-hidden">
-
-              <img class="w-full h-auto rounded-[12px]" src="/assets/ExImg/MCP.webp" :alt="$t('home.advanced.row2.imageAlt')" width="1200" height="823" loading="lazy" decoding="async">
+              <img class="w-full h-auto rounded-[12px]" src="/assets/ExImg/MCP.webp" :alt="$t('home.advanced.row2.imageAlt')" width="656" height="872" loading="lazy" decoding="async">
             </div>
 
             <div class="flex-1 min-w-0 flex flex-col justify-center gap-6">
@@ -305,9 +305,7 @@ useHead({
           <!-- 列 3 -->
           <div class="flex flex-col lg:flex-row items-center gap-15 max-xl:gap-10 max-lg:gap-6">
             <div class="w-full lg:w-[600px] lg:shrink-0 p-1 rounded-md overflow-hidden aspect-[16/10] bg-surface-card border border-dashed border-ink-300 flex items-center justify-center text-ink-500 font-medium" role="img" :aria-label="$t('home.advanced.row3.imageAria')">
-
-              <img class="w-full h-auto rounded-[12px]" src="/assets/ExImg/chaining-demo.webp" :alt="$t('home.advanced.row3.imageAlt')" width="1200" height="823" loading="lazy" decoding="async">
-
+              <img class="w-full h-auto rounded-[12px]" src="/assets/ExImg/chaining-demo.webp" :alt="$t('home.advanced.row3.imageAlt')" width="1465" height="912" loading="lazy" decoding="async">
             </div>
             <div class="flex-1 min-w-0 flex flex-col justify-center gap-6">
               <h3 class="text-ink-800 font-sans font-bold text-[32px] max-sm:text-2xl leading-tight tracking-[0.0313em]">{{ $t('home.advanced.row3.title') }}</h3>
