@@ -2,7 +2,19 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/content', '@nuxtjs/i18n', 'nuxt-gtag'],
+  modules: ['@nuxt/content', '@nuxtjs/i18n', 'nuxt-gtag', '@nuxtjs/supabase'],
+
+  // ── D6 / D7：Supabase Auth ───────────────────────────────────────────
+  supabase: {
+    redirect: false, // 🔴 必須設為 false，避免公共行銷頁面被非預期強制導向 /login
+    url: process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
+    key: process.env.SUPABASE_KEY || 'placeholder-anon-key',
+  },
+
+  // ── 5a+：路由規則 ────────────────────────────────────────────────────
+  routeRules: {
+    '/account': { ssr: false }, // 會員中心走純 SPA 客戶端渲染，防止 SSG 水合衝突
+  },
 
   // CommonMark 的強調規則對 CJK 標點不友善。像 `**「密碼保護」**與` 這種寫法，
   // 收尾的 `**` 前面是全形標點、後面接非空白字元，依規則不算 right-flanking，
@@ -47,6 +59,7 @@ export default defineNuxtConfig({
           'zh-TW/privacy.json',
           'zh-TW/subscribe.json',
           'zh-TW/enterprise.json',
+          'zh-TW/account.json',
         ],
       },
       {
@@ -65,6 +78,7 @@ export default defineNuxtConfig({
           'en/privacy.json',
           'en/subscribe.json',
           'en/enterprise.json',
+          'en/account.json',
         ],
       },
       {
@@ -83,6 +97,7 @@ export default defineNuxtConfig({
           'ja/privacy.json',
           'ja/subscribe.json',
           'ja/enterprise.json',
+          'ja/account.json',
         ],
       },
     ],

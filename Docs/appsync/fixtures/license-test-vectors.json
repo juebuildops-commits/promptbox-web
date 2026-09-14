@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "schema": "Docs/appsync/ADR-008_授權憑證格式與離線驗證契約.md",
+  "createdAt": "2026-09-14T15:41:20.730Z",
+  "keyInfo": {
+    "kid": "K2026A",
+    "algorithm": "Ed25519 / EdDSA",
+    "publicSpkiPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAGB/zyi0JBYqvehGSG+nbwTIxOeGFAp+oipWFMNz27KE=\n-----END PUBLIC KEY-----\n",
+    "privatePkcs8Pem": "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIBJM8oCc3fj+GCR3v6wvW34mgx7cHIJ2Zq+jqNCLNVGG\n-----END PRIVATE KEY-----\n",
+    "publicJwk": {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "GB_zyi0JBYqvehGSG-nbwTIxOeGFAp-oipWFMNz27KE"
+    }
+  },
+  "vectors": [
+    {
+      "id": "case_pro_standard",
+      "description": "標準個人版 Pro 憑證（1 席次，綁定個人 Email）",
+      "payload": {
+        "v": 1,
+        "iss": "promptbox.app",
+        "sub": "alice@example.com",
+        "plan": "pro",
+        "seat": 1,
+        "order": "polar_ord_test_001",
+        "jti": "jti_pro_test_001_8a9d0c1e",
+        "iat": 1773446400
+      },
+      "header": {
+        "alg": "EdDSA",
+        "typ": "pbent+jws",
+        "kid": "K2026A"
+      },
+      "expectedJws": "eyJhbGciOiJFZERTQSIsInR5cCI6InBiZW50K2p3cyIsImtpZCI6IksyMDI2QSJ9.eyJ2IjoxLCJpc3MiOiJwcm9tcHRib3guYXBwIiwic3ViIjoiYWxpY2VAZXhhbXBsZS5jb20iLCJwbGFuIjoicHJvIiwic2VhdCI6MSwib3JkZXIiOiJwb2xhcl9vcmRfdGVzdF8wMDEiLCJqdGkiOiJqdGlfcHJvX3Rlc3RfMDAxXzhhOWQwYzFlIiwiaWF0IjoxNzczNDQ2NDAwfQ.vVW-3LkZTYLDOhfv9RDryuWeiPsD5lhbNvq7WNwJgCVZwMDWO3QnE_JoPVjt3Ujcl5oWBgron0s-fxnAaB7tDw",
+      "verified": true
+    },
+    {
+      "id": "case_lifetime",
+      "description": "永久更新權 Lifetime 憑證",
+      "payload": {
+        "v": 1,
+        "iss": "promptbox.app",
+        "sub": "bob@example.com",
+        "plan": "lifetime",
+        "seat": 1,
+        "order": "polar_ord_test_002",
+        "jti": "jti_life_test_002_4b5c6d7e",
+        "iat": 1773446400
+      },
+      "header": {
+        "alg": "EdDSA",
+        "typ": "pbent+jws",
+        "kid": "K2026A"
+      },
+      "expectedJws": "eyJhbGciOiJFZERTQSIsInR5cCI6InBiZW50K2p3cyIsImtpZCI6IksyMDI2QSJ9.eyJ2IjoxLCJpc3MiOiJwcm9tcHRib3guYXBwIiwic3ViIjoiYm9iQGV4YW1wbGUuY29tIiwicGxhbiI6ImxpZmV0aW1lIiwic2VhdCI6MSwib3JkZXIiOiJwb2xhcl9vcmRfdGVzdF8wMDIiLCJqdGkiOiJqdGlfbGlmZV90ZXN0XzAwMl80YjVjNmQ3ZSIsImlhdCI6MTc3MzQ0NjQwMH0.mZc4K28kS3lWCV9_yEb9Em1AoqJFn_KZmdMr7gQi1n4kS9AHFTpzDDO4HjkV1eEPH-5DcotKBoxB746URom9Bg",
+      "verified": true
+    },
+    {
+      "id": "case_commercial_seat_3",
+      "description": "商業授權席次 3/5 憑證",
+      "payload": {
+        "v": 1,
+        "iss": "promptbox.app",
+        "sub": "developer3@company.com",
+        "plan": "commercial",
+        "seat": 3,
+        "order": "polar_ord_test_003",
+        "jti": "jti_comm_test_003_1f2a3b4c",
+        "iat": 1773446400
+      },
+      "header": {
+        "alg": "EdDSA",
+        "typ": "pbent+jws",
+        "kid": "K2026A"
+      },
+      "expectedJws": "eyJhbGciOiJFZERTQSIsInR5cCI6InBiZW50K2p3cyIsImtpZCI6IksyMDI2QSJ9.eyJ2IjoxLCJpc3MiOiJwcm9tcHRib3guYXBwIiwic3ViIjoiZGV2ZWxvcGVyM0Bjb21wYW55LmNvbSIsInBsYW4iOiJjb21tZXJjaWFsIiwic2VhdCI6Mywib3JkZXIiOiJwb2xhcl9vcmRfdGVzdF8wMDMiLCJqdGkiOiJqdGlfY29tbV90ZXN0XzAwM18xZjJhM2I0YyIsImlhdCI6MTc3MzQ0NjQwMH0.Vd3BIyvf7d8UI8WroF5neuHqD8A2HjMTo9_ry7GVwiRQF-IYYsul9xm6cx1qOe4ZWtIF06_slpI_hSsQZRCVBA",
+      "verified": true
+    }
+  ]
+}

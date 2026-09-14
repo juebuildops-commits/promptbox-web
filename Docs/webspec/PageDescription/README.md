@@ -19,8 +19,9 @@
 | [08_enterprise.md](08_enterprise.md) | `/enterprise` | 意向登記頁（Intent Capture），主體為支持組織名單的**空狀態** |
 | [09_demo.md](09_demo.md) | `/demo` | 產品體驗頁（Product Experience），形式為受控的功能模擬 |
 | [10_about.md](10_about.md) | `/about` | 信任論證頁（Trust Argument），形式為第一人稱的作者自述 |
+| [11_account.md](11_account.md) | `/account` | 會員應用專區（User Dashboard）兼授權展示節點 |
 
-共 9 個路由，各具備繁體中文與英文兩個語系版本（英文以 `/en` 前綴，繁中為預設無前綴）。除語系前綴外，站內不存在其他動態路由或子節點。
+共 10 個路由，各具備繁體中文與英文兩個語系版本（英文以 `/en` 前綴，繁中為預設無前綴）。除語系前綴外，站內不存在其他動態路由或子節點。
 
 🔴 **`/demo` 是唯一「兩語系入站連結不對稱」的路由**（2026-09-05）：zh-TW 在主導覽第 2 項，`en` 只有首頁那一段的 CTA 到得了。
 `nitro.prerender.routes` 因此也明列了 `/en/demo` —— 首頁那段被改動或藏起來時，沒有那一行它就會無聲變成 404。理由與掛法見 [09 §1／§3](09_demo.md)。

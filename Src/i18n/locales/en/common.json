@@ -7,6 +7,7 @@
       "pricing": "Pricing",
       "docs": "Manual",
       "changelog": "Changelog",
+      "account": "Account",
       "ariaMain": "Main navigation",
       "ariaFooter": "Footer navigation"
     },
@@ -27,7 +28,9 @@
       "buyLifetime": "Buy lifetime",
       "learnLicense": "About licensing",
       "goDownloadLatest": "Get the latest version",
-      "downloadAndStart": "Download free and get started"
+      "downloadAndStart": "Download free and get started",
+      "signIn": "Sign In",
+      "signOut": "Sign Out"
     },
     "menu": {
       "theme": "Theme"

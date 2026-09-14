@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "會員專區 · PromptBox",
+    "description": "PromptBox 會員帳號專區，管理個人資訊、下載安裝檔與檢視授權憑證。"
+  },
+  "hero": {
+    "badge": "會員中心",
+    "title": "個人帳號專區",
+    "subtitle": "檢視你的方案狀態、取得官方最新安裝檔與管理授權憑證。"
+  },
+  "offlineNotice": {
+    "title": "展示模式（Supabase 尚未連線）",
+    "desc": "目前本機未設定 SUPABASE_URL 環境變數，此頁面以展示狀態呈現。設定環境變數後即可啟用 Google OAuth 登入。"
+  },
+  "profile": {
+    "title": "基本資料",
+    "email": "登入信箱",
+    "name": "使用者名稱",
+    "guest": "訪客（未登入）",
+    "signInWithGoogle": "使用 Google 登入",
+    "signOut": "登出"
+  },
+  "earlyBird": {
+    "badge": "早鳥 150 名席次保留",
+    "desc": "你的信箱已符合早鳥登記名單，享有首批永久鎖價 $19 USD/年 權益。"
+  },
+  "license": {
+    "title": "授權憑證",
+    "currentPlan": "當前方案",
+    "freePlan": "免費版（Free）",
+    "proPlan": "個人專業版（Pro）",
+    "upgradeBtn": "升級至 Pro",
+    "keyPlaceholder": "尚未擁有 Pro 授權碼",
+    "copyKey": "複製授權碼",
+    "copied": "已複製！",
+    "q12Note": "授權碼為 Ed25519 compact JWS 字串，可直接複製並於桌面端設定頁貼上離線啟用。"
+  },
+  "downloads": {
+    "title": "快速下載（官方發佈版）",
+    "desc": "已登入會員專屬直接下載端點，由 Cloudflare R2 邊緣 CDN 高速遞送。",
+    "winExe": "Windows 安裝檔 (.exe)",
+    "winZip": "Windows 免安裝免解壓 (.zip)",
+    "macDmg": "macOS Apple Silicon (.dmg)"
+  }
+}

@@ -6,6 +6,7 @@
       "pricing": "料金",
       "docs": "マニュアル",
       "changelog": "変更履歴",
+      "account": "アカウント",
       "ariaMain": "メインナビゲーション",
       "ariaFooter": "フッターナビゲーション",
       "demo": "デモ体験"
@@ -27,7 +28,9 @@
       "buyLifetime": "永久ライセンスを購入",
       "learnLicense": "ライセンスについて",
       "goDownloadLatest": "最新版をダウンロード",
-      "downloadAndStart": "無料ダウンロードして始める"
+      "downloadAndStart": "無料ダウンロードして始める",
+      "signIn": "ログイン",
+      "signOut": "ログアウト"
     },
     "menu": {
       "theme": "テーマ"

@@ -7,6 +7,7 @@
       "pricing": "收費機制",
       "docs": "操作手冊",
       "changelog": "更新日誌",
+      "account": "會員專區",
       "ariaMain": "主導覽",
       "ariaFooter": "頁尾導覽"
     },
@@ -27,7 +28,9 @@
       "buyLifetime": "終身買斷",
       "learnLicense": "了解授權",
       "goDownloadLatest": "前往下載最新版",
-      "downloadAndStart": "免費下載開始使用"
+      "downloadAndStart": "免費下載開始使用",
+      "signIn": "登入",
+      "signOut": "登出"
     },
     "menu": {
       "theme": "深淺模式"

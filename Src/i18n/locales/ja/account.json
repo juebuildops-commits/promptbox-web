@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "アカウント · PromptBox",
+    "description": "PromptBox アカウントダッシュボード：プロファイルの管理、インストーラーのダウンロード、ライセンスの確認。"
+  },
+  "hero": {
+    "badge": "アカウントセンター",
+    "title": "マイアカウント",
+    "subtitle": "プランの状態の確認、公式インストーラーのダウンロード、ライセンスの管理。"
+  },
+  "offlineNotice": {
+    "title": "プレビューモード（Supabase未接続）",
+    "desc": "SUPABASE_URL環境変数が設定されていません。プレビューモードで表示しています。"
+  },
+  "profile": {
+    "title": "プロフィール",
+    "email": "メールアドレス",
+    "name": "表示名",
+    "guest": "ゲスト（未ログイン）",
+    "signInWithGoogle": "Googleでログイン",
+    "signOut": "ログアウト"
+  },
+  "earlyBird": {
+    "badge": "アーリーバード枠確保（先着150名）",
+    "desc": "登録メールアドレスがアーリーバード対象です。年額19米ドルの永久固定価格が適用されます。"
+  },
+  "license": {
+    "title": "ライセンス認証情報",
+    "currentPlan": "現在のプラン",
+    "freePlan": "無料版（Free）",
+    "proPlan": "Pro プラン",
+    "upgradeBtn": "Pro にアップグレード",
+    "keyPlaceholder": "Pro ライセンスキーがありません",
+    "copyKey": "キーをコピー",
+    "copied": "コピーしました！",
+    "q12Note": "ライセンスキーはEd25519 compact JWS形式です。デスクトップアプリの設定画面に貼り付けてオフライン認証できます。"
+  },
+  "downloads": {
+    "title": "ダウンロード",
+    "desc": "Cloudflare R2 エッジ CDN による高速直接ダウンロード。",
+    "winExe": "Windows インストーラー (.exe)",
+    "winZip": "Windows ポータブル版 (.zip)",
+    "macDmg": "macOS Apple Silicon (.dmg)"
+  }
+}

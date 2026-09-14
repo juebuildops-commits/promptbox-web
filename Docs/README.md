@@ -61,7 +61,7 @@
 
 | 文件 | 鏡射什麼 |
 | --- | --- |
-| [PageDescription/](webspec/PageDescription/) | 九個路由的資訊架構與意圖分析（2026-08-31 增 `/enterprise`、2026-09-05 增 `/demo`、2026-09-07 增 `/about`；原 `/what-we-dont-do` 於 2026-09-14 徹底移除）。**這個網站唯一的架構記錄，正本只有這一份** |
+| [PageDescription/](webspec/PageDescription/) | 十個路由的資訊架構與意圖分析（2026-08-31 增 `/enterprise`、2026-09-05 增 `/demo`、2026-09-07 增 `/about`、2026-09-14 增 `/account`；原 `/what-we-dont-do` 於 2026-09-14 徹底移除）。**這個網站唯一的架構記錄，正本只有這一份** |
 | [主張與依據.md](webspec/主張與依據.md) | 對外主張 ↔ 可查證依據 ↔ 目前狀態。主張來源是 PageDescription 的「核心內容映射」 |
 | [systemV2.md](webspec/systemV2.md) | 官網的 design token（從 `style.css` 逆向拆解）。⚠️ 與 App 那套不可互換 |
 

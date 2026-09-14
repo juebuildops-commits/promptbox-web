@@ -12,11 +12,13 @@
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:docs": "node scripts/check-docs.mjs",
     "check:release": "node scripts/check-release.mjs",
+    "generate:vectors": "node scripts/generate-test-vectors.mjs",
     "i18n:sync": "node scripts/check-i18n.mjs --sync"
   },
   "dependencies": {
     "@nuxt/content": "^3.15.2",
     "@nuxtjs/i18n": "^10.6.0",
+    "@nuxtjs/supabase": "^2.0.10",
     "nuxt": "^4.0.0",
     "nuxt-gtag": "^5.0.0",
     "remark-cjk-friendly": "^2.3.1",

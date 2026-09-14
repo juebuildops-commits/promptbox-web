@@ -14,6 +14,7 @@ const { isDark, toggleTheme } = useTheme()
 const localePath = useLocalePath()
 
 const { locale } = useI18n()
+const user = useSupabaseUser()
 
 // 🔴 `/demo` 只對 zh-TW 露出（webplan/模擬試用頁.md D5）：demo 本體的介面
 //    只有繁體中文，對英文使用者露出等於把人送進一個看不懂的頁。
@@ -98,6 +99,16 @@ const menuOpen = ref(false)
             <span class="icon icon--theme" aria-hidden="true" />
           </button>
 
+          <!-- 會員專區 / 登入入口（5a+） -->
+          <NuxtLink
+            :to="localePath('/account')"
+            class="px-3 py-1.5 rounded-sm text-ink-700 hover:bg-brand-surface hover:text-brand font-sans font-medium text-sm flex items-center gap-1.5 transition-colors max-md:hidden"
+            :class="isActive('/account') ? 'bg-brand-surface text-brand font-bold' : ''"
+          >
+            <span class="icon icon--user text-base shrink-0" aria-hidden="true" />
+            <span class="truncate max-w-[120px]">{{ user ? (user.user_metadata?.full_name || user.email?.split('@')[0] || $t('common.nav.account')) : $t('common.cta.signIn') }}</span>
+          </NuxtLink>
+
           <a
             v-if="ctaExternal"
             class="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 bg-brand hover:bg-brand-hover text-white rounded-sm font-sans font-medium text-lg leading-snug shadow-btn transition duration-150 active:translate-y-px"
@@ -147,6 +158,13 @@ const menuOpen = ref(false)
           @click="menuOpen = false"
         >
           {{ $t(item.key) }}
+        </NuxtLink>
+        <NuxtLink
+          :to="localePath('/account')"
+          :class="isActive('/account') ? MOBILE_ACTIVE : MOBILE_IDLE"
+          @click="menuOpen = false"
+        >
+          {{ $t('common.nav.account') }}
         </NuxtLink>
         <div class="flex items-center justify-around pt-3 border-t border-line-200 flex-wrap gap-2">
           <button
