@@ -9,6 +9,9 @@ export default defineNuxtConfig({
   // 於是 `**` 會原樣顯示而不會變成粗體 —— 而且完全不報錯。
   // remark-cjk-friendly 放寬這條規則，讓中日韓文本的強調語法如預期運作。
   content: {
+    experimental: {
+      nativeSqlite: true,
+    },
     build: {
       markdown: {
         remarkPlugins: {
