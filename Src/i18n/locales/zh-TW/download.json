@@ -37,12 +37,13 @@
         "ctaPortable": "免安裝便攜版（.zip）"
       },
       "mac": {
-        "requirement": "macOS 10.15 (Catalina)+",
-        "body": "原生整合 macOS Keychain 金鑰庫，支援 Apple Silicon (M1/M2/M3/M4) 與 Intel 晶片架構。",
+        "requirement": "macOS 10.15 (Catalina)+ / Apple Silicon",
+        "body": "原生整合 macOS Keychain 金鑰庫，專為 Apple Silicon (M1/M2/M3/M4) 架構最佳化。",
         "f1pre": "macOS 原生安裝映像檔（",
         "f1post": "）",
-        "f2": "支援 Apple Silicon 與 Intel 雙架構",
+        "f2": "支援 Apple Silicon (arm64) 架構",
         "f3": "金鑰自動儲存於 macOS Keychain 保險庫",
+        "cta": "下載 macOS 版 (Apple Silicon)",
         "soonBadge": "即將推出",
         "ctaSoon": "macOS 版釋出時通知我",
         "soonNote": "macOS 版正在準備中。留下 email，釋出當天第一時間通知你。"
@@ -53,6 +54,7 @@
       "lead": "下載後可自行核對，確認拿到的檔案與我們發布的完全一致。",
       "exeLabel": "安裝版 .exe",
       "zipLabel": "便攜版 .zip",
+      "dmgLabel": "macOS .dmg",
       "verifyWin": "Windows PowerShell",
       "verifyUnix": "macOS / Linux"
     },

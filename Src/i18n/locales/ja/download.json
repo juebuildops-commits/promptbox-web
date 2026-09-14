@@ -37,12 +37,13 @@
         "ctaPortable": "ポータブル版（.zip）"
       },
       "mac": {
-        "requirement": "macOS 10.15 (Catalina)+",
-        "body": "macOS Keychain とネイティブに連携し、Apple Silicon（M1/M2/M3/M4）と Intel の両アーキテクチャに対応します。",
+        "requirement": "macOS 10.15 (Catalina)+ / Apple Silicon",
+        "body": "macOS Keychain とネイティブに連携し、Apple Silicon（M1/M2/M3/M4）アーキテクチャに最適化されています。",
         "f1pre": "macOS ネイティブのディスクイメージ（",
         "f1post": "）",
-        "f2": "Apple Silicon と Intel の両アーキテクチャに対応",
+        "f2": "Apple Silicon (arm64) アーキテクチャに最適化",
         "f3": "鍵は macOS Keychain に自動で保管されます",
+        "cta": "macOS 版をダウンロード (Apple Silicon)",
         "soonBadge": "近日公開",
         "ctaSoon": "macOS 版が公開されたら通知する",
         "soonNote": "macOS 版は準備中です。メールアドレスをお預けいただければ、公開当日にいちはやくお知らせします。"
@@ -53,6 +54,7 @@
       "lead": "ダウンロード後にご自身で照合すれば、受け取ったファイルが私たちの配布したものと完全に一致することを確認できます。",
       "exeLabel": "インストーラー版 .exe",
       "zipLabel": "ポータブル版 .zip",
+      "dmgLabel": "macOS .dmg",
       "verifyWin": "Windows PowerShell",
       "verifyUnix": "macOS / Linux"
     },

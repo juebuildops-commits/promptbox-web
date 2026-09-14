@@ -47,9 +47,9 @@
       "ctaDefault": "無料ダウンロード",
       "ctaWin": "Windows 版を無料ダウンロード",
       "ctaMac": "macOS 版を無料ダウンロード",
-      "noteDefault": "現在 Windows 10 / 11 版を提供中・macOS 版は近日公開",
-      "noteWin": "Windows 10 / 11 対応・macOS 版は近日公開",
-      "noteMac": "macOS 版は近日公開・現在は Windows 版をダウンロードいただけます"
+      "noteDefault": "Windows 10 / 11 および macOS (Apple Silicon) に対応",
+      "noteWin": "Windows 10 / 11（64-bit）対応・macOS 版も利用可能",
+      "noteMac": "macOS（Apple Silicon）対応・Windows 版も利用可能"
     },
     "lang": {
       "zh-TW": "繁體中文",

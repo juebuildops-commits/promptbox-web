@@ -37,12 +37,13 @@
         "ctaPortable": "Portable build (.zip)"
       },
       "mac": {
-        "requirement": "macOS 10.15 (Catalina)+",
-        "body": "Natively integrated with the macOS Keychain, running on both Apple Silicon (M1/M2/M3/M4) and Intel.",
+        "requirement": "macOS 10.15 (Catalina)+ / Apple Silicon",
+        "body": "Natively integrated with the macOS Keychain, optimized for Apple Silicon (M1/M2/M3/M4).",
         "f1pre": "Native macOS disk image (",
         "f1post": ")",
-        "f2": "Universal: Apple Silicon and Intel",
+        "f2": "Optimized for Apple Silicon (arm64)",
         "f3": "Key stored automatically in the macOS Keychain",
+        "cta": "Download for macOS (Apple Silicon)",
         "soonBadge": "Coming soon",
         "ctaSoon": "Notify me when macOS ships",
         "soonNote": "The macOS build is in preparation. Leave your email and we’ll tell you the day it ships."
@@ -53,6 +54,7 @@
       "lead": "Verify your download to confirm the file you received is exactly the one we published.",
       "exeLabel": "Installer .exe",
       "zipLabel": "Portable .zip",
+      "dmgLabel": "macOS .dmg",
       "verifyWin": "Windows PowerShell",
       "verifyUnix": "macOS / Linux"
     },

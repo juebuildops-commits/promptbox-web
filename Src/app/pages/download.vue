@@ -44,11 +44,17 @@ const WIN_ZIP = {
   sha256: 'a12ba94ff8499672c42671bfcde2aaa5b0dac87113bf8849a1dfd86fe2d23ede',
 }
 
+const MAC_DMG = {
+  href: `${R2}/V3.9.4/PromptBox-3.9.4-arm64.dmg`,
+  size: '126.8 MB',
+  sha256: '04a44b63095d05c1052c1934089f83b5e04feba04f97875fcb554c62d7aa1a86',
+}
+
 /**
  * macOS build 還不存在。在它存在之前，mac 訪客導到訂閱表單 ——
  * 給一個下載不到東西的按鈕，比誠實說「即將推出」傷害大。
  */
-const MAC_READY: boolean = false
+const MAC_READY: boolean = true
 
 /**
  * 窄視窗不給下載鈕（2026-09-10 創辦人裁示）。
@@ -73,7 +79,11 @@ const MAC_READY: boolean = false
  *    R2 的檔案位址本來就不是要被索引的頁面節點，`meta` 與其餘內容一個字都沒變。
  */
 const macSoon = computed(() => !MAC_READY && os.value === 'mac')
-const heroHref = computed(() => (macSoon.value ? '#subscribe' : WIN_EXE.href))
+const heroHref = computed(() => {
+  if (macSoon.value) return '#subscribe'
+  if (os.value === 'mac') return MAC_DMG.href
+  return WIN_EXE.href
+})
 const heroLabel = computed(() => {
   if (macSoon.value) return t('download.platforms.mac.ctaSoon')
   // 'other'（Linux 等）點下去拿到的也是 Windows 檔，標籤要說實話
@@ -121,7 +131,7 @@ useHead({
               data-os-cta
               :href="heroHref"
             >
-              <span :class="['icon', macSoon ? 'icon--apple' : 'icon--computer']" aria-hidden="true" />
+              <span :class="['icon', os === 'mac' ? 'icon--apple' : 'icon--computer']" aria-hidden="true" />
               <span data-os-label>{{ heroLabel }}</span>
             </a>
             <!-- <1024px：不是被停用的連結，是一顆真的停用鈕（見 script 的說明） -->
@@ -262,8 +272,8 @@ useHead({
                   <span class="text-xs font-mono text-ink-500">{{ $t('download.platforms.mac.requirement') }}</span>
                 </div>
               </div>
-              <span class="px-3 py-1 bg-surface-subtle border border-line-300 text-ink-600 rounded-pill text-xs font-bold font-sans">
-                {{ $t('download.platforms.mac.soonBadge') }}
+              <span data-recommended-badge :class="[os === 'mac' ? '' : 'hidden', 'px-3 py-1 bg-brand text-white rounded-pill text-xs font-bold font-sans']">
+                {{ $t('download.platforms.recommendedBadge') }}
               </span>
             </div>
 
@@ -288,18 +298,29 @@ useHead({
           </div>
 
           <div class="pt-8 flex flex-col items-center gap-3">
-            <!--
-              沒有 macOS 檔案就不給下載鈕。導向本頁的訂閱表單 ——
-              它正好是「東西好了怎麼通知你」的答案（F4）。
-            -->
+            <!-- ≥1024px：macOS 下載連結 -->
             <a
-              class="inline-flex items-center justify-center gap-2 w-full py-4 px-6 rounded-md bg-surface-subtle border border-line-300 hover:border-brand hover:text-brand text-ink-800 font-sans font-bold text-base transition"
-              href="#subscribe"
+              class="hidden lg:inline-flex items-center justify-center gap-2 w-full py-4 px-6 rounded-md bg-brand hover:bg-brand-hover text-white font-sans font-bold text-base transition shadow-btn"
+              :href="MAC_DMG.href"
             >
               <span class="icon icon--apple" />
-              <span>{{ $t('download.platforms.mac.ctaSoon') }}</span>
+              <span>{{ $t('download.platforms.mac.cta') }}</span>
+              <span class="font-normal text-white/75">({{ MAC_DMG.size }})</span>
             </a>
-            <span class="text-sm text-ink-500 text-center">{{ $t('download.platforms.mac.soonNote') }}</span>
+
+            <!--
+              <1024px：換成停用鈕 + 一句為什麼。
+            -->
+            <button
+              type="button"
+              disabled
+              class="inline-flex lg:hidden items-center justify-center gap-2 w-full py-4 px-6 rounded-md bg-surface-muted border border-line-300 text-ink-500 font-sans font-bold text-base cursor-not-allowed"
+            >
+              <span class="icon icon--apple" aria-hidden="true" />
+              <span>{{ $t('download.desktopOnly.cta') }}</span>
+              <span class="font-normal">({{ MAC_DMG.size }})</span>
+            </button>
+            <span class="lg:hidden text-sm text-ink-500 text-center">{{ $t('download.desktopOnly.cardNote') }}</span>
           </div>
         </div>
 
@@ -317,6 +338,7 @@ useHead({
           <div
             v-for="f in [
               { label: $t('download.checksum.exeLabel'), hash: WIN_EXE.sha256 },
+              { label: $t('download.checksum.dmgLabel'), hash: MAC_DMG.sha256 },
               { label: $t('download.checksum.zipLabel'), hash: WIN_ZIP.sha256 },
             ]"
             :key="f.hash"
@@ -334,7 +356,7 @@ useHead({
           </p>
           <p>
             <span class="font-sans font-bold text-ink-700">{{ $t('download.checksum.verifyUnix') }}</span>
-            <code class="select-all ml-2">shasum -a 256 PromptBox-Setup-3.9.4.exe</code>
+            <code class="select-all ml-2">shasum -a 256 PromptBox-3.9.4-arm64.dmg</code>
           </p>
         </div>
       </div>

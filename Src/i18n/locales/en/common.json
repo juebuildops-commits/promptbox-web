@@ -47,9 +47,9 @@
       "ctaDefault": "Download free",
       "ctaWin": "Free download for Windows",
       "ctaMac": "Free download for macOS",
-      "noteDefault": "Windows 10/11 available now · macOS coming soon",
-      "noteWin": "For Windows 10 / 11 · macOS coming soon",
-      "noteMac": "macOS coming soon · the Windows build is available now"
+      "noteDefault": "Supports Windows 10 / 11 and macOS (Apple Silicon)",
+      "noteWin": "For Windows 10 / 11 (64-bit) · macOS build also available",
+      "noteMac": "For macOS (Apple Silicon) · Windows build also available"
     },
     "lang": {
       "zh-TW": "繁體中文",

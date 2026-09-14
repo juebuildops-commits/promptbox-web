@@ -47,9 +47,9 @@
       "ctaDefault": "免費下載",
       "ctaWin": "免費下載 Windows 版",
       "ctaMac": "免費下載 macOS 版",
-      "noteDefault": "目前提供 Windows 10 / 11 版・macOS 版即將推出",
-      "noteWin": "適用 Windows 10 / 11・macOS 版即將推出",
-      "noteMac": "macOS 版即將推出・目前可下載 Windows 版"
+      "noteDefault": "支援 Windows 10 / 11 與 macOS (Apple Silicon)",
+      "noteWin": "適用 Windows 10 / 11 (64-bit)・另提供 macOS 版",
+      "noteMac": "適用 macOS (Apple Silicon)・另提供 Windows 版"
     },
     "lang": {
       "zh-TW": "繁體中文",
