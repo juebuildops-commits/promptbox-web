@@ -105,7 +105,9 @@ const menuOpen = ref(false)
             class="px-3 py-1.5 rounded-sm text-ink-700 hover:bg-brand-surface hover:text-brand font-sans font-medium text-sm flex items-center gap-1.5 transition-colors max-md:hidden"
             :class="isActive('/account') ? 'bg-brand-surface text-brand font-bold' : ''"
           >
-            <span class="icon icon--user text-base shrink-0" aria-hidden="true" />
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
             <span class="truncate max-w-[120px]">{{ user ? (user.user_metadata?.full_name || user.email?.split('@')[0] || $t('common.nav.account')) : $t('common.cta.signIn') }}</span>
           </NuxtLink>
 

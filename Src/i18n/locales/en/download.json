@@ -91,6 +91,11 @@
         "linkLabel": "why there is no signature yet",
         "bodyPost": " for the reasoning, how to verify us yourself, and when this goes away."
       }
+    },
+    "accountLead": {
+      "title": "Already a member? Visit Account Center",
+      "body": "Signed-in members can manage dedicated downloads and license entitlements in the Account Center.",
+      "cta": "Go to Account"
     }
   }
 }

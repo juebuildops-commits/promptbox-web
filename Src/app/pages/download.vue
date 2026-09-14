@@ -467,6 +467,32 @@ useHead({
         </div>
 
         <!--
+          5a+：會員中心引導卡片（增加註冊動機、提供已登入會員快速通道）
+        -->
+        <div class="mt-8 p-6 rounded-2xl bg-surface-card border border-brand-border/60 hover:border-brand-border transition-colors shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-surface text-brand flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <div>
+              <strong class="text-ink-900 font-bold font-sans text-base block">{{ $t('download.accountLead.title') }}</strong>
+              <p class="text-sm text-ink-600 mt-0.5">{{ $t('download.accountLead.body') }}</p>
+            </div>
+          </div>
+          <NuxtLink
+            :to="localePath('/account')"
+            class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-brand hover:bg-brand-hover text-white font-sans font-medium text-sm transition shadow-btn"
+          >
+            <span>{{ $t('download.accountLead.cta') }}</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </NuxtLink>
+        </div>
+
+        <!--
           F4：下載頁是「拿到 App 的那一刻」，也是最該告訴使用者
           「我們不會自動更新，新版只會用 email 通知」的位置。
         -->
