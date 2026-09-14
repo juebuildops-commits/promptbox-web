@@ -2,8 +2,8 @@
 
 > PromptBox 的**官方網站**原始碼 —— Nuxt 4 靜態預繪站，負責產品說明、安裝檔發佈、操作手冊、版本紀錄與名單收集。
 >
-> **狀態**：階段一～四已完成（遷移 → 內容化 → i18n／訂閱 → 正式文件）；階段五、六（金流、登入、下載閘門）**已規劃但刻意暫緩**。
-> **最後更新**：2026-08-29
+> **狀態**：階段一～四已完成（遷移 → 內容化 → i18n／訂閱 → 正式文件）；階段五（5a+ 會員與帳號中心）**先行啟動中**；階段六（金流與授權發放）**刻意暫緩**。
+> **最後更新**：2026-09-14
 
 ---
 
@@ -29,8 +29,8 @@
 | --- | --- | --- |
 | 框架 | **Nuxt 4** | 專案根在 `Src/`，不在 repo 根 |
 | 樣式 | **Tailwind v4**（`@tailwindcss/vite`） | 走 Vite plugin，**不用** `@nuxtjs/tailwindcss`。設計 token 全部寫在 `app/assets/css/style.css` 的 `@theme` |
-| 內容 | **`@nuxt/content` v3** | changelog／docs 由 Markdown 生成；`better-sqlite3` 是它的本機 SQLite 後端（產物在 `Src/.data/`） |
-| 多語系 | **`@nuxtjs/i18n` v10** | `prefix_except_default`，預設 `zh-TW` |
+| 內容 | **`@nuxt/content` v3** | changelog／docs 由 Markdown 生成；採用 Node 22 原生 SQLite（`nativeSqlite`，產物在 `Src/.data/`） |
+| 多語系 | **`@nuxtjs/i18n` v10** | `prefix_except_default`，預設 `zh-TW`，全面出貨 zh-TW / en / ja 三語系 |
 | 分析 | **`nuxt-gtag`** | `initMode: 'manual'`，退出分析者身上完全不下載 gtag.js |
 | CJK 粗體 | `remark-cjk-friendly` | CommonMark 的強調規則對全形標點不友善，收尾 `**` 前是全形標點時會靜默不變粗體 |
 
@@ -42,8 +42,8 @@
 | **Cloudflare R2** | 安裝檔託管（上線前置鏈 P1） | ✅ 已上線 | `Src/app/pages/download.vue` 頂端的 `R2` 常數。目前用 `pub-*.r2.dev` 公用網址，待網域到位後改綁自訂網域 |
 | **Buttondown** | Email 名單（D29） | 待開帳號 | `server/api/subscribe.post.ts`；key 未設時端點回 501，表單誠實顯示「尚未啟用」 |
 | **Google Analytics 4** | 網站分析（D4） | 待建資源 | `NUXT_PUBLIC_GTAG_ID`；未設定時整個模組靜默不動作，隱私頁的開關會自動收起 |
-| **Google Fonts** | Noto Sans TC／Inter／Big Shoulders | 使用中 | `nuxt.config.ts` 的 `app.head.link` |
-| **Polar**（金流）／**Supabase**（帳號、DB） | 階段五、六 | 📦 未接 | 見 `Docs/webplan/PRD_階段五六_金流與授權發放.md` |
+| **Google Fonts** | Noto Sans TC／Inter／Big Shoulders | 使用中 | `nuxt.config.ts` 的 `app.head.link`（走非同步免阻塞載入） |
+| **Polar**（金流）／**Supabase**（帳號、DB） | 階段五、六 | 階段五 🟡 先行啟動 / 階段六 📦 暫緩 | 見 [`Docs/webplan/PRD_階段五_會員與帳號中心.md`](Docs/webplan/PRD_階段五_會員與帳號中心.md) 與 [`Docs/webplan/PRD_階段六_金流與授權發放.md`](Docs/webplan/PRD_階段六_金流與授權發放.md) |
 
 🔴 **四個環境變數全部可留空**，留空時對應功能會**安全地停用**（不壞版、不噴錯、文案自動改口）。這是刻意設計，見 `Src/.env.example`。
 
@@ -245,7 +245,8 @@ npm run i18n:sync       # 補齊缺的 key（空字串）並清掉殘留 key
 | [`Docs/webplan/PRD_階段一_Nuxt遷移.md`](Docs/webplan/PRD_階段一_Nuxt遷移.md) | 從靜態 HTML 搬到 Nuxt 4 的範圍與驗收條件 |
 | [`Docs/webplan/PRD_階段二_Content化.md`](Docs/webplan/PRD_階段二_Content化.md) | changelog／docs 為什麼變成 Markdown、資產怎麼瘦身 |
 | [`Docs/webplan/PRD_階段三_i18n與訂閱.md`](Docs/webplan/PRD_階段三_i18n與訂閱.md) | i18n、GA4、隱私頁、訂閱表單；含上線前的環境變數交接表 |
-| [`Docs/webplan/PRD_階段五六_金流與授權發放.md`](Docs/webplan/PRD_階段五六_金流與授權發放.md) | 金流／登入／下載閘門為什麼暫緩、依賴順序長什麼樣 |
+| [`Docs/webplan/PRD_階段五_會員與帳號中心.md`](Docs/webplan/PRD_階段五_會員與帳號中心.md) | 會員登入、帳號專區、Free 快速下載、早鳥資格對齊與測試向量（🟡 5a+ 先行啟動） |
+| [`Docs/webplan/PRD_階段六_金流與授權發放.md`](Docs/webplan/PRD_階段六_金流與授權發放.md) | 金流（Polar）、不可撤銷簽發與 Pro 下載閘門（📦 暫緩） |
 | [`Docs/webplan/上線前置鏈.md`](Docs/webplan/上線前置鏈.md) | 一行程式都不用寫、但交期以週計算的事（公司登記 → D-U-N-S → Apple；網域 → DKIM） |
 | [`Docs/appsync/身分字串凍結清單.md`](Docs/appsync/身分字串凍結清單.md) | 發出任何安裝檔之前必須一次定死的字串 |
 | [`Docs/appsync/ADR-008_授權憑證格式與離線驗證契約.md`](Docs/appsync/ADR-008_授權憑證格式與離線驗證契約.md) | 授權憑證長什麼樣、App 怎麼離線驗簽、哪些欄位**刻意不存在** |

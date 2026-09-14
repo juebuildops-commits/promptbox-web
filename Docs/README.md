@@ -54,7 +54,8 @@
 | [PRD_階段一_Nuxt遷移.md](webplan/PRD_階段一_Nuxt遷移.md) | 從靜態 HTML 搬到 Nuxt 4 的範圍與驗收條件 |
 | [PRD_階段二_Content化.md](webplan/PRD_階段二_Content化.md) | changelog／docs 為什麼變成 Markdown、資產怎麼瘦身 |
 | [PRD_階段三_i18n與訂閱.md](webplan/PRD_階段三_i18n與訂閱.md) | i18n、GA4、隱私頁、訂閱表單；含上線前的環境變數交接表 |
-| [PRD_階段五六_金流與授權發放.md](webplan/PRD_階段五六_金流與授權發放.md) | 金流／登入／下載閘門為什麼暫緩、依賴順序長什麼樣 |
+| [PRD_階段五_會員與帳號中心.md](webplan/PRD_階段五_會員與帳號中心.md) | 會員登入、帳號專區、Free 快速下載、早鳥資格對齊與測試向量（🟡 5a+ 先行啟動） |
+| [PRD_階段六_金流與授權發放.md](webplan/PRD_階段六_金流與授權發放.md) | 金流（Polar）、不可撤銷簽發與 Pro 下載閘門（📦 暫緩） |
 
 ### webspec/ —— 現在是什麼（🔴 改完要回寫）
 
