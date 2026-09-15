@@ -8,11 +8,19 @@
  *   - 日誌與下載頁只改了繁體中文，en / ja 漏改。
  *   - 程式碼宣稱了新版本，但 download.vue 連結尚未指向該版二進位檔案。
  *
+ *   - 2026-09-15：5a+ 之後同一組下載網址一度寫在三個地方（下載頁、/dl 端點、會員專區徽章），
+ *     而本護欄只看得到下載頁的 WIN_EXE／WIN_ZIP，連 macOS 那一組都沒檢查。
+ *
  * 檢核目標：
- *   自動推導 content/changelog/*.md 最新版號，並確保以下 3 處 100% 對齊：
+ *   自動推導 content/changelog/*.md 最新版號，並確保以下各處 100% 對齊：
  *   1. i18n download.json (zh-TW, en, ja) 的 meta.description 與 hero.badge
  *   2. i18n changelog.json (zh-TW, en, ja) 的 meta.description 與 cta.body
- *   3. download.vue 的 WIN_EXE.href 與 WIN_ZIP.href
+ *   3. shared/downloads.ts（下載目標的唯一來源）：
+ *      DOWNLOAD_VERSION ＝ 最新版號；win／win-zip／mac 三個 href 都含該版號；
+ *      三個 sha256 都是 64 位十六進位且互不相同（擋「複製一組、忘了換校驗碼」）
+ *   4. app/、server/ 裡除了 shared/downloads.ts 之外，不得出現 `r2.dev`（擋網址又被抄成第二份）
+ *
+ * 🔴 本護欄驗不了「sha256 真的是那個檔案的雜湊」—— 那只能整顆下載回來實算，見 shared/downloads.ts 檔頭。
  *
  * 用法：node scripts/check-release.mjs
  */
@@ -22,7 +30,9 @@ import path from 'node:path'
 const SRC_ROOT = path.resolve(import.meta.dirname, '..')
 const CHANGELOG_DIR = path.join(SRC_ROOT, 'content', 'changelog')
 const LOCALES_DIR = path.join(SRC_ROOT, 'i18n', 'locales')
-const DOWNLOAD_VUE = path.join(SRC_ROOT, 'app', 'pages', 'download.vue')
+const DOWNLOADS_TS = path.join(SRC_ROOT, 'shared', 'downloads.ts')
+const DOWNLOAD_PLATFORMS = ['win', 'win-zip', 'mac']
+const NO_R2_DIRS = ['app', 'server']
 
 const LOCALES = ['zh-TW', 'en', 'ja']
 
@@ -146,34 +156,86 @@ for (const loc of LOCALES) {
   }
 }
 
-// 4. 檢核 download.vue 內的 WIN_EXE 與 WIN_ZIP 下載路徑
-if (!fs.existsSync(DOWNLOAD_VUE)) {
-  offences.push({ file: 'app/pages/download.vue', reason: '檔案不存在' })
+// 4. 檢核 shared/downloads.ts（下載目標的唯一來源）
+if (!fs.existsSync(DOWNLOADS_TS)) {
+  offences.push({ file: 'shared/downloads.ts', reason: '檔案不存在' })
 } else {
-  const vueContent = fs.readFileSync(DOWNLOAD_VUE, 'utf8')
-  // 檢查是否有包含版號的路徑或檔名，例：/V3.9.4/ 或 -3.9.4.exe 或 -3.9.4-win.zip
-  const hasExeVersion = vueContent.includes(`PromptBox-Setup-${rawVersion}.exe`) || vueContent.includes(`/V${rawVersion}/`) || vueContent.includes(`/v${rawVersion}/`)
-  const hasZipVersion = vueContent.includes(`PromptBox-${rawVersion}-win.zip`) || vueContent.includes(`promptbox-v${rawVersion}.zip`) || vueContent.includes(`/V${rawVersion}/`) || vueContent.includes(`/v${rawVersion}/`)
+  const ts = fs.readFileSync(DOWNLOADS_TS, 'utf8')
 
-  if (!hasExeVersion) {
+  const declaredVersion = ts.match(/export const DOWNLOAD_VERSION\s*=\s*'([^']+)'/)?.[1]
+  if (declaredVersion !== rawVersion) {
     offences.push({
-      file: 'app/pages/download.vue',
-      field: 'WIN_EXE.href',
-      expected: `含 ${rawVersion} 或 /V${rawVersion}/`,
-      actual: '未偵測到相應路徑',
+      file: 'shared/downloads.ts',
+      field: 'DOWNLOAD_VERSION',
+      expected: rawVersion,
+      actual: declaredVersion ?? '未偵測到',
     })
   }
-  if (!hasZipVersion) {
-    offences.push({
-      file: 'app/pages/download.vue',
-      field: 'WIN_ZIP.href',
-      expected: `含 ${rawVersion} 或 /V${rawVersion}/`,
-      actual: '未偵測到相應路徑',
-    })
+
+  const seenHashes = new Map()
+  for (const platform of DOWNLOAD_PLATFORMS) {
+    // 抓 `'win': { href: ..., size: ..., sha256: ... }` 這一段。
+    // 結尾要比對「獨佔一行的 }」—— href 裡的 `${R2}` 本身就含一個 }，比對第一個 } 會截在網址中間。
+    const block = ts.match(new RegExp(`'${platform}':\\s*\\{([\\s\\S]*?)\\n\\s*\\}`))?.[1]
+    if (!block) {
+      offences.push({ file: 'shared/downloads.ts', field: `DOWNLOADS['${platform}']`, expected: '存在', actual: '未偵測到' })
+      continue
+    }
+    const href = block.match(/href:\s*[`'"]([^`'"]+)[`'"]/)?.[1] ?? ''
+    const sha256 = block.match(/sha256:\s*'([^']*)'/)?.[1] ?? ''
+
+    // 檔名與版本資料夾（`/V3.9.4/`）要各自對上 —— 只看整串含不含版號，
+    // 會放過「資料夾換了新版、檔名還是舊版」這種半套更新
+    const filename = href.slice(href.lastIndexOf('/') + 1)
+    const folderVersion = href.match(/\/[Vv](\d+\.\d+\.\d+)\//)?.[1]
+    if (!filename.includes(rawVersion) || (folderVersion && folderVersion !== rawVersion)) {
+      offences.push({
+        file: 'shared/downloads.ts',
+        field: `DOWNLOADS['${platform}'].href`,
+        expected: `檔名含 ${rawVersion}，版本資料夾為 /V${rawVersion}/`,
+        actual: href || '未偵測到',
+      })
+    }
+    if (!/^[0-9a-f]{64}$/.test(sha256)) {
+      offences.push({
+        file: 'shared/downloads.ts',
+        field: `DOWNLOADS['${platform}'].sha256`,
+        expected: '64 位小寫十六進位',
+        actual: sha256 || '未偵測到',
+      })
+    } else if (seenHashes.has(sha256)) {
+      offences.push({
+        file: 'shared/downloads.ts',
+        field: `DOWNLOADS['${platform}'].sha256`,
+        expected: `與 '${seenHashes.get(sha256)}' 不同`,
+        actual: `${sha256}（兩個不同檔案不可能有同一個 SHA-256，是複製後忘了換）`,
+      })
+    } else {
+      seenHashes.set(sha256, platform)
+    }
   }
 }
 
-// 5. 輸出成果或阻擋
+// 5. 下載網址不得在 shared/downloads.ts 以外再寫一份
+const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+  const p = path.join(dir, e.name)
+  return e.isDirectory() ? walk(p) : [p]
+})
+for (const dir of NO_R2_DIRS) {
+  const abs = path.join(SRC_ROOT, dir)
+  if (!fs.existsSync(abs)) continue
+  for (const file of walk(abs)) {
+    if (!/\.(vue|ts|mjs|js|json)$/.test(file)) continue
+    if (fs.readFileSync(file, 'utf8').includes('r2.dev')) {
+      offences.push({
+        file: path.relative(SRC_ROOT, file).replaceAll('\\', '/'),
+        reason: '出現 `r2.dev` 網址 —— 下載目標只能寫在 shared/downloads.ts，這裡請改為引用它',
+      })
+    }
+  }
+}
+
+// 6. 輸出成果或阻擋
 if (offences.length > 0) {
   console.error(`\n✗ 發版版本一致性檢查失敗！最新日誌為 [${latestVersion}]，但以下檔案未同步：\n`)
   for (const o of offences) {
@@ -192,4 +254,5 @@ if (offences.length > 0) {
 console.log(`✔ check:release —— 全站最新版號一致：${latestVersion}`)
 console.log(`  - 3 語系 download.json 已同步`)
 console.log(`  - 3 語系 changelog.json 已同步`)
-console.log(`  - download.vue 下載連結已指向 ${latestVersion}\n`)
+console.log(`  - shared/downloads.ts 三組下載目標已指向 ${latestVersion}，校驗碼格式正確且互不相同`)
+console.log(`  - app/、server/ 沒有第二份 R2 網址\n`)

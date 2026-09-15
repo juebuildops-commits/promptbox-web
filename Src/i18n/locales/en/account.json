@@ -1,45 +1,44 @@
 {
-  "meta": {
-    "title": "Account · PromptBox",
-    "description": "PromptBox Account dashboard: manage profile, download builds, and view licenses."
-  },
-  "hero": {
-    "badge": "Account Center",
-    "title": "Your Account",
-    "subtitle": "View your plan status, download official builds, and manage entitlements."
-  },
-  "offlineNotice": {
-    "title": "Preview Mode (Supabase not connected)",
-    "desc": "SUPABASE_URL environment variable is not set. Showing UI in preview mode. Set env vars to enable Google OAuth."
-  },
-  "profile": {
-    "title": "Profile",
-    "email": "Email",
-    "name": "Display Name",
-    "guest": "Guest (Not signed in)",
-    "signInWithGoogle": "Sign in with Google",
-    "signOut": "Sign out"
-  },
-  "earlyBird": {
-    "badge": "Early Bird Reserved (Top 150)",
-    "desc": "Your email is in the early-bird list. You are eligible for the $19 USD/year locked rate."
-  },
-  "license": {
-    "title": "License Entitlement",
-    "currentPlan": "Current Plan",
-    "freePlan": "Free Plan",
-    "proPlan": "Pro Plan",
-    "upgradeBtn": "Upgrade to Pro",
-    "keyPlaceholder": "No Pro license key assigned",
-    "copyKey": "Copy License Key",
-    "copied": "Copied!",
-    "q12Note": "License key is an Ed25519 compact JWS string. Copy and paste into the desktop app settings to activate offline."
-  },
-  "downloads": {
-    "title": "Quick Downloads",
-    "desc": "Fast direct downloads powered by Cloudflare R2 edge CDN.",
-    "winExe": "Windows Installer (.exe)",
-    "winZip": "Windows Portable (.zip)",
-    "macDmg": "macOS Apple Silicon (.dmg)"
+  "account": {
+    "meta": {
+      "title": "Account · PromptBox",
+      "description": "Your PromptBox account: check your plan and download the official builds."
+    },
+    "hero": {
+      "badge": "Account Center",
+      "title": "Your Account",
+      "subtitle": "Check your plan and get the official builds."
+    },
+    "offlineNotice": {
+      "title": "Sign-in isn't open yet",
+      "desc": "Accounts are still being built, so you can't create one yet. The builds below are the same files as on the public download page — no sign-in needed."
+    },
+    "profile": {
+      "title": "Profile",
+      "email": "Email",
+      "name": "Display Name",
+      "guest": "Guest (not signed in)",
+      "signInWithGoogle": "Sign in with Google",
+      "signingIn": "Connecting…",
+      "signInError": "Sign-in failed. Please try again.",
+      "googleLinked": "Google linked",
+      "signOut": "Sign out"
+    },
+    "license": {
+      "title": "License",
+      "currentPlan": "Current plan",
+      "freePlan": "Free",
+      "viewPlans": "See the Pro plan",
+      "empty": "No license key yet",
+      "emptyNote": "Payments aren't open yet and Pro can't be bought, so there is no license key to show here."
+    },
+    "downloads": {
+      "title": "Download the app",
+      "desc": "The same official files as the public download page — no sign-in needed.",
+      "checksumLink": "Verify the SHA-256 checksums on the download page",
+      "winExe": "Windows installer (.exe)",
+      "winZip": "Windows portable (.zip)",
+      "macDmg": "macOS Apple Silicon (.dmg)"
+    }
   }
 }

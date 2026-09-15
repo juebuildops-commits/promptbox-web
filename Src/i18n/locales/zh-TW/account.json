@@ -1,45 +1,44 @@
 {
-  "meta": {
-    "title": "會員專區 · PromptBox",
-    "description": "PromptBox 會員帳號專區，管理個人資訊、下載安裝檔與檢視授權憑證。"
-  },
-  "hero": {
-    "badge": "會員中心",
-    "title": "個人帳號專區",
-    "subtitle": "檢視你的方案狀態、取得官方最新安裝檔與管理授權憑證。"
-  },
-  "offlineNotice": {
-    "title": "展示模式（Supabase 尚未連線）",
-    "desc": "目前本機未設定 SUPABASE_URL 環境變數，此頁面以展示狀態呈現。設定環境變數後即可啟用 Google OAuth 登入。"
-  },
-  "profile": {
-    "title": "基本資料",
-    "email": "登入信箱",
-    "name": "使用者名稱",
-    "guest": "訪客（未登入）",
-    "signInWithGoogle": "使用 Google 登入",
-    "signOut": "登出"
-  },
-  "earlyBird": {
-    "badge": "早鳥 150 名席次保留",
-    "desc": "你的信箱已符合早鳥登記名單，享有首批永久鎖價 $19 USD/年 權益。"
-  },
-  "license": {
-    "title": "授權憑證",
-    "currentPlan": "當前方案",
-    "freePlan": "免費版（Free）",
-    "proPlan": "個人專業版（Pro）",
-    "upgradeBtn": "升級至 Pro",
-    "keyPlaceholder": "尚未擁有 Pro 授權碼",
-    "copyKey": "複製授權碼",
-    "copied": "已複製！",
-    "q12Note": "授權碼為 Ed25519 compact JWS 字串，可直接複製並於桌面端設定頁貼上離線啟用。"
-  },
-  "downloads": {
-    "title": "快速下載（官方發佈版）",
-    "desc": "已登入會員專屬直接下載端點，由 Cloudflare R2 邊緣 CDN 高速遞送。",
-    "winExe": "Windows 安裝檔 (.exe)",
-    "winZip": "Windows 免安裝免解壓 (.zip)",
-    "macDmg": "macOS Apple Silicon (.dmg)"
+  "account": {
+    "meta": {
+      "title": "會員專區 · PromptBox",
+      "description": "PromptBox 會員專區：查看方案狀態、下載官方安裝檔。"
+    },
+    "hero": {
+      "badge": "會員中心",
+      "title": "個人帳號專區",
+      "subtitle": "查看你的方案狀態，取得官方安裝檔。"
+    },
+    "offlineNotice": {
+      "title": "會員登入尚未開放",
+      "desc": "登入功能還在建置中，目前無法建立帳號。下方的安裝檔與公開下載頁是同一批檔案，不需要登入就能下載。"
+    },
+    "profile": {
+      "title": "基本資料",
+      "email": "登入信箱",
+      "name": "使用者名稱",
+      "guest": "訪客（未登入）",
+      "signInWithGoogle": "使用 Google 登入",
+      "signingIn": "連線中…",
+      "signInError": "登入失敗，請稍後再試一次。",
+      "googleLinked": "Google 已連結",
+      "signOut": "登出"
+    },
+    "license": {
+      "title": "授權憑證",
+      "currentPlan": "當前方案",
+      "freePlan": "免費版（Free）",
+      "viewPlans": "查看 Pro 方案",
+      "empty": "目前沒有授權碼",
+      "emptyNote": "金流尚未開通，Pro 目前還不能購買，所以這裡還不會有授權碼。"
+    },
+    "downloads": {
+      "title": "下載安裝檔",
+      "desc": "與公開下載頁是同一批官方檔案，不需要登入也能下載。",
+      "checksumLink": "到下載頁核對 SHA-256 校驗碼",
+      "winExe": "Windows 安裝版（.exe）",
+      "winZip": "Windows 免安裝便攜版（.zip）",
+      "macDmg": "macOS Apple Silicon（.dmg）"
+    }
   }
 }

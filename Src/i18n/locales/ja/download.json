@@ -1,8 +1,8 @@
 {
   "download": {
     "meta": {
-      "title": "PromptBox をダウンロード — Windows",
-      "description": "PromptBox v3.9.4 を無料ダウンロード。Windows 10 / 11 に対応し、macOS 版は近日公開です。インストーラー版とポータブル版をご用意。ローカルで暗号化保存、100% 完全オフライン。"
+      "title": "PromptBox をダウンロード — Windows / macOS",
+      "description": "PromptBox v3.9.4 を無料ダウンロード。Windows 10 / 11 と macOS 12 以降（Apple Silicon）に対応。Windows のインストーラー版・ポータブル版と macOS のディスクイメージをご用意。ローカルで暗号化保存、100% 完全オフライン。"
     },
     "hero": {
       "badge": "✨ 最新バージョン v3.9.4",
@@ -11,7 +11,7 @@
     },
     "desktopOnly": {
       "cta": "パソコンでダウンロード",
-      "note": "PromptBox は Windows のデスクトップアプリで、スマートフォンやタブレットにはインストールできないため、ここにはダウンロードボタンを置いていません。パソコンをお使いの場合は、ブラウザーの幅を広げるとボタンが表示されます。",
+      "note": "PromptBox は Windows／macOS 向けのデスクトップアプリで、スマートフォンやタブレットにはインストールできないため、ここにはダウンロードボタンを置いていません。パソコンをお使いの場合は、ブラウザーの幅を広げるとボタンが表示されます。",
       "cardNote": "スマートフォンとタブレットにはインストールできません。パソコンでこのページを開くか、ウィンドウの幅を広げてください。"
     },
     "trust": {
@@ -23,7 +23,7 @@
     },
     "platforms": {
       "title": "お使いの OS を選んでください",
-      "lead": "現在 Windows のインストーラー版とポータブル版を提供しています。オフライン環境やインストール先の指定にも対応。macOS 版は近日公開です。",
+      "lead": "Windows はインストーラー版とポータブル版（オフライン環境・インストール先の指定に対応）、macOS は Apple Silicon 版をご用意しています。",
       "recommendedBadge": "お使いの OS におすすめ",
       "win": {
         "requirement": "Windows 10 / 11 (64-bit)",
@@ -37,12 +37,12 @@
         "ctaPortable": "ポータブル版（.zip）"
       },
       "mac": {
-        "requirement": "macOS 10.15 (Catalina)+ / Apple Silicon",
-        "body": "macOS Keychain とネイティブに連携し、Apple Silicon（M1/M2/M3/M4）アーキテクチャに最適化されています。",
+        "requirement": "macOS 12 (Monterey)+ / Apple Silicon",
+        "body": "Apple Silicon（M1 以降）ネイティブ版で、データベースの鍵は macOS Keychain が保管します。Intel Mac 版はまだありません。",
         "f1pre": "macOS ネイティブのディスクイメージ（",
         "f1post": "）",
-        "f2": "Apple Silicon (arm64) アーキテクチャに最適化",
-        "f3": "鍵は macOS Keychain に自動で保管されます",
+        "f2": "Apple Silicon（arm64）専用 —— Intel Mac では動作しません",
+        "f3": "鍵は macOS Keychain が保管します",
         "cta": "macOS 版をダウンロード (Apple Silicon)",
         "soonBadge": "近日公開",
         "ctaSoon": "macOS 版が公開されたら通知する",
@@ -90,11 +90,17 @@
         "bodyPre": "この警告は正確です。私たちはコード署名証明書をまだ購入しておらず、そのため Windows はインストーラーを検証済みの発行元に結びつけられません。「無視してください」とは申し上げません —— 上の SHA-256 チェックサムでファイルを照合したうえで、",
         "linkLabel": "デジタル署名がまだない理由",
         "bodyPost": "をお読みください。その理由と、ご自身で確かめる方法、そしてこの警告がいつ消えるのかを説明しています。"
+      },
+      "n5": {
+        "title": "macOS は初回起動をブロックします",
+        "bodyPre": "これも正確です。私たちはまだ Apple Developer アカウントを持っておらず、macOS 版には Apple が発行する開発者署名がなく、公証も受けていません。そのため macOS は出どころを確認できません。こちらも「無視してください」とは申し上げません —— 上の SHA-256 チェックサムで .dmg を照合したうえで、",
+        "linkLabel": "マニュアルの macOS の説明",
+        "bodyPost": "をお読みになり、開くかどうかをご判断ください。また、macOS 版で新しいバージョンを上書きインストールしたときにデータがそのまま引き継がれるかは、まだ Mac 上で実機確認していません。確認が済むまでは、Mac 上の PromptBox を大切なデータの唯一の保存先にしないでください。"
       }
     },
     "accountLead": {
-      "title": "登録済みの方はこちら",
-      "body": "ログイン済みメンバーはアカウントセンターで専用ダウンロードとライセンスを管理できます。",
+      "title": "ログイン済みの方へ",
+      "body": "アカウントページでプランの状態を確認でき、同じインストーラーもダウンロードできます。",
       "cta": "アカウントへ"
     }
   }

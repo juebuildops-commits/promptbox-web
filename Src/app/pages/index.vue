@@ -60,10 +60,9 @@ useHead({
               🔴 用 NuxtLink + localePath，不要寫死 href —— 寫死會在 /en 掉語系，
               英文訪客會被丟回中文頁。
 
-              macOS 那顆**不是下載鈕**：build 不存在（前置鏈 P3/P4 未啟動）。
-              依 Q15-b 為下載頁定下的同一個決定 ——「沒有檔案就不給下載鈕」——
-              文案改為「即將推出」，並把實心主鈕讓給真的能用的 Windows。
-              原本的配置是反的：不存在的那個是主鈕，能用的是次要鈕。
+              macOS 那顆：2026-08-30 build 不存在時改成「即將推出」；2026-09-15 起 Apple Silicon 版已上架，
+              改回「免費下載 macOS 版」。它仍然導到下載頁而不是直接給 .dmg —— 未公證的 Gatekeeper 揭露（`notes.n5`）在那裡。
+              主鈕樣式維持給 Windows。
             -->
             <NuxtLink class="inline-flex items-center justify-center gap-3 px-8 py-6 rounded-pill border border-brand-border bg-brand hover:bg-brand-hover text-white font-sans font-bold text-xl max-md:text-lg max-md:px-6 max-md:py-4 leading-snug transition duration-150 active:translate-y-px shadow-btn" :to="`${localePath('/download')}#platforms`">
               <span class="icon icon--devices" aria-hidden="true" />
@@ -71,7 +70,7 @@ useHead({
             </NuxtLink>
             <NuxtLink class="inline-flex items-center justify-center gap-3 px-8 py-6 rounded-pill border border-brand-border bg-brand-surface hover:bg-brand-surface-hover text-brand font-sans font-bold text-xl max-md:text-lg max-md:px-6 max-md:py-4 leading-snug transition duration-150 active:translate-y-px" :to="`${localePath('/download')}#platforms`">
               <span class="icon icon--apple" aria-hidden="true" />
-              <span>{{ $t('common.cta.macSoon') }}</span>
+              <span>{{ $t('common.cta.downloadMac') }}</span>
             </NuxtLink>
           </div>
 
@@ -512,10 +511,9 @@ useHead({
             🔴 用 NuxtLink + localePath，不要寫死 href —— 寫死會在 /en 掉語系，
             英文訪客會被丟回中文頁。
 
-            macOS 那顆**不是下載鈕**：build 不存在（前置鏈 P3/P4 未啟動）。
-            依 Q15-b 為下載頁定下的同一個決定 ——「沒有檔案就不給下載鈕」——
-            文案改為「即將推出」，並把實心主鈕讓給真的能用的 Windows。
-            原本的配置是反的：不存在的那個是主鈕，能用的是次要鈕。
+            macOS 那顆：2026-08-30 build 不存在時改成「即將推出」；2026-09-15 起 Apple Silicon 版已上架，
+            改回「免費下載 macOS 版」。它仍然導到下載頁而不是直接給 .dmg —— 未公證的 Gatekeeper 揭露（`notes.n5`）在那裡。
+            主鈕樣式維持給 Windows。
           -->
           <NuxtLink class="inline-flex items-center justify-center gap-3 px-8 py-6 rounded-pill border border-brand-border bg-brand hover:bg-brand-hover text-white font-sans font-bold text-xl max-md:text-lg max-md:px-6 max-md:py-4 leading-snug transition duration-150 active:translate-y-px shadow-btn" :to="`${localePath('/download')}#platforms`">
             <span class="icon icon--devices" aria-hidden="true" />
@@ -523,7 +521,7 @@ useHead({
           </NuxtLink>
           <NuxtLink class="inline-flex items-center justify-center gap-3 px-8 py-6 rounded-pill border border-brand-border bg-brand-surface hover:bg-brand-surface-hover text-brand font-sans font-bold text-xl max-md:text-lg max-md:px-6 max-md:py-4 leading-snug transition duration-150 active:translate-y-px" :to="`${localePath('/download')}#platforms`">
             <span class="icon icon--apple" aria-hidden="true" />
-            <span>{{ $t('common.cta.macSoon') }}</span>
+            <span>{{ $t('common.cta.downloadMac') }}</span>
           </NuxtLink>
         </div>
 

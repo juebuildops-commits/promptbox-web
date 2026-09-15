@@ -2,7 +2,7 @@
 
 > **性質**：官網發版與更新日誌作業的唯一標準手冊（單一真相來源）。  
 > **核心原則**：本檔為**完全閉環的作業清單**。執行發版任務時，歷史版本視為不可變之凍結狀態，**嚴禁沿超連結向外遞迴追溯無關之歷史文件（Max Depth = 1）**。  
-> **最後更新**：2026-09-14  
+> **最後更新**：2026-09-15（下載目標搬到 `Src/shared/downloads.ts`）  
 
 ---
 
@@ -23,7 +23,7 @@
 | **1** | **日誌 Markdown 正文** | `Src/content/changelog/vX.X.X.md` | 一版一檔。最新版由 `date` 與 SemVer 數字動態推導，**不手動標記 `latest`**。撰寫風格遵循 [§3 規範](#3-changelog-內容撰寫規範-style-guide)。 |
 | **2** | **日誌頁三語 Meta** | `Src/i18n/locales/{zh-TW,en,ja}/changelog.json` | 同步 `meta.description`（例：「從 v1.0 到 vX.X.X…」）與 `cta.body`（例：「vX.X.X 現已推出…」）。 |
 | **3** | **下載頁三語 Meta** | `Src/i18n/locales/{zh-TW,en,ja}/download.json` | 同步 `meta.description`（免費下載版號）與 `hero.badge`（「✨ 最新版本 vX.X.X」）。 |
-| **4** | **下載安裝檔與校驗碼** | `Src/app/pages/download.vue` | 🔴 **紅線 5**：`href` 與實算 `sha256` 必須成對更新（確認 Cloudflare R2 已上架）。若手冊第 9 章校驗範例含版號亦連動。 |
+| **4** | **下載安裝檔與校驗碼** | `Src/shared/downloads.ts` | 🔴 **紅線 5**：`win`／`win-zip`／`mac` 三組的 `href` 與實算 `sha256` 必須成對更新，`DOWNLOAD_VERSION` 一併改（確認 Cloudflare R2 已上架）。下載頁、會員專區、`/dl` 端點都讀這一份，**不要在別處另寫網址**（`check:release` 會擋）。若手冊第 9 章校驗範例含版號亦連動。 |
 | **5** | **規格文件鏡像回寫** | `Docs/webspec/PageDescription/05_changelog.md`<br>`Docs/webspec/PageDescription/02_download.md` | 回寫「當前發行版本」表格與最新版聲明。若涉及產品能力或重要名詞更動，回寫 `Docs/webspec/主張與依據.md`。 |
 
 ---
@@ -35,7 +35,7 @@
 ### 階段一：繁中定稿與下載核對 (Phase 1)
 1. **撰寫日誌正文**：於 `Src/content/changelog/` 新增 `vX.X.X.md`，參照 [§3 範本](#4-標準-markdown-範本-standard-template) 撰寫繁中條目。
 2. **同步繁中版面**：修改 `Src/i18n/locales/zh-TW/changelog.json` 與 `download.json` 的最新版號。
-3. **核對下載檔與校驗碼（紅線 5）**：確認 Cloudflare R2 上安裝檔（`.exe` / `.zip`）已可存取（HEAD 200），於 `Src/app/pages/download.vue` 填入創辦人實算之 SHA-256。
+3. **核對下載檔與校驗碼（紅線 5）**：確認 Cloudflare R2 上安裝檔（`.exe` / `.zip` / `.dmg`）已可存取（HEAD 200），於 `Src/shared/downloads.ts` 填入 `href`、`size` 與創辦人實算之 SHA-256，並更新 `DOWNLOAD_VERSION`。
 4. **人工確認繁中品質（關卡）**：檢視繁中文案流暢度、使用者效益是否清楚，確認無誤後**宣告 Phase 1 正式定稿**。
 
 ### 階段二：外語衍生與護欄驗證 (Phase 2)
@@ -47,7 +47,7 @@
    npm run check:content   # 1. 檢查 Markdown 是否有未包裹的 {{ }}
    npm run check:i18n      # 2. 檢查三語 key 是否完整對齊
    npm run check:docs      # 3. 檢查文件內部連結與錨點
-   npm run check:release   # 4. 檢查最新發布版號全站一致性（防缺口 7、9）
+   npm run check:release   # 4. 檢查最新發布版號全站一致性（防缺口 7、9）＋ 下載目標是否只有一份
    npm run build           # 整合編譯測試（自動依序跑完上述 4 支護欄）
    ```
 
@@ -115,7 +115,7 @@ major: true # 若為重大版本（版號進位或重大架構躍進）才加上
 ```markdown
 - [ ] 1. 新增 `Src/content/changelog/vX.X.X.md`（無裸露 {{ }}、採使用者視角、動詞開頭）
 - [ ] 2. 更新 `Src/i18n/locales/zh-TW/changelog.json` 與 `download.json`
-- [ ] 3. 確認 R2 安裝檔可下載（HEAD 200），並更新 `download.vue` 的 href 與 sha256
+- [ ] 3. 確認 R2 安裝檔可下載（HEAD 200），並更新 `shared/downloads.ts` 三組的 href 與 sha256、`DOWNLOAD_VERSION`
 - [ ] 4. 人工審查繁中文案與版號（Phase 1 定稿關卡）
 - [ ] 5. 同步翻譯 `en` 與 `ja` 的 `changelog.json` 與 `download.json`（Phase 2）
 - [ ] 6. 回寫 `Docs/webspec/PageDescription/05_changelog.md` 與 `02_download.md`

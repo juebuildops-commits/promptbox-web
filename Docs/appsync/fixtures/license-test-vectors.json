@@ -1,16 +1,17 @@
 {
   "version": 1,
   "schema": "Docs/appsync/ADR-008_授權憑證格式與離線驗證契約.md",
-  "createdAt": "2026-09-14T15:41:20.730Z",
+  "warning": "測試專用金鑰，私鑰已公開。kid TEST-DO-NOT-SHIP 永遠不得進入 App 的內建公鑰表（ADR-008 §五）。",
   "keyInfo": {
-    "kid": "K2026A",
+    "kid": "TEST-DO-NOT-SHIP",
+    "seedLabel": "promptbox-license-test-vectors/v1",
     "algorithm": "Ed25519 / EdDSA",
-    "publicSpkiPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAGB/zyi0JBYqvehGSG+nbwTIxOeGFAp+oipWFMNz27KE=\n-----END PUBLIC KEY-----\n",
-    "privatePkcs8Pem": "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIBJM8oCc3fj+GCR3v6wvW34mgx7cHIJ2Zq+jqNCLNVGG\n-----END PRIVATE KEY-----\n",
+    "publicSpkiPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAegiigQqum1RykzqCzHmpCTv+v/Rer9Z4AUZ04Hg0He8=\n-----END PUBLIC KEY-----\n",
+    "privatePkcs8Pem": "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIIZp8SkkHwk4He3sAC1J6D4nMRW4t0ieo/TgdBp6f426\n-----END PRIVATE KEY-----\n",
     "publicJwk": {
       "kty": "OKP",
       "crv": "Ed25519",
-      "x": "GB_zyi0JBYqvehGSG-nbwTIxOeGFAp-oipWFMNz27KE"
+      "x": "egiigQqum1RykzqCzHmpCTv-v_Rer9Z4AUZ04Hg0He8"
     }
   },
   "vectors": [
@@ -30,9 +31,9 @@
       "header": {
         "alg": "EdDSA",
         "typ": "pbent+jws",
-        "kid": "K2026A"
+        "kid": "TEST-DO-NOT-SHIP"
       },
-      "expectedJws": "eyJhbGciOiJFZERTQSIsInR5cCI6InBiZW50K2p3cyIsImtpZCI6IksyMDI2QSJ9.eyJ2IjoxLCJpc3MiOiJwcm9tcHRib3guYXBwIiwic3ViIjoiYWxpY2VAZXhhbXBsZS5jb20iLCJwbGFuIjoicHJvIiwic2VhdCI6MSwib3JkZXIiOiJwb2xhcl9vcmRfdGVzdF8wMDEiLCJqdGkiOiJqdGlfcHJvX3Rlc3RfMDAxXzhhOWQwYzFlIiwiaWF0IjoxNzczNDQ2NDAwfQ.vVW-3LkZTYLDOhfv9RDryuWeiPsD5lhbNvq7WNwJgCVZwMDWO3QnE_JoPVjt3Ujcl5oWBgron0s-fxnAaB7tDw",
+      "expectedJws": "eyJhbGciOiJFZERTQSIsInR5cCI6InBiZW50K2p3cyIsImtpZCI6IlRFU1QtRE8tTk9ULVNISVAifQ.eyJ2IjoxLCJpc3MiOiJwcm9tcHRib3guYXBwIiwic3ViIjoiYWxpY2VAZXhhbXBsZS5jb20iLCJwbGFuIjoicHJvIiwic2VhdCI6MSwib3JkZXIiOiJwb2xhcl9vcmRfdGVzdF8wMDEiLCJqdGkiOiJqdGlfcHJvX3Rlc3RfMDAxXzhhOWQwYzFlIiwiaWF0IjoxNzczNDQ2NDAwfQ.QrN9W9mgwFCVFMsvCAYUr7CjYDHvjMX_PckLK8dnUyQoifj3kxdXMw_pm0FxsbxFTfRjTNw0VSADmrh6Cmt_BA",
       "verified": true
     },
     {
@@ -51,9 +52,9 @@
       "header": {
         "alg": "EdDSA",
         "typ": "pbent+jws",
-        "kid": "K2026A"
+        "kid": "TEST-DO-NOT-SHIP"
       },
-      "expectedJws": "eyJhbGciOiJFZERTQSIsInR5cCI6InBiZW50K2p3cyIsImtpZCI6IksyMDI2QSJ9.eyJ2IjoxLCJpc3MiOiJwcm9tcHRib3guYXBwIiwic3ViIjoiYm9iQGV4YW1wbGUuY29tIiwicGxhbiI6ImxpZmV0aW1lIiwic2VhdCI6MSwib3JkZXIiOiJwb2xhcl9vcmRfdGVzdF8wMDIiLCJqdGkiOiJqdGlfbGlmZV90ZXN0XzAwMl80YjVjNmQ3ZSIsImlhdCI6MTc3MzQ0NjQwMH0.mZc4K28kS3lWCV9_yEb9Em1AoqJFn_KZmdMr7gQi1n4kS9AHFTpzDDO4HjkV1eEPH-5DcotKBoxB746URom9Bg",
+      "expectedJws": "eyJhbGciOiJFZERTQSIsInR5cCI6InBiZW50K2p3cyIsImtpZCI6IlRFU1QtRE8tTk9ULVNISVAifQ.eyJ2IjoxLCJpc3MiOiJwcm9tcHRib3guYXBwIiwic3ViIjoiYm9iQGV4YW1wbGUuY29tIiwicGxhbiI6ImxpZmV0aW1lIiwic2VhdCI6MSwib3JkZXIiOiJwb2xhcl9vcmRfdGVzdF8wMDIiLCJqdGkiOiJqdGlfbGlmZV90ZXN0XzAwMl80YjVjNmQ3ZSIsImlhdCI6MTc3MzQ0NjQwMH0.CAsmgKIJ5eto9npDiKp94-R5i29KlCvdh9_Ua7yjMkGLNmd5nWgAnqyZHUPbUpkGCVkmreZBg32XAC10m995Ag",
       "verified": true
     },
     {
@@ -72,9 +73,9 @@
       "header": {
         "alg": "EdDSA",
         "typ": "pbent+jws",
-        "kid": "K2026A"
+        "kid": "TEST-DO-NOT-SHIP"
       },
-      "expectedJws": "eyJhbGciOiJFZERTQSIsInR5cCI6InBiZW50K2p3cyIsImtpZCI6IksyMDI2QSJ9.eyJ2IjoxLCJpc3MiOiJwcm9tcHRib3guYXBwIiwic3ViIjoiZGV2ZWxvcGVyM0Bjb21wYW55LmNvbSIsInBsYW4iOiJjb21tZXJjaWFsIiwic2VhdCI6Mywib3JkZXIiOiJwb2xhcl9vcmRfdGVzdF8wMDMiLCJqdGkiOiJqdGlfY29tbV90ZXN0XzAwM18xZjJhM2I0YyIsImlhdCI6MTc3MzQ0NjQwMH0.Vd3BIyvf7d8UI8WroF5neuHqD8A2HjMTo9_ry7GVwiRQF-IYYsul9xm6cx1qOe4ZWtIF06_slpI_hSsQZRCVBA",
+      "expectedJws": "eyJhbGciOiJFZERTQSIsInR5cCI6InBiZW50K2p3cyIsImtpZCI6IlRFU1QtRE8tTk9ULVNISVAifQ.eyJ2IjoxLCJpc3MiOiJwcm9tcHRib3guYXBwIiwic3ViIjoiZGV2ZWxvcGVyM0Bjb21wYW55LmNvbSIsInBsYW4iOiJjb21tZXJjaWFsIiwic2VhdCI6Mywib3JkZXIiOiJwb2xhcl9vcmRfdGVzdF8wMDMiLCJqdGkiOiJqdGlfY29tbV90ZXN0XzAwM18xZjJhM2I0YyIsImlhdCI6MTc3MzQ0NjQwMH0.V-sCJFaDu9UF7XAHV18AGDkDUpw6Acb80S4Cc_Tj3KV4B8GPjYfRnCB0wexOhgqfbECkoPWdP1I9aExVuGa3Dg",
       "verified": true
     }
   ]

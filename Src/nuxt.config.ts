@@ -5,15 +5,12 @@ export default defineNuxtConfig({
   modules: ['@nuxt/content', '@nuxtjs/i18n', 'nuxt-gtag', '@nuxtjs/supabase'],
 
   // ── D6 / D7：Supabase Auth ───────────────────────────────────────────
+  // 🔴 佔位值不是「先接起來」：模組缺 url 會在每一頁建立 client 時丟錯。
+  //    「是否真的設定」一律用 composables/useMemberLogin.ts 判斷，改佔位值時兩處一起改。
   supabase: {
     redirect: false, // 🔴 必須設為 false，避免公共行銷頁面被非預期強制導向 /login
     url: process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
     key: process.env.SUPABASE_KEY || 'placeholder-anon-key',
-  },
-
-  // ── 5a+：路由規則 ────────────────────────────────────────────────────
-  routeRules: {
-    '/account': { ssr: false }, // 會員中心走純 SPA 客戶端渲染，防止 SSG 水合衝突
   },
 
   // CommonMark 的強調規則對 CJK 標點不友善。像 `**「密碼保護」**與` 這種寫法，
@@ -34,9 +31,8 @@ export default defineNuxtConfig({
   },
 
   // ── D3 / F3 / F7：i18n ──────────────────────────────────────────────
-  // 階段三決策 D-16：**只上 zh-TW + en**，ja 留完整骨架（見 i18n/locales/ja/）。
-  // 要啟用日文＝把下面 locales 加一筆 ja + 把 ja/*.json 的空字串填滿，
-  // `npm run check:i18n` 會逐 key 檢查兩者是否同步。
+  // 階段三決策 D-16 原本只上 zh-TW + en、ja 留骨架；2026-09-14 起三個語系全部出貨。
+  // 新增語系的步驟見 README §八；`npm run check:i18n` 會逐 key 檢查各語系是否同步。
   i18n: {
     defaultLocale: 'zh-TW',
     strategy: 'prefix_except_default',
@@ -153,9 +149,21 @@ export default defineNuxtConfig({
   // 🔴 階段三起 `/api/**` 例外 —— F4 的訂閱端點必須是真的 server route，
   //    否則 Buttondown 的 API key 只能放進前端（= 公開）。這是 AC-15
   //    「無 serverless function」的**唯一且刻意**的破例，見 PRD 階段三 D-18。
+  //
+  // 🔴 整個設定檔只能有**一個** `routeRules`。物件字面值的重複鍵不會報錯，後寫的整組蓋掉先寫的 ——
+  //    2026-09-14 另寫在檔頭的 `/account` 規則就是這樣無聲消失的（建置成功、`/account` 照樣被 SSR 預繪）。
   routeRules: {
     '/**': { prerender: true },
     '/api/**': { prerender: false },
+    // 🔴 `/dl/**`（FR-27C 下載轉址 + 遙測）同樣必須是真的 server route。
+    //    不排除的話，crawlLinks 會從會員專區爬到 `/dl/win`，把 302 預繪成一個 meta refresh 靜態檔
+    //    ⇒ 線上永遠命中靜態檔、function 從不執行、遙測一筆都不記、`no-store` 也跟著消失。
+    '/dl/**': { prerender: false },
+    // 5a+：會員專區走純 SPA（登入狀態只存在瀏覽器，預繪出來的 HTML 一定是「未登入」）。
+    // 規則比對的是實際路徑，三個語系要各寫一條。
+    '/account': { ssr: false },
+    '/en/account': { ssr: false },
+    '/ja/account': { ssr: false },
   },
 
   // 🔴 `routeRules` 的 glob **不會**餵種子給預繪器 —— 它只回答「這條路徑
@@ -182,6 +190,11 @@ export default defineNuxtConfig({
         '/ja/enterprise',
         '/en/demo',
         '/ja/demo',
+        //    🔴 `/account`（2026-09-15）：會員登入未開放期間，導覽列的入口是藏起來的
+        //    （AppHeader 的 `memberLoginAvailable`），同一個坑 ⇒ 三個語系各明列一條。
+        '/account',
+        '/en/account',
+        '/ja/account',
       ],
     },
   },

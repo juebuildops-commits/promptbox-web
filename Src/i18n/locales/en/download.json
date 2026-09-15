@@ -1,8 +1,8 @@
 {
   "download": {
     "meta": {
-      "title": "Download PromptBox — Windows",
-      "description": "Download PromptBox v3.9.4 free for Windows 10/11; the macOS build is coming soon. Installer and portable builds, encrypted local storage, 100% offline."
+      "title": "Download PromptBox — Windows / macOS",
+      "description": "Download PromptBox v3.9.4 free for Windows 10/11 and macOS 12+ (Apple Silicon). Windows installer and portable builds plus a macOS disk image, encrypted local storage, 100% offline."
     },
     "hero": {
       "badge": "✨ Latest release v3.9.4",
@@ -11,7 +11,7 @@
     },
     "desktopOnly": {
       "cta": "Download on a computer",
-      "note": "PromptBox is a Windows desktop app — it cannot be installed on a phone or tablet, so there is no download button here. If you are on a computer, widen the browser window and the button will appear.",
+      "note": "PromptBox is a desktop app for Windows and macOS — it cannot be installed on a phone or tablet, so there is no download button here. If you are on a computer, widen the browser window and the button will appear.",
       "cardNote": "Phones and tablets cannot install it. Open this page on a computer, or widen the window, to download."
     },
     "trust": {
@@ -23,7 +23,7 @@
     },
     "platforms": {
       "title": "Choose your operating system",
-      "lead": "Windows installer and portable builds are available now, with offline support and a custom install directory. macOS is coming soon.",
+      "lead": "Windows installer and portable builds (offline-friendly, custom install directory), plus a macOS build for Apple Silicon.",
       "recommendedBadge": "Recommended for your system",
       "win": {
         "requirement": "Windows 10 / 11 (64-bit)",
@@ -37,12 +37,12 @@
         "ctaPortable": "Portable build (.zip)"
       },
       "mac": {
-        "requirement": "macOS 10.15 (Catalina)+ / Apple Silicon",
-        "body": "Natively integrated with the macOS Keychain, optimized for Apple Silicon (M1/M2/M3/M4).",
+        "requirement": "macOS 12 (Monterey)+ / Apple Silicon",
+        "body": "Native build for Apple Silicon (M1 and later), with the database key held by the macOS Keychain. There is no Intel Mac build yet.",
         "f1pre": "Native macOS disk image (",
         "f1post": ")",
-        "f2": "Optimized for Apple Silicon (arm64)",
-        "f3": "Key stored automatically in the macOS Keychain",
+        "f2": "Apple Silicon (arm64) only — will not run on Intel Macs",
+        "f3": "Key held by the macOS Keychain",
         "cta": "Download for macOS (Apple Silicon)",
         "soonBadge": "Coming soon",
         "ctaSoon": "Notify me when macOS ships",
@@ -90,12 +90,18 @@
         "bodyPre": "That prompt is accurate: we have not bought a code signing certificate yet, so Windows cannot match the installer to a verified publisher. We will not ask you to ignore it — check the file against the SHA-256 checksum above, and read ",
         "linkLabel": "why there is no signature yet",
         "bodyPost": " for the reasoning, how to verify us yourself, and when this goes away."
+      },
+      "n5": {
+        "title": "macOS will block the first launch",
+        "bodyPre": "This is accurate too: we don’t have an Apple Developer account yet, so the macOS build has no Apple-issued developer signature and has not been notarized, and macOS cannot confirm where it came from. We won’t ask you to ignore that either — check the .dmg against the SHA-256 checksum above, then read ",
+        "linkLabel": "the macOS section of the manual",
+        "bodyPost": " before deciding whether to open it. Also, whether your data carries over intact when you install a new version over the old one has not been tested on a Mac yet; until it has, don’t let PromptBox on your Mac hold the only copy of anything important."
       }
     },
     "accountLead": {
-      "title": "Already a member? Visit Account Center",
-      "body": "Signed-in members can manage dedicated downloads and license entitlements in the Account Center.",
-      "cta": "Go to Account"
+      "title": "Already signed in?",
+      "body": "Your account page shows your plan and links to the same builds.",
+      "cta": "Go to your account"
     }
   }
 }

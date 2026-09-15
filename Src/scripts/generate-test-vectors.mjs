@@ -11,6 +11,13 @@
  *   - 3 組標準 compact JWS 測試向量（Pro、Lifetime、Commercial 多席次）
  *   - 寫入 Docs/appsync/fixtures/license-test-vectors.json 供官網與 App 端單元測試共用
  *
+ * 🔴 這把私鑰會公開在 repo 裡，因此：
+ *   - `kid` 刻意取成一眼就知道是測試用的 `TEST-DO-NOT-SHIP`，**不得**長得像正式 kid（ADR-008 §五 的 `PB2026A`）。
+ *     只要 App 的內建公鑰表收進這把公鑰，任何人都能自己簽出 Pro 憑證；
+ *     而 ADR-008 規定舊 kid 永不移除 ⇒ 一旦出貨就收不回來。
+ *   - 金鑰由固定種子推導、Ed25519 簽章本身是確定性的 ⇒ 重跑本腳本輸出**逐位元組相同**，
+ *     App 端引用的公鑰與預期 JWS 不會因為有人重跑而失效。要換金鑰就改 SEED_LABEL，並同步通知 App 端。
+ *
  * 用法：node scripts/generate-test-vectors.mjs
  */
 import fs from 'node:fs'
@@ -50,21 +57,27 @@ function verifyCompactJws(jws, publicKey) {
   return crypto.verify(null, dataToSign, publicKey, signature)
 }
 
-console.info('🔑 正在生成 Ed25519 測試金鑰對...')
+console.info('🔑 正在由固定種子推導 Ed25519 測試金鑰對...')
 
-// 1. 生成確定性或新 Ed25519 金鑰對
-const { publicKey, privateKey } = crypto.generateKeyPairSync('ed25519', {
-  publicKeyEncoding: { type: 'spki', format: 'pem' },
-  privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
+// 1. 由固定種子推導金鑰對（PKCS#8 DER 固定前綴 + 32 位元組種子）
+const SEED_LABEL = 'promptbox-license-test-vectors/v1'
+const seed = crypto.createHash('sha256').update(SEED_LABEL).digest()
+const PKCS8_ED25519_PREFIX = Buffer.from('302e020100300506032b657004220420', 'hex')
+
+const privateKeyObj = crypto.createPrivateKey({
+  key: Buffer.concat([PKCS8_ED25519_PREFIX, seed]),
+  format: 'der',
+  type: 'pkcs8',
 })
+const publicKeyObj = crypto.createPublicKey(privateKeyObj)
 
-const publicKeyObj = crypto.createPublicKey(publicKey)
-const privateKeyObj = crypto.createPrivateKey(privateKey)
+const privateKey = privateKeyObj.export({ type: 'pkcs8', format: 'pem' })
+const publicKey = publicKeyObj.export({ type: 'spki', format: 'pem' })
 
 // 導出 JWK
 const publicJwk = publicKeyObj.export({ format: 'jwk' })
 
-const kid = 'K2026A'
+const kid = 'TEST-DO-NOT-SHIP'
 const header = {
   alg: 'EdDSA',
   typ: 'pbent+jws',
@@ -135,12 +148,14 @@ const signedVectors = testCases.map((tc) => {
 })
 
 // 4. 組裝輸出資料結構
+// 不寫產生時間：輸出必須可重現（見檔頭）
 const fixtureData = {
   version: 1,
   schema: 'Docs/appsync/ADR-008_授權憑證格式與離線驗證契約.md',
-  createdAt: new Date().toISOString(),
+  warning: '測試專用金鑰，私鑰已公開。kid TEST-DO-NOT-SHIP 永遠不得進入 App 的內建公鑰表（ADR-008 §五）。',
   keyInfo: {
     kid,
+    seedLabel: SEED_LABEL,
     algorithm: 'Ed25519 / EdDSA',
     publicSpkiPem: publicKey,
     privatePkcs8Pem: privateKey,
@@ -162,5 +177,5 @@ fs.writeFileSync(OUTPUT_FILE, JSON.stringify(fixtureData, null, 2), 'utf8')
 
 console.info(`✔ 成功生成測試向量並寫入: ${path.relative(SRC_ROOT, OUTPUT_FILE)}`)
 console.info(`  - 測試案例數: ${signedVectors.length}`)
-console.info(`  - 演算法: EdDSA (Ed25519), kid: ${kid}`)
+console.info(`  - 演算法: EdDSA (Ed25519), kid: ${kid}（測試專用，不得出貨）`)
 console.info(`  - 3/3 簽章全數通過本機離線公鑰驗證 (crypto.verify)`)

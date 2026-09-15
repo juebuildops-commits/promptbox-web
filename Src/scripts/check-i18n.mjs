@@ -18,6 +18,12 @@
  *     - 裸露的 `@`（例如 `you@example.com`）會讓建置炸在
  *       "Invalid linked format"，而那句話完全沒提到 `@`。要寫成 `{'@'}`。
  *
+ *  4. **程式碼引用了不存在的 key** —— 前三條只比對語系檔彼此，看不到 `.vue` 在讀什麼。
+ *     2026-09-14 `account.json` 少包一層 `"account"`，三個語系「彼此對稱」照樣全綠，
+ *     而 `/account` 整頁顯示成 `account.hero.title` 這種原始 key。
+ *     這裡掃 `app/**` 裡字面寫死的 key（`t('…')`、`$t('…')`、`key:`／`labelKey: '…'`），
+ *     不在參考語系裡就擋。用樣板字串組出來的 key（`` `privacy.rights.i${n}` ``）掃不到，那種要自己小心。
+ *
  * 用法：
  *   node scripts/check-i18n.mjs          檢查（不通過則離開碼 1）
  *   node scripts/check-i18n.mjs --sync   補上缺的 key（空字串）並清掉改名後的殘留 key
@@ -225,6 +231,41 @@ for (const locale of locales) {
   }
 }
 
+// ── 3. 程式碼引用的 key 必須存在於參考語系 ────────────────────────────
+const APP_DIR = join(ROOT, 'app')
+const refKeys = new Set()
+const namespaces = new Set()
+for (const file of files) {
+  const parsed = JSON.parse(readFileSync(join(LOCALES_DIR, REFERENCE, file), 'utf8'))
+  // 命名空間同時認「檔名」與「頂層 key」。只認頂層 key 的話，
+  // 正好會放過 2026-09-14 那種「account.json 少包一層 account」—— 少的就是那個頂層 key。
+  namespaces.add(file.replace(/\.json$/, ''))
+  for (const ns of Object.keys(parsed)) namespaces.add(ns)
+  for (const key of Object.keys(flatten(parsed))) refKeys.add(key)
+}
+
+const walkApp = dir => readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+  const p = join(dir, e.name)
+  return e.isDirectory() ? walkApp(p) : (/\.(vue|ts)$/.test(e.name) ? [p] : [])
+})
+const KEY_REFS = [
+  /\$?t\(\s*['"]([A-Za-z][\w-]*(?:\.[\w-]+)+)['"]/g, // t('a.b')、$t('a.b', …)
+  /\b(?:key|labelKey)\s*:\s*['"]([A-Za-z][\w-]*(?:\.[\w-]+)+)['"]/g, // { key: 'common.nav.home' } 這類間接引用
+]
+for (const file of walkApp(APP_DIR)) {
+  const src = readFileSync(file, 'utf8')
+  const rel = file.slice(ROOT.length + 1).replaceAll('\\', '/')
+  const reported = new Set()
+  for (const re of KEY_REFS) {
+    for (const [, key] of src.matchAll(re)) {
+      // 只認頂層是語系命名空間的字串，避免把 `download.vue` 之類的檔名當成 key
+      if (!namespaces.has(key.split('.')[0]) || refKeys.has(key) || reported.has(key)) continue
+      reported.add(key)
+      errors.push(`${rel} 引用了不存在的 key \`${key}\`（${REFERENCE} 語系檔裡找不到 —— 畫面會直接顯示這串 key）`)
+    }
+  }
+}
+
 if (SYNC) console.log(`i18n sync：補了 ${synced} 個 key，清掉 ${pruned} 個殘留 key`)
 
 for (const n of notes) console.log(`  · ${n}`)
@@ -236,4 +277,4 @@ if (errors.length) {
   process.exit(1)
 }
 
-console.log(`✓ check-i18n：${files.length} 個檔案 × ${locales.length + 1} 個語系，key 與參數皆對稱`)
+console.log(`✓ check-i18n：${files.length} 個檔案 × ${locales.length + 1} 個語系，key 與參數皆對稱；app/ 引用的 key 全部存在`)

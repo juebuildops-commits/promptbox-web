@@ -8,7 +8,7 @@
       "badge": "🔒 隱私權政策",
       "titleLead": "我們收集什麼，",
       "titleAccent": "以及怎麼關掉",
-      "updated": "最後更新：2026-08-27"
+      "updated": "最後更新：2026-09-15"
     },
     "appVsSite": {
       "title": "先講最重要的：App 與這個網站是兩件事",
@@ -38,9 +38,15 @@
         "noTrackingStrong": "關閉了開信追蹤像素",
         "noTrackingPost": "。我們不知道你有沒有打開信、不知道你點了哪個連結。這是選 Buttondown 而不是更便宜的服務的原因。"
       },
+      "member": {
+        "title": "會員登入（Supabase・Google 帳號）",
+        "body": "只有你在會員專區主動按「使用 Google 登入」才會建立帳號。我們拿到的是 Google 提供的 email、名稱與頭像網址，用來辨識你是誰、在會員專區顯示你的方案狀態。",
+        "optional": "瀏覽網站、下載安裝檔、訂閱電子報都不需要登入。登出會清除瀏覽器裡的登入狀態；要刪除帳號，請透過本頁下方的聯絡管道提出。"
+      },
       "none": {
         "title": "我們沒有的東西",
         "i1": "沒有帳號系統，這個網站現階段不需要你註冊任何東西",
+        "i1Member": "除了會員專區的登入之外，這個網站不需要你註冊任何東西",
         "i2": "沒有廣告、沒有廣告追蹤像素、沒有跨站追蹤器",
         "i3": "沒有 session recording、沒有滑鼠熱區圖",
         "i4": "沒有把你的 email 賣給、或分享給任何第三方"
@@ -51,6 +57,9 @@
       "body": "本站不使用 cookie 做任何個人化或追蹤。只有兩個值存在你自己瀏覽器的 localStorage，永遠不會被送到伺服器：",
       "themeKey": "深淺色主題偏好。",
       "analyticsKey": "分析退出開關的狀態。",
+      "bodyWithCookies": "本站不使用 cookie 做個人化或廣告。以下是這個網站會存在你瀏覽器裡的全部東西：前兩項存在 localStorage，永遠不會被送到伺服器；其餘是 cookie，各自什麼時候出現寫在旁邊：",
+      "gaCookie": "Google Analytics 的 cookie，用來分辨回訪的瀏覽器。只在流量分析開著時寫入；在本頁關掉分析之後就不會再寫入，已經存在的可以清除瀏覽器資料刪掉。",
+      "authCookie": "登入用的 cookie，只在你登入會員專區後才會出現，用來維持登入狀態；登出後清除。",
       "clear": "清除瀏覽器資料就會一併清掉，本站會回到預設值。"
     },
     "processors": {
@@ -59,11 +68,15 @@
       "colPurpose": "用途",
       "colData": "會看到什麼",
       "vercel": "網站託管與傳輸",
-      "vercelData": "伺服器日誌層級的 IP 與 User-Agent（用於服務運作與濫用防制）",
+      "vercelData": "伺服器日誌層級的 IP 與 User-Agent（用於服務運作與濫用防制）。從會員專區下載安裝檔時，另記一筆下載紀錄：平台、概略國別、來源頁與 User-Agent，不含 IP（用於統計下載量）",
       "ga": "網站流量分析",
       "gaData": "匿名化後的頁面瀏覽事件（可退出）",
       "buttondown": "電子報寄送",
-      "buttondownData": "你主動提供的 email 位址（不含開信追蹤）"
+      "buttondownData": "你主動提供的 email 位址（不含開信追蹤）",
+      "supabase": "會員登入與帳號資料",
+      "supabaseData": "你以 Google 登入時提供的 email、名稱與頭像網址；登入時的 IP 與 User-Agent（驗證服務的運作紀錄）",
+      "google": "Google 帳號登入",
+      "googleData": "你在 Google 授權畫面上同意提供給本站的 email、名稱與頭像；Google 會知道你用 Google 帳號登入了本站"
     },
     "rights": {
       "title": "你可以做什麼",

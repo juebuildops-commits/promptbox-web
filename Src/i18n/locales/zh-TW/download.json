@@ -1,8 +1,8 @@
 {
   "download": {
     "meta": {
-      "title": "下載 PromptBox — Windows",
-      "description": "免費下載 PromptBox v3.9.4，支援 Windows 10 / 11；macOS 版即將推出。提供安裝版與免安裝便攜版，本地加密儲存、100% 不連網。"
+      "title": "下載 PromptBox — Windows / macOS",
+      "description": "免費下載 PromptBox v3.9.4，支援 Windows 10 / 11 與 macOS 12 以上（Apple Silicon）。提供 Windows 安裝版、免安裝便攜版與 macOS 映像檔，本地加密儲存、100% 不連網。"
     },
     "hero": {
       "badge": "✨ 最新版本 v3.9.4",
@@ -11,7 +11,7 @@
     },
     "desktopOnly": {
       "cta": "請用電腦下載",
-      "note": "PromptBox 是 Windows 桌面程式，手機與平板裝不起來，所以這裡不放下載鈕。如果你正在用電腦，把瀏覽器視窗拉寬一點，下載按鈕就會出現。",
+      "note": "PromptBox 是電腦用的桌面程式（Windows／macOS），手機與平板裝不起來，所以這裡不放下載鈕。如果你正在用電腦，把瀏覽器視窗拉寬一點，下載按鈕就會出現。",
       "cardNote": "手機與平板裝不起來。用電腦開啟本頁，或把視窗拉寬，就能下載。"
     },
     "trust": {
@@ -23,7 +23,7 @@
     },
     "platforms": {
       "title": "選擇您的作業系統",
-      "lead": "目前提供 Windows 安裝版與免安裝便攜版，支援離線環境與自訂目錄；macOS 版即將推出。",
+      "lead": "Windows 提供安裝版與免安裝便攜版（支援離線環境與自訂目錄），macOS 提供 Apple Silicon 版。",
       "recommendedBadge": "推薦目前系統",
       "win": {
         "requirement": "Windows 10 / 11 (64-bit)",
@@ -37,12 +37,12 @@
         "ctaPortable": "免安裝便攜版（.zip）"
       },
       "mac": {
-        "requirement": "macOS 10.15 (Catalina)+ / Apple Silicon",
-        "body": "原生整合 macOS Keychain 金鑰庫，專為 Apple Silicon (M1/M2/M3/M4) 架構最佳化。",
+        "requirement": "macOS 12 (Monterey)+ / Apple Silicon",
+        "body": "Apple Silicon（M1 以後的晶片）原生版本，資料庫金鑰由 macOS Keychain 保管。目前沒有 Intel Mac 版本。",
         "f1pre": "macOS 原生安裝映像檔（",
         "f1post": "）",
-        "f2": "支援 Apple Silicon (arm64) 架構",
-        "f3": "金鑰自動儲存於 macOS Keychain 保險庫",
+        "f2": "僅支援 Apple Silicon（arm64），Intel Mac 無法執行",
+        "f3": "金鑰由 macOS Keychain 保管",
         "cta": "下載 macOS 版 (Apple Silicon)",
         "soonBadge": "即將推出",
         "ctaSoon": "macOS 版釋出時通知我",
@@ -90,11 +90,17 @@
         "bodyPre": "這個提示是準確的：我們尚未購買程式碼簽章憑證，Windows 因此無法把安裝檔對應到一個已驗證的發行者。我們不會請您忽略它 —— 請用上方的 SHA-256 校驗碼核對檔案，並參閱",
         "linkLabel": "為什麼還沒有數位簽章",
         "bodyPost": "了解原因、自行查證的方法，以及它什麼時候會消失。"
+      },
+      "n5": {
+        "title": "macOS 會擋下第一次開啟",
+        "bodyPre": "這也是準確的：我們還沒有 Apple 開發者帳號，macOS 版沒有 Apple 核發的開發者簽章、也沒有經過公證，macOS 因此無法確認它的來源。我們一樣不會請您忽略它 —— 請先用上方的 SHA-256 校驗碼核對 .dmg，再參閱",
+        "linkLabel": "手冊裡 macOS 的說明",
+        "bodyPost": "決定要不要打開。另外，macOS 版覆蓋安裝新版之後資料是否完整延續，還沒有在 Mac 上實測過；在那之前，請不要讓 Mac 上的 PromptBox 成為重要資料唯一的一份。"
       }
     },
     "accountLead": {
-      "title": "已是會員？前往會員專區",
-      "body": "已登入會員可於會員專區快速管理專屬下載與授權憑證。",
+      "title": "已經登入過？",
+      "body": "會員專區可以查看你的方案狀態，也能下載同一批安裝檔。",
       "cta": "前往會員專區"
     }
   }

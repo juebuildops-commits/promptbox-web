@@ -9,41 +9,29 @@
  *    進行檔案串流代理（Stream Proxy），避免超時與吃滿每月頻寬限制。
  *    流量 100% 由 Cloudflare R2 邊緣 CDN 承擔。
  * 2. 基礎遙測紀錄：
- *    解析 User-Agent、IP 國別、Referer 與時間戳，記錄結構化日誌（並預留 Supabase 寫入接縫）。
+ *    記錄平台、User-Agent、國別、Referer 與時間戳的結構化日誌（**不含 IP**）。
+ *    🔴 欄位與隱私頁 `privacy.processors.vercelData` 的描述一一對應 —— 加欄位（尤其是 IP）要同時改隱私頁與主張與依據。
  * 3. 語意化路由與解耦：
- *    全站與外部連結僅需指向 /dl/win、/dl/win-zip、/dl/mac，
- *    不暴露底層 pub-*.r2.dev 儲存桶網址。日後儲存庫更換或加裝 Pro 閘門（階段六 FR-29），
- *    前端與外部散佈之短網址完全不需變動。
+ *    連結只需指向 /dl/win、/dl/win-zip、/dl/mac，不暴露底層 R2 儲存桶的公用網址。
+ *    日後儲存庫更換或加裝 Pro 閘門（階段六 FR-29），外部散佈的網址完全不需變動。
+ * 4. 🔴 這條路由在 nuxt.config.ts 的 routeRules 設了 `prerender: false`。拿掉它，
+ *    crawlLinks 會把 302 預繪成靜態檔，本檔從此不會被執行。
+ *
+ * 轉址目標來自 shared/downloads.ts（與下載頁共用的唯一來源），本檔不另寫網址。
  */
 import { defineEventHandler, getRouterParam, getHeader, sendRedirect, setResponseHeader } from 'h3'
+import { DOWNLOADS, DOWNLOAD_VERSION, downloadFilename, type DownloadPlatform } from '#shared/downloads'
 
-/** 支援之平台與 R2 映射目標（與 download.vue 最新版號對齊） */
-const DOWNLOAD_TARGETS: Record<string, { url: string; filename: string; os: string }> = {
-  'win': {
-    url: 'https://pub-c877572083874aada08b285a742dce71.r2.dev/V3.9.4/PromptBox-Setup-3.9.4.exe',
-    filename: 'PromptBox-Setup-3.9.4.exe',
-    os: 'windows',
-  },
-  'win-zip': {
-    url: 'https://pub-c877572083874aada08b285a742dce71.r2.dev/V3.9.4/PromptBox-3.9.4-win.zip',
-    filename: 'PromptBox-3.9.4-win.zip',
-    os: 'windows',
-  },
-  'mac': {
-    url: 'https://pub-c877572083874aada08b285a742dce71.r2.dev/V3.9.4/PromptBox-3.9.4-arm64.dmg',
-    filename: 'PromptBox-3.9.4-arm64.dmg',
-    os: 'macos',
-  },
-}
+const isPlatform = (p: string | undefined): p is DownloadPlatform => !!p && Object.hasOwn(DOWNLOADS, p)
 
 export default defineEventHandler(async (event) => {
   const platform = getRouterParam(event, 'platform')?.toLowerCase()
-  const target = platform ? DOWNLOAD_TARGETS[platform] : null
 
   // 不合法平台直接導回公開下載頁
-  if (!target) {
+  if (!isPlatform(platform)) {
     return sendRedirect(event, '/download', 302)
   }
+  const target = DOWNLOADS[platform]
 
   // 1. 遙測資料萃取
   const userAgent = getHeader(event, 'user-agent') || 'Unknown'
@@ -55,8 +43,9 @@ export default defineEventHandler(async (event) => {
   console.info(JSON.stringify({
     event: 'download_redirect',
     platform,
-    filename: target.filename,
-    os: target.os,
+    version: DOWNLOAD_VERSION,
+    filename: downloadFilename(target),
+    os: platform === 'mac' ? 'macos' : 'windows',
     country,
     referer,
     userAgent,
@@ -69,5 +58,5 @@ export default defineEventHandler(async (event) => {
   setResponseHeader(event, 'Expires', '0')
 
   // 4. 立即回傳 302 導向 R2 目標
-  return sendRedirect(event, target.url, 302)
+  return sendRedirect(event, target.href, 302)
 })

@@ -2,8 +2,8 @@
 
 > PromptBox 的**官方網站**原始碼 —— Nuxt 4 靜態預繪站，負責產品說明、安裝檔發佈、操作手冊、版本紀錄與名單收集。
 >
-> **狀態**：階段一～四已完成（遷移 → 內容化 → i18n／訂閱 → 正式文件）；階段五（5a+ 會員與帳號中心）**先行啟動中**；階段六（金流與授權發放）**刻意暫緩**。
-> **最後更新**：2026-09-14
+> **狀態**：階段一～四已完成（遷移 → 內容化 → i18n／訂閱 → 正式文件）；階段五（5a+ 會員與帳號中心）**先行啟動中**（程式已進 repo，Supabase 未設定、導覽入口隱藏）；階段六（金流與授權發放）**刻意暫緩**。macOS（Apple Silicon）未公證版已上架供測試。
+> **最後更新**：2026-09-15
 
 ---
 
@@ -11,9 +11,9 @@
 
 | | |
 | --- | --- |
-| **是** | 官網前端。8 個頁面、2 個語系、1 個 API 端點（email 訂閱），其餘全部是建置時預繪好的靜態 HTML |
+| **是** | 官網前端。10 個頁面、3 個語系、2 支 server 端點（`/api/subscribe` email 訂閱、`/dl/[platform]` 下載轉址），其餘全部是建置時預繪好的靜態 HTML（`/account` 為預繪的 SPA 殼） |
 | **是** | PromptBox 安裝檔的**唯一**發佈管道 —— 沒有 GitHub Releases（決策 D19），App 本體的 repo 目前未公開 |
-| **不是** | 商店。目前**收不到錢**：金流（Polar）、帳號（Supabase Auth）、下載閘門都還沒接，定價頁的購買行為一律導向 email 訂閱表單 |
+| **不是** | 商店。目前**收不到錢**：金流（Polar）與下載閘門都還沒接；帳號（Supabase Auth）的程式已在 repo 裡，但環境變數未設定 ⇒ 安全停用。定價頁的購買行為一律導向 email 訂閱表單 |
 | **不是** | App 本身。Electron 桌面程式在另一個 repo；App 的 README 快照在 `Docs/refer/APP快照.md`，那是**那個產品**的說明書，不是這個網站的 |
 
 這個網站在賣的立場是「**你的 context 存在你自己的電腦，任何廠商都拿不走**」。
@@ -32,6 +32,7 @@
 | 內容 | **`@nuxt/content` v3** | changelog／docs 由 Markdown 生成；採用 Node 22 原生 SQLite（`nativeSqlite`，產物在 `Src/.data/`） |
 | 多語系 | **`@nuxtjs/i18n` v10** | `prefix_except_default`，預設 `zh-TW`，全面出貨 zh-TW / en / ja 三語系 |
 | 分析 | **`nuxt-gtag`** | `initMode: 'manual'`，退出分析者身上完全不下載 gtag.js |
+| 會員登入 | **`@nuxtjs/supabase`** | 階段五 5a+。`redirect: false`（不得把公開頁導向登入）；`SUPABASE_URL` 未設定時退回佔位網址，「是否真的設定」一律用 `useMemberLogin()` 判斷 |
 | CJK 粗體 | `remark-cjk-friendly` | CommonMark 的強調規則對全形標點不友善，收尾 `**` 前是全形標點時會靜默不變粗體 |
 
 ### 外部服務
@@ -39,13 +40,13 @@
 | 服務 | 角色 | 狀態 | 設定位置 |
 | --- | --- | --- | --- |
 | **Vercel** | 網站部署（D8） | 決策已定 | `NUXT_*` 環境變數；`NUXT_BUTTONDOWN_API_KEY` 須標 Sensitive 且**只設 Production** |
-| **Cloudflare R2** | 安裝檔託管（上線前置鏈 P1） | ✅ 已上線 | `Src/app/pages/download.vue` 頂端的 `R2` 常數。目前用 `pub-*.r2.dev` 公用網址，待網域到位後改綁自訂網域 |
+| **Cloudflare R2** | 安裝檔託管（上線前置鏈 P1） | ✅ 已上線 | `Src/shared/downloads.ts`（下載頁、會員專區、`/dl` 端點共用的唯一來源）。目前用 `pub-*.r2.dev` 公用網址，待網域到位後改綁自訂網域 |
 | **Buttondown** | Email 名單（D29） | 待開帳號 | `server/api/subscribe.post.ts`；key 未設時端點回 501，表單誠實顯示「尚未啟用」 |
 | **Google Analytics 4** | 網站分析（D4） | 待建資源 | `NUXT_PUBLIC_GTAG_ID`；未設定時整個模組靜默不動作，隱私頁的開關會自動收起 |
 | **Google Fonts** | Noto Sans TC／Inter／Big Shoulders | 使用中 | `nuxt.config.ts` 的 `app.head.link`（走非同步免阻塞載入） |
-| **Polar**（金流）／**Supabase**（帳號、DB） | 階段五、六 | 階段五 🟡 先行啟動 / 階段六 📦 暫緩 | 見 [`Docs/webplan/PRD_階段五_會員與帳號中心.md`](Docs/webplan/PRD_階段五_會員與帳號中心.md) 與 [`Docs/webplan/PRD_階段六_金流與授權發放.md`](Docs/webplan/PRD_階段六_金流與授權發放.md) |
+| **Polar**（金流）／**Supabase**（帳號、DB） | 階段五、六 | 階段五 🟡 先行啟動（程式已接、`SUPABASE_URL` 未設定）/ 階段六 📦 暫緩 | 見 [`Docs/webplan/PRD_階段五_會員與帳號中心.md`](Docs/webplan/PRD_階段五_會員與帳號中心.md) 與 [`Docs/webplan/PRD_階段六_金流與授權發放.md`](Docs/webplan/PRD_階段六_金流與授權發放.md) |
 
-🔴 **四個環境變數全部可留空**，留空時對應功能會**安全地停用**（不壞版、不噴錯、文案自動改口）。這是刻意設計，見 `Src/.env.example`。
+🔴 **所有環境變數全部可留空**，留空時對應功能會**安全地停用**（不壞版、不噴錯、文案自動改口）。這是刻意設計，見 `Src/.env.example`。
 
 ---
 
@@ -70,27 +71,33 @@ promptbox-web/
     │
     ├── app/
     │   ├── app.vue            ← 只做一件事：由 useLocaleHead() 輸出 <html lang>／hreflang／canonical
-    │   ├── pages/             ← 8 個頁面（見第四節）
+    │   ├── pages/             ← 10 個頁面（見第四節）
     │   ├── components/        ← AppHeader／AppFooter／LanguageSwitcher／SubscribeForm
     │   │                        ／ContentLocaleNotice／content/Notice.vue（MDC callout）
     │   ├── composables/       ← useTheme／useOsDetect／useAnalyticsConsent／useContact
-    │   │                        ／useDocsScrollSpy
+    │   │                        ／useDocsScrollSpy／useMemberLogin
     │   ├── plugins/           ← analytics.client.ts：沒退出才載入 GA4
     │   ├── utils/pricing.ts   ← 🔴 所有價格與 Free 配額的唯一來源
     │   └── assets/css/style.css ← @theme token、.icon（CSS mask）、.notice、深色模式
     │
+    ├── shared/downloads.ts    ← 🔴 安裝檔 href／size／sha256 的唯一來源（頁面與 server 共用）
+    │
     ├── content/               ← 🔴 手冊與版本紀錄的單一真相來源（僅 zh-TW）
     │   ├── changelog/*.md     ← 一版一檔，順序由 date 反向排序推導
-    │   └── docs/*.md          ← 一節一檔，側欄由 frontmatter 生成
+    │   ├── docs/*.md          ← 一節一檔，側欄由 frontmatter 生成
+    │   └── about/*.md         ← /about 的內文
     │
     ├── i18n/
     │   ├── i18n.config.ts     ← fallbackLocale: 'zh-TW'
-    │   └── locales/{zh-TW,en,ja}/*.json  ← 每頁一個檔；ja 是留白骨架，尚未出貨
+    │   └── locales/{zh-TW,en,ja}/*.json  ← 每頁一個檔，三個語系都已出貨
     │
-    ├── public/assets/         ← icon-*.svg（走 CSS mask 上色）、logo-*.svg、ExImg/ 產品截圖
+    ├── public/assets/         ← icon.png（favicon／Logo）、ExImg/ 產品截圖（圖示 SVG 在 app/assets/icons/，走 CSS mask 上色）
     │
-    ├── scripts/               ← 三支建置護欄（見第六節）
-    └── server/api/subscribe.post.ts  ← 🔴 全站唯一的 serverless function
+    ├── scripts/               ← 四支建置護欄（見第六節）＋ generate-test-vectors.mjs（授權憑證測試向量）
+    └── server/
+        ├── api/subscribe.post.ts     ← 🔴 email 訂閱（API key 只在 server）
+        ├── routes/dl/[platform].get.ts ← 🔴 下載轉址 + 遙測（302 到 R2，不串流）
+        └── database/schema.sql       ← Supabase 資料表定義（階段五；網站程式目前沒有讀寫任何資料表）
 ```
 
 **刻意不在 repo 裡的東西**：安裝檔（`*.exe`／`*.zip`，各自超過 100 MB，GitHub 硬擋單檔 >100 MiB、Vercel Hobby 的來源檔上限同樣是 100 MB）→ 放 Cloudflare R2；`.env`；`.nuxt`／`.output`／`.data` 等建置產物。
@@ -112,9 +119,9 @@ Hero（含產品截圖）→ 信任列（本地儲存・SQLCipher 靜態加密�
 **要表達**：把檔案交到手上，並且**對安裝過程完全誠實**。
 
 - 進站即偵測作業系統（`useOsDetect`），CTA 文案與平台卡高亮跟著換。預繪時沒有 User-Agent，因此掛載前一律顯示通用文案。
-- Windows 提供 `.exe` 安裝版與 `.zip` 免安裝版，**兩者都印出 SHA-256 校驗碼**。🔴 `href` 與 `sha256` 必須成對更新 —— 校驗碼是印在頁面上的對外承諾，對不上比沒有更糟。
-- macOS build 尚不存在 ⇒ mac 訪客導向訂閱表單並顯示「即將推出」，而不是給一顆按了下載不到東西的按鈕。
-- 「安裝小提示」四條：零連網保證與更新方式、本機資料加密、v2.x 升級路徑、以及**主動承認「Windows 會顯示無法辨識的應用程式」** —— 不請使用者忽略警告，而是請他用 SHA-256 核對檔案，並連到手冊第 9 節說明原因與它何時會消失。
+- Windows 提供 `.exe` 安裝版與 `.zip` 免安裝版，macOS 提供 Apple Silicon `.dmg`（2026-09-14 起），**三者都印出 SHA-256 校驗碼**。🔴 `href` 與 `sha256` 必須成對更新 —— 校驗碼是印在頁面上的對外承諾，對不上比沒有更糟。全部寫在 `Src/shared/downloads.ts`，不在頁面裡。
+- macOS 版以 `MAC_READY` 旗標控制：設回 `false` 時 mac 訪客導向訂閱表單並顯示「即將推出」，而不是給一顆按了下載不到東西的按鈕。
+- 「安裝小提示」四條：**主動承認「Windows 會顯示無法辨識的應用程式」**、**主動承認「macOS 版未公證、第一次開啟會被擋下，且 mac 上的資料延續還沒實機測過」**、零連網保證與更新方式、本機資料加密 —— 不請使用者忽略警告，而是請他用 SHA-256 核對檔案，並連到手冊第 9 節說明原因與它何時會消失。
 
 ### `/pricing` — 定價（`app/pages/pricing.vue`）
 
@@ -142,7 +149,7 @@ Hero（含產品截圖）→ 信任列（本地儲存・SQLCipher 靜態加密�
 
 結構是：① 先把 **App（完全不連網）** 與 **網站（有分析、有電子報）** 切乾淨 → ② 每一項收集都寫「為什麼」與「怎麼關」→ ③ **開關就放在文字旁邊**，不是叫使用者去別的地方找 → ④ 瀏覽器儲存、第三方處理者、你的權利、聯絡、政策變更。
 
-GA4 未設定時，這頁會誠實顯示「本站目前未設定任何分析工具」，而不是描述一個不存在的東西。頁尾「聯絡我們」在沒有聯絡信箱時會導到這頁的聯絡區。
+GA4 未設定時，這頁會誠實顯示「本站目前未設定任何分析工具」，而不是描述一個不存在的東西。會員登入（Supabase）同一個規矩：沒設定就不寫帳號段落與登入 cookie，設定了就一定寫；「不使用 cookie 做任何個人化或追蹤」那句也只在 GA4 與會員登入都沒設定時出現。頁尾「聯絡我們」在沒有聯絡信箱時會導到這頁的聯絡區。
 
 ### `/enterprise` — 支持組織（`app/pages/enterprise.vue`）
 
@@ -153,36 +160,45 @@ GA4 未設定時，這頁會誠實顯示「本站目前未設定任何分析工�
 🔴 **本頁刻意不掛進 header／footer**：能開始賣之前，導覽裡多一個入口只會把訪客送到一個買不了東西的頁。
 **而沒有連結 ⇒ `crawlLinks` 爬不到 ⇒ 不會被預繪**，因此 `nitro.prerender.routes` 明列了 `/enterprise` 與 `/en/enterprise`（見 §五第三點，那個坑的症狀是建置成功、線上 404）。開賣時要一起改的三處寫在 [PageDescription 08 §3](Docs/webspec/PageDescription/08_enterprise.md)。
 
+### `/demo`、`/about`、`/account`
+
+- **`/demo` 模擬試用**（`app/pages/demo.vue`）：不用安裝，在瀏覽器裡體驗「把卡片設成機密、讓 AI 來要」。只在 zh-TW 導覽露出。見 [PageDescription 09](Docs/webspec/PageDescription/09_demo.md)。
+- **`/about` 關於**（`app/pages/about.vue` ＋ `content/about/*.md`）：第一人稱的來由、技術棧、已知邊界、平台狀態。主張密度全站最高，而且幾乎沒有機器在守。見 [PageDescription 10](Docs/webspec/PageDescription/10_about.md)。
+- **`/account` 會員專區**（`app/pages/account.vue`，SPA）：階段五 5a+。🔴 **會員登入未接 Supabase 前，導覽入口隱藏**（`useMemberLogin()`），頁面本身顯示「尚未開放」。頁上每一句話都要在「現在」成立 —— 不顯示未比對的早鳥資格、不放範例授權碼。見 [PageDescription 11](Docs/webspec/PageDescription/11_account.md)。
+
 ---
 
 ## 五、渲染與路由模型
 
 - **全站預繪**：`routeRules` 設 `'/**': { prerender: true }`，產物是純靜態 HTML。
-- 🔴 **唯一例外是 `/api/**`**。`server/api/subscribe.post.ts` 必須是真的 server route，否則 Buttondown 的 API key 只能放進前端（＝公開，任何人都能拿它讀取整份訂閱名單）。這是「純靜態」**唯一且刻意**的破例。
+- 🔴 **例外是 `/api/**` 與 `/dl/**`**。`server/api/subscribe.post.ts` 必須是真的 server route，否則 Buttondown 的 API key 只能放進前端（＝公開，任何人都能拿它讀取整份訂閱名單）。`server/routes/dl/[platform].get.ts`（5a+ 下載轉址 + 遙測）同理：沒設 `prerender: false` 的話，`crawlLinks` 會把它的 302 預繪成靜態檔，function 從此不會執行。
+  - 🔴 **`routeRules` 在 `nuxt.config.ts` 裡只能寫一次**。物件的重複鍵不報錯、後寫的整組蓋掉先寫的 —— `/account` 的 `ssr: false` 曾經這樣無聲消失。
 - 🔴 `routeRules` 的 glob **不會餵種子給預繪器** —— 它只回答「這條路徑如果被走到，要不要預繪」。因為改用 `nuxt build`（而非會自動塞 `/` 的 `nuxt generate`），必須在 `nitro.prerender.routes` 明確給 `['/', '/en']` 兩個入口，其餘由 `crawlLinks` 從連結爬出來。漏了的症狀很惡毒：建置照樣成功，只是 `.output/public` 裡一個 `.html` 都沒有。
-  - 🔴 **同一個坑的第二種踩法**：`/enterprise` 與 `/en/enterprise` 刻意不掛進導覽（見 §四），於是 `crawlLinks` 也爬不到它們，因此它們**各自明列在 `routes` 裡**。把頁面從導覽拿掉、或新增一個不進導覽的頁面時，都要同時看這一行。
+  - 🔴 **同一個坑的第二種踩法**：`/enterprise` 刻意不掛進導覽（見 §四）、`/account` 的入口在會員登入未開放時隱藏，於是 `crawlLinks` 爬不到它們，因此三個語系**各自明列在 `routes` 裡**。把頁面從導覽拿掉、或新增一個不進導覽的頁面時，都要同時看這一行。
 - **深色模式**：初始判定是 `<head>` 內的**同步 inline script**（寫在 `nuxt.config.ts`），不是 plugin —— plugin 在 hydration 之後才跑，深色模式使用者每次載入都會閃一下白底。`useTheme()` 只負責點擊後的切換與持久化（`localStorage: pb-theme`）。
 - **分析退出**：`initMode: 'manual'` ＋ `plugins/analytics.client.ts`。退出的訪客身上，gtag.js **從頭到尾不會出現在網路請求裡** —— 比業界慣用的 `ga-disable-*` 旗標（照樣下載執行、只是不回報）強一級。狀態存 `localStorage: pb-analytics`，未表態視為允許（opt-out 模型）。
 - **訂閱端點**：前端只送 `kind`（updates／early-bird／commercial），**tag 由伺服器決定**，放任前端傳 tag ＝ 讓任何人污染名單分群。另含蜜罐欄位、保守的 email 檢查、以及「不回傳 Buttondown 原始錯誤」。
   - 🔴 **不轉發訪客 IP 給 Buttondown**（路線 B）。Buttondown 官方建議這樣做以避開防火牆誤判，但那會擴大送給第三方的個資範圍，牴觸隱私頁的處理者矩陣。代價是防濫用責任回到我方 ＝ **每 IP 10 分鐘 5 次的限流**（實例層級記憶體，是減速丘不是牆）。
   - 🔴 **Buttondown 後台的防火牆設定會整個關掉這支端點**（伺服器端轉發 ⇒ 對方只看得到機房 IP）。目標值與四輪除錯的來龍去脈見 [待討論問題 F17](Docs/webplan/待討論問題.md)，**動它之前先讀**。
-- **圖示**：`.icon--*` 走 CSS mask 上色，SVG 放 `public/assets/`，不引入圖示元件庫。
+- **圖示**：`.icon--*` 走 CSS mask 上色，SVG 放 `app/assets/icons/`、class 定義在 `style.css`，不引入圖示元件庫。用到沒定義的 `icon--*` 不會報錯，只會畫出一塊色塊或空白。
 
 ---
 
-## 六、四個「單一真相來源」與三支護欄
+## 六、五個「單一真相來源」與四支護欄
 
 | 真相來源 | 管什麼 | 誰在守 |
 | --- | --- | --- |
 | `Src/content/**.md` | changelog 與 docs 的文字、側欄結構、版本順序 | `scripts/check-content.mjs` |
-| `Src/i18n/locales/**/*.json` | 所有版面文案（zh-TW／en，ja 骨架） | `scripts/check-i18n.mjs` |
+| `Src/i18n/locales/**/*.json` | 所有版面文案（zh-TW／en／ja） | `scripts/check-i18n.mjs` |
 | `Src/app/utils/pricing.ts` | 20 餘處價格、Free 配額、`{{variable}}` 字面值 | `scripts/check-i18n.mjs`（比對具名參數） |
+| `Src/shared/downloads.ts` | 安裝檔的 `href`／體積／SHA-256、目前發佈版號 | `scripts/check-release.mjs` |
 | `Docs/**.md` 之間的相對連結 | 文件索引與交叉引用點不點得開 | `scripts/check-docs.mjs` |
 
-三支腳本的共同目的是**把「靜默壞掉」變成「建置失敗」**，它們掛在 `npm run build`／`generate` 前面：
+四支腳本的共同目的是**把「靜默壞掉」變成「建置失敗」**，它們掛在 `npm run build`／`generate` 前面：
 
 - **`check:content`** —— 擋 `content/` 裡沒包在程式碼中的 `{{ }}`。MDC 會把 `{{變數}}`、`{{@prompt:N}}` 當資料綁定求值，解不出來就**渲染成空字串**：不報錯、不警告，文字就這樣消失。而這兩個 token 正好是 PromptBox 的核心概念，幾乎一定會有人寫進段落裡。
-- **`check:i18n`** —— 擋三件事：①缺 key（設了 fallbackLocale ⇒ 英文頁會靜靜冒出一句中文，不會報錯）；②具名參數不對稱（翻譯漏掉一個 `{proEarly}`，那個數字整段消失）；③訊息語法（裸露的 `{{variable}}` 被 vue-i18n 靜默吃掉、裸露的 `@` 會炸在一句完全沒提到 `@` 的 "Invalid linked format" 上）。`npm run i18n:sync` 可自動補缺 key 並清掉改名後的殘留 key。
+- **`check:i18n`** —— 擋四件事：①缺 key（設了 fallbackLocale ⇒ 英文頁會靜靜冒出一句中文，不會報錯）；②具名參數不對稱（翻譯漏掉一個 `{proEarly}`，那個數字整段消失）；③訊息語法（裸露的 `{{variable}}` 被 vue-i18n 靜默吃掉、裸露的 `@` 會炸在一句完全沒提到 `@` 的 "Invalid linked format" 上）；④**`app/` 裡寫死的 key 在語系檔找不到**（2026-09-14 `account.json` 少包一層，三語「彼此對稱」全綠、整頁卻顯示原始 key）。`npm run i18n:sync` 可自動補缺 key 並清掉改名後的殘留 key。
+- **`check:release`** —— 擋發版漏改：最新 changelog 版號必須同步到三語 `download.json`／`changelog.json` 與 `shared/downloads.ts`（三組 `href` 的檔名與版本資料夾、`DOWNLOAD_VERSION`）；三個 `sha256` 格式正確且互不相同；`app/`、`server/` 裡不得再出現第二份 R2 網址。它驗不了「校驗碼真的是那個檔案的雜湊」—— 那只能整顆下載回來實算。
 - **`check:docs`** —— 擋文件斷鏈。文件搬家不會噴任何錯，連結只是點下去 404，而**最先爛掉的通常是索引本身**：2026-08-29 的 `Docs/` 重組一次產生 107 條斷鏈，其中 `Docs/README.md` 的 19 條全斷 —— 那正是 AI 進來第一個讀的檔案。刻意豁免 `Docs/refer/`（App repo 的副本，內部連結本來就指向正本 repo，修它反而會讓副本對不上正本）。
 
 ---
@@ -194,9 +210,10 @@ GA4 未設定時，這頁會誠實顯示「本站目前未設定任何分析工�
 | `NUXT_PUBLIC_SITE_URL` | canonical／hreflang／og:url 指向佔位網域 `promptbox.app` | 網域未購買（前置鏈 P6） |
 | `NUXT_PUBLIC_GTAG_ID` | 完全不載入分析，頁面一切正常 | 需建立 GA4 資源。**不要為了「先接起來」而填假 ID** |
 | `NUXT_PUBLIC_CONTACT_EMAIL` | 頁尾「聯絡我們」與商業授權 CTA 自動改導訂閱表單 | 真實信箱未提供 |
-| `NUXT_BUTTONDOWN_API_KEY` | `/api/subscribe` 回 501，表單顯示「訂閱功能尚未啟用」 | 需開 Buttondown 帳號 |
+| `NUXT_BUTTONDOWN_API_KEY` | `/api/subscribe` 回 501，表單顯示「訂閱功能尚未啟用」 | ✅ 2026-08-30 已部署（見主張與依據 §二） |
+| `SUPABASE_URL`／`SUPABASE_KEY` | 會員登入停用：導覽不出現會員入口、`/account` 顯示「尚未開放」、下載頁不出現會員卡、隱私頁不描述帳號系統 | 階段五 5a+，環境變數未設定。🔴 **填之前先重讀 [主張與依據 §二之六](Docs/webspec/主張與依據.md)** |
 
-🔴 前三個是 `runtimeConfig.public`（會進前端 bundle）；`NUXT_BUTTONDOWN_API_KEY` 在非 public 區，**僅 server 端可讀，永不進前端 bundle**。在 Vercel 要標 **Sensitive** 且**只設 Production** —— preview 部署預設任何人拿到網址就能存取。
+🔴 `NUXT_PUBLIC_*` 與 `SUPABASE_URL`／`SUPABASE_KEY`（anon key）會進前端 bundle；`NUXT_BUTTONDOWN_API_KEY` 在非 public 區，**僅 server 端可讀，永不進前端 bundle**。在 Vercel 要標 **Sensitive** 且**只設 Production** —— preview 部署預設任何人拿到網址就能存取。
 
 ---
 
@@ -206,19 +223,21 @@ GA4 未設定時，這頁會誠實顯示「本站目前未設定任何分析工�
 cd Src
 npm install          # postinstall 會跑 nuxt prepare
 npm run dev          # 開發伺服器
-npm run build        # check:content → check:i18n → check:docs → nuxt build（產物含 /api）
-npm run generate     # 同上，但純靜態（不含 API 端點）
+npm run build        # check:content → check:i18n → check:docs → check:release → nuxt build（產物含 /api、/dl）
+npm run generate     # 同上，但純靜態（不含 server 端點）
 npm run preview      # 預覽建置結果
 
 npm run check:content   # 單獨跑內容護欄
 npm run check:i18n      # 單獨跑語系護欄
 npm run check:docs      # 單獨跑文件斷鏈護欄
+npm run check:release   # 單獨跑發版一致性護欄
 npm run i18n:sync       # 補齊缺的 key（空字串）並清掉殘留 key
+npm run generate:vectors  # 重產授權憑證測試向量（固定種子，輸出可重現）
 ```
 
-需要 Node 20 以上（Nuxt 4 的需求）。
+需要 Node 22 以上（`@nuxt/content` 的 `nativeSqlite` 用 Node 22 內建的 SQLite）。
 
-**要啟用日文**需要三步，缺一 `check:i18n` 就會擋下來：①填滿 `i18n/locales/ja/*.json` 的空字串 ②把 `'ja'` 從 `scripts/check-i18n.mjs` 的 `SKELETON` 集合移除 ③在 `nuxt.config.ts` 的 `i18n.locales` 加一筆 `ja`。
+三個語系（zh-TW／en／ja）都已出貨，`check:i18n` 的 `SKELETON` 集合是空的。**要再加一個語系**：新增 `i18n/locales/<code>/*.json` → 暫時放進 `SKELETON`（允許空字串）→ 在 `nuxt.config.ts` 的 `i18n.locales` 加一筆 → 翻完後從 `SKELETON` 移除。
 
 ---
 
@@ -228,12 +247,13 @@ npm run i18n:sync       # 補齊缺的 key（空字串）並清掉殘留 key
 | --- | --- | --- |
 | **網域未購買** | 用佔位值 `promptbox.app` | 買到後只改 Vercel 環境變數，不動任何 `.vue` |
 | **產品即將改名**（商標問題） | 進行中 | 網域與簽章憑證都綁名稱 ⇒ 前置鏈 P2–P7 一律等改名定案、且開始有實際銷售後才啟動 |
-| **macOS build 不存在** | 未開發 | 下載頁對 mac 訪客顯示「即將推出」並導向訂閱 |
+| **macOS 版未公證、未實機驗收** | Apple Silicon `.dmg` 已上架供測試（2026-09-14）；無 Apple Developer 帳號（前置鏈 P4）；mac 上覆蓋安裝後的資料延續沒實測過 | 下載頁 `notes.n5` ＋ 手冊第 9 節主動說明；首頁 `faq.a3` 註明 mac 未實測。`MAC_READY = false` 可收回 |
 | **沒有程式碼簽章憑證** | 未購買 | 下載頁 `notes.n4` ＋ 手冊第 9 節主動說明，並提供 SHA-256 供自行核對 |
-| **`content/` 只有 zh-TW** | 版面兩語、內容單語 | `ContentLocaleNotice` 在非中文語系顯示「以下為中文原文」—— 不隱藏、也不機翻 |
+| **`content/` 只有 zh-TW** | 版面三語、內容單語 | `ContentLocaleNotice` 在非中文語系顯示「以下為中文原文」—— 不隱藏、也不機翻 |
+| **會員登入未開放** | Supabase 未設定 | 導覽入口隱藏，`/account` 顯示「尚未開放」；早鳥資格比對（FR-27B）未實作，頁面不顯示任何資格 |
 | **收不到錢** | 階段五六暫緩 | 所有購買 CTA 改為 email 名單（不收錢、只保證早鳥資格，150 名以訂閱時間戳為準） |
 | **R2 用公用開發網址** | `pub-*.r2.dev` | Cloudflare 不建議正式環境長期依賴，待網域到位後改綁自訂網域 |
-| **下載未設登入閘門** | D16 的暫時例外 | 為比賽曝光期保留。閘門上線時只需把下載頁的 `href` 換成閘門路由，文案一個字都不用改 |
+| **下載未設登入閘門** | D16 的暫時例外 | 為比賽曝光期保留。`/dl/[platform]` 轉址端點已存在（目前只有會員專區在用，無閘門）；閘門上線時在那支端點加判斷、下載頁 `href` 改指 `/dl/*` |
 
 ---
 

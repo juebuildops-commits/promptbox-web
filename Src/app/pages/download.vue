@@ -1,66 +1,35 @@
 <script setup lang="ts">
+import { DOWNLOADS, downloadFilename } from '#shared/downloads'
+
 // FR-4：作業系統偵測（原 js/main.js 的 detectOS + CTA 文案替換 + 平台卡高亮）
 const { os, ctaLabel, osNote } = useOsDetect()
 
 const { t } = useI18n()
 const localePath = useLocalePath()
+const { available: memberLoginAvailable } = useMemberLogin()
 
 /**
- * F10 / Q15 已解 —— 安裝檔由 Cloudflare R2 發佈（上線前置鏈 P1）。
- *
- * 為什麼不放 `public/`：兩顆檔案各自超過 100 MB，而 GitHub 硬擋單檔 >100 MiB、
- * Vercel Hobby 的來源檔上限同樣是 100 MB ⇒ 放進 repo 會讓整條部署路線不通。
- * R2 的 egress 免費，這是「發安裝檔」唯一重要的成本項。
- *
- * 🔴 這是 D16（所有下載一律需登入）的**暫時例外**，為了讓比賽曝光期有東西可下載。
- *    階段五 5a 的登入閘門上線時，只需把 `href` 換成閘門路由，本頁文案一個字都不用動。
- *
- * 🔴 `href` 與 `sha256` **必須成對更新** —— 校驗碼是印在頁面上的對外承諾
- *    （`download.checksum.*`），對不上比沒有更糟。
- *    2026-09-10（v3.9.2）起，每一組都是**整顆下載回來實算 SHA-256** 與下面的常數比對過的；
- *    現行這組是 2026-09-12（v3.9.4），由創辦人實算比對。
- *    ⚠️ 不要退回只比 ETag：ETag 是 MD5，與頁面上印的 SHA-256 是**兩種雜湊**，
- *    ETag 相符證明得了「線上檔案 = 本機產物」，證明不了「印出去的校驗碼是對的」。
- *
- * 🔴 檔名與路徑**推導不出來，只能照建置產物逐字抄**：
- *    R2 路徑自 v3.9.2 起多一層版本資料夾（`/V3.9.2/`），而兩顆檔案的命名規則還不一致
- *    （`PromptBox-Setup-3.9.2.exe` 對 `PromptBox-3.9.2-win.zip`；v3.7.1 時的 zip 又叫 `promptbox-v3.7.1.zip`）。
- *    ⇒ ⛔ 不要為了「乾淨」把版號抽成常數再組字串 —— 那會讓下一個人只改版號、而 `sha256` 停在舊值，
- *    正是這條紅線要擋的事。
- *
- * 🔴 `pub-*.r2.dev` 是 Cloudflare 的公用開發網址，官方不建議正式環境長期依賴。
- *    網域到位後（前置鏈 P6）改綁自訂網域，一樣只動這幾行。
+ * 安裝檔的 `href`／`size`／`sha256` 住在 `shared/downloads.ts`（唯一來源，與 `/dl` 端點、會員專區共用）。
+ * 🔴 `href` 與 `sha256` 必須成對更新 —— 為什麼、以及為什麼不能用版號組字串，都寫在那個檔案的檔頭。
  */
-const R2 = 'https://pub-c877572083874aada08b285a742dce71.r2.dev'
-
-const WIN_EXE = {
-  href: `${R2}/V3.9.4/PromptBox-Setup-3.9.4.exe`,
-  size: '116.6 MB',
-  sha256: 'beaf83fd32b8520c8ea5f5017730d23e5f34f6453d473d22355a6f99c096b2b1',
-}
-const WIN_ZIP = {
-  href: `${R2}/V3.9.4/PromptBox-3.9.4-win.zip`,
-  size: '160.7 MB',
-  sha256: 'a12ba94ff8499672c42671bfcde2aaa5b0dac87113bf8849a1dfd86fe2d23ede',
-}
-
-const MAC_DMG = {
-  href: `${R2}/V3.9.4/PromptBox-3.9.4-arm64.dmg`,
-  size: '126.8 MB',
-  sha256: '04a44b63095d05c1052c1934089f83b5e04feba04f97875fcb554c62d7aa1a86',
-}
+const WIN_EXE = DOWNLOADS['win']
+const WIN_ZIP = DOWNLOADS['win-zip']
+const MAC_DMG = DOWNLOADS['mac']
 
 /**
- * macOS build 還不存在。在它存在之前，mac 訪客導到訂閱表單 ——
- * 給一個下載不到東西的按鈕，比誠實說「即將推出」傷害大。
+ * macOS（Apple Silicon）build 自 2026-09-14 起提供（v3.9.4 `.dmg`），2026-09-15 創辦人裁示維持上架供測試人員跑完整流程。
+ * 🔴 它**沒有 Apple 開發者簽章、沒有公證**（前置鏈 P4 未啟動）⇒ 第一次開啟會被 Gatekeeper 擋下，
+ *    這件事由 `notes.n5` 與手冊第 9 節揭露；mac 上的資料延續（`app.setName` 對 Keychain 的保護）也還沒實機驗證過。
+ * 設回 `false` ⇒ mac 訪客改導到訂閱表單並顯示「即將推出」（下載不到東西的按鈕，比誠實說做不到傷害大）。
+ * ⚠️ 設回 false 時，首頁 CTA、`home.trust.platforms`／`faq.a3`／`faq.a4`、下載頁 meta 與 `notes.n5` 要一起改口。
  */
 const MAC_READY: boolean = true
 
 /**
  * 窄視窗不給下載鈕（2026-09-10 創辦人裁示）。
  *
- * 為什麼：PromptBox 是 Windows 桌面程式，手機與平板裝不起來。給一個按下去
- * 拿到 111 MB 但永遠打不開的檔案，跟 `MAC_READY = false` 那裡的理由是同一條 ——
+ * 為什麼：PromptBox 是桌面程式（Windows／macOS），手機與平板裝不起來。給一個按下去
+ * 拿到 100 MB 以上但永遠打不開的檔案，跟 `MAC_READY = false` 那裡的理由是同一條 ——
  * 「下載不到東西的按鈕，比誠實說做不到傷害大」。
  *
  * 🔴 **判定走 CSS 斷點（`lg:` = 1024px），不是 JS 偵測 UA。**
@@ -352,11 +321,11 @@ useHead({
         <div class="flex flex-col gap-2 text-xs text-ink-500 border-t border-line-200 pt-4">
           <p>
             <span class="font-sans font-bold text-ink-700">{{ $t('download.checksum.verifyWin') }}</span>
-            <code class="select-all ml-2">Get-FileHash .\PromptBox-Setup-3.9.4.exe -Algorithm SHA256</code>
+            <code class="select-all ml-2">Get-FileHash .\{{ downloadFilename(WIN_EXE) }} -Algorithm SHA256</code>
           </p>
           <p>
             <span class="font-sans font-bold text-ink-700">{{ $t('download.checksum.verifyUnix') }}</span>
-            <code class="select-all ml-2">shasum -a 256 PromptBox-3.9.4-arm64.dmg</code>
+            <code class="select-all ml-2">shasum -a 256 {{ downloadFilename(MAC_DMG) }}</code>
           </p>
         </div>
       </div>
@@ -440,6 +409,21 @@ useHead({
             </div>
           </div>
 
+          <!--
+            n5：macOS 版的同一種揭露（2026-09-15）。與 n4 同一個框架 —— 解釋警告在說什麼、先核對校驗碼，
+            不教人繞過檢查（怎麼打開交給手冊引 Apple 官方說明）。
+            後半句的資料延續但書不能拿掉：mac 上的覆蓋安裝還沒實機驗過（App事實依據、身分字串凍結清單 A-3）。
+          -->
+          <div v-if="MAC_READY" class="notice notice-warning">
+            <span class="icon icon--apple text-amber-500 shrink-0 mt-1" aria-hidden="true" />
+            <div>
+              <strong class="text-ink-900 font-bold block mb-1">{{ $t('download.notes.n5.title') }}</strong>
+              <p class="text-sm text-ink-700">
+                {{ $t('download.notes.n5.bodyPre') }}<NuxtLink class="text-brand underline underline-offset-2 hover:text-brand-hover" :to="localePath('/docs') + '#install-safety'">{{ $t('download.notes.n5.linkLabel') }}</NuxtLink>{{ $t('download.notes.n5.bodyPost') }}
+              </p>
+            </div>
+          </div>
+
           <div class="notice notice-info">
             <span class="icon icon--check text-brand shrink-0 mt-1" aria-hidden="true" />
             <div>
@@ -467,9 +451,11 @@ useHead({
         </div>
 
         <!--
-          5a+：會員中心引導卡片（增加註冊動機、提供已登入會員快速通道）
+          5a+：會員中心引導卡片。
+          🔴 只在會員登入真的接上 Supabase 時出現 —— 登入沒開放的期間，「已經登入過？」
+          是一句對誰都不成立的話，而這張卡唯一的目的地是一個登不進去的頁（與 /enterprise 不進導覽同一個理由）。
         -->
-        <div class="mt-8 p-6 rounded-2xl bg-surface-card border border-brand-border/60 hover:border-brand-border transition-colors shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div v-if="memberLoginAvailable" class="mt-8 p-6 rounded-2xl bg-surface-card border border-brand-border/60 hover:border-brand-border transition-colors shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-brand-surface text-brand flex items-center justify-center shrink-0">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -7,10 +7,18 @@
  *   1. 先把 App（完全不連網）與網站（有分析、有電子報）切乾淨
  *   2. 每一項收集都寫「為什麼」與「怎麼關」
  *   3. 開關**就放在文字旁邊**，不是叫使用者去別的地方找
+ *
+ * 🔴 會員登入（Supabase + Google OAuth，階段五 5a+）與 GA4 同一個規矩：
+ *    沒設定就一個字都不寫，設定了就一定寫。`memberLoginAvailable` 為 true 時才出現
+ *    帳號段落、登入 cookie、Supabase／Google 兩列處理者，並改掉「沒有帳號系統」那一句 ——
+ *    否則填上 SUPABASE_URL 的那一刻，本頁就同時有三句話變成假的。
  */
 const { t } = useI18n()
 const { available, enabled, set } = useAnalyticsConsent()
 const { hasEmail, email } = useContact()
+const { available: memberLoginAvailable } = useMemberLogin()
+// @nuxtjs/supabase 的 session cookie 前綴（預設 `sb-<專案代號>-auth-token`，內容過長時會切成 .0、.1…）
+const authCookieName = useRuntimeConfig().public.supabase?.cookiePrefix ?? 'sb-auth-token'
 
 useHead({
   title: () => t('privacy.meta.title'),
@@ -118,13 +126,20 @@ useHead({
             <p class="text-ink-700 text-base leading-relaxed">{{ $t('privacy.collect.email.unsubscribe') }}</p>
           </div>
 
+          <!-- 2b'. 會員登入：只在 Supabase 真的設定時存在 -->
+          <div v-if="memberLoginAvailable" class="bg-surface-card border border-line-200 rounded-2xl p-7 max-md:p-6 flex flex-col gap-4 shadow-sm">
+            <h3 class="font-sans font-bold text-xl text-ink-900">{{ $t('privacy.collect.member.title') }}</h3>
+            <p class="text-ink-700 text-base leading-relaxed">{{ $t('privacy.collect.member.body') }}</p>
+            <p class="text-ink-700 text-base leading-relaxed">{{ $t('privacy.collect.member.optional') }}</p>
+          </div>
+
           <!-- 2c. 我們沒有的東西 -->
           <div class="bg-surface-card border border-line-200 rounded-2xl p-7 max-md:p-6 flex flex-col gap-4 shadow-sm">
             <h3 class="font-sans font-bold text-xl text-ink-900">{{ $t('privacy.collect.none.title') }}</h3>
             <ul class="flex flex-col gap-3 text-base text-ink-700">
               <li v-for="n in 4" :key="n" class="flex items-start gap-2.5">
                 <span class="icon icon--check text-brand w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
-                <span>{{ $t(`privacy.collect.none.i${n}`) }}</span>
+                <span>{{ n === 1 && memberLoginAvailable ? $t('privacy.collect.none.i1Member') : $t(`privacy.collect.none.i${n}`) }}</span>
               </li>
             </ul>
           </div>
@@ -133,7 +148,11 @@ useHead({
         <!-- 3. 瀏覽器儲存 -->
         <section class="flex flex-col gap-4">
           <h2 class="font-sans font-black text-3xl max-md:text-2xl text-ink-900">{{ $t('privacy.storage.title') }}</h2>
-          <p class="text-ink-700 text-base leading-relaxed">{{ $t('privacy.storage.body') }}</p>
+          <!--
+            🔴 「本站不使用 cookie 做任何個人化或追蹤」只在 GA4 與會員登入都沒設定時成立：
+               GA4 會寫 `_ga`／`_ga_*`，會員登入會寫 session cookie。任一個設定了就換成列出 cookie 的版本。
+          -->
+          <p class="text-ink-700 text-base leading-relaxed">{{ available || memberLoginAvailable ? $t('privacy.storage.bodyWithCookies') : $t('privacy.storage.body') }}</p>
           <ul class="flex flex-col gap-3 text-base text-ink-700">
             <li class="flex items-start gap-2.5">
               <span class="icon icon--storage text-brand w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
@@ -142,6 +161,14 @@ useHead({
             <li class="flex items-start gap-2.5">
               <span class="icon icon--storage text-brand w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
               <span><code>pb-analytics</code> — {{ $t('privacy.storage.analyticsKey') }}</span>
+            </li>
+            <li v-if="available" class="flex items-start gap-2.5">
+              <span class="icon icon--storage text-brand w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
+              <span><code>_ga</code>、<code>_ga_*</code> — {{ $t('privacy.storage.gaCookie') }}</span>
+            </li>
+            <li v-if="memberLoginAvailable" class="flex items-start gap-2.5">
+              <span class="icon icon--lock text-brand w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
+              <span><code>{{ authCookieName }}</code> — {{ $t('privacy.storage.authCookie') }}</span>
             </li>
           </ul>
           <p class="text-ink-600 text-sm leading-relaxed">{{ $t('privacy.storage.clear') }}</p>
@@ -174,6 +201,16 @@ useHead({
                   <td class="p-4 font-medium">Buttondown</td>
                   <td class="p-4">{{ $t('privacy.processors.buttondown') }}</td>
                   <td class="p-4 text-ink-700">{{ $t('privacy.processors.buttondownData') }}</td>
+                </tr>
+                <tr v-if="memberLoginAvailable">
+                  <td class="p-4 font-medium">Supabase</td>
+                  <td class="p-4">{{ $t('privacy.processors.supabase') }}</td>
+                  <td class="p-4 text-ink-700">{{ $t('privacy.processors.supabaseData') }}</td>
+                </tr>
+                <tr v-if="memberLoginAvailable">
+                  <td class="p-4 font-medium">Google</td>
+                  <td class="p-4">{{ $t('privacy.processors.google') }}</td>
+                  <td class="p-4 text-ink-700">{{ $t('privacy.processors.googleData') }}</td>
                 </tr>
               </tbody>
             </table>

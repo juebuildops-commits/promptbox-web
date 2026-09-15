@@ -15,6 +15,10 @@ const localePath = useLocalePath()
 
 const { locale } = useI18n()
 const user = useSupabaseUser()
+// 🔴 會員專區入口只在會員登入真的接上 Supabase 時出現（2026-09-15 創辦人裁示「先藏起來」）。
+//    登入沒開放時，這顆鈕唯一的目的地是一個登不進去的頁 —— 與 /enterprise 不進導覽同一個理由。
+//    ⚠️ 藏起來 ⇒ crawlLinks 爬不到 /account ⇒ nuxt.config.ts 的 nitro.prerender.routes 已明列三個語系。
+const { available: memberLoginAvailable } = useMemberLogin()
 
 // 🔴 `/demo` 只對 zh-TW 露出（webplan/模擬試用頁.md D5）：demo 本體的介面
 //    只有繁體中文，對英文使用者露出等於把人送進一個看不懂的頁。
@@ -99,8 +103,9 @@ const menuOpen = ref(false)
             <span class="icon icon--theme" aria-hidden="true" />
           </button>
 
-          <!-- 會員專區 / 登入入口（5a+） -->
+          <!-- 會員專區 / 登入入口（5a+，僅會員登入可用時） -->
           <NuxtLink
+            v-if="memberLoginAvailable"
             :to="localePath('/account')"
             class="px-3 py-1.5 rounded-sm text-ink-700 hover:bg-brand-surface hover:text-brand font-sans font-medium text-sm flex items-center gap-1.5 transition-colors max-md:hidden"
             :class="isActive('/account') ? 'bg-brand-surface text-brand font-bold' : ''"
@@ -162,6 +167,7 @@ const menuOpen = ref(false)
           {{ $t(item.key) }}
         </NuxtLink>
         <NuxtLink
+          v-if="memberLoginAvailable"
           :to="localePath('/account')"
           :class="isActive('/account') ? MOBILE_ACTIVE : MOBILE_IDLE"
           @click="menuOpen = false"
