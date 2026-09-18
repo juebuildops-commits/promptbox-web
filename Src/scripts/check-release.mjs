@@ -16,8 +16,8 @@
  *   1. i18n download.json (zh-TW, en, ja) 的 meta.description 與 hero.badge
  *   2. i18n changelog.json (zh-TW, en, ja) 的 meta.description 與 cta.body
  *   3. shared/downloads.ts（下載目標的唯一來源）：
- *      DOWNLOAD_VERSION ＝ 最新版號；win／win-zip／mac 三個 href 都含該版號；
- *      三個 sha256 都是 64 位十六進位且互不相同（擋「複製一組、忘了換校驗碼」）
+ *      DOWNLOAD_VERSION ＝ 最新版號；DOWNLOAD_PLATFORMS 每一組的 href 都含該版號；
+ *      每個 sha256 都是 64 位十六進位且互不相同（擋「複製一組、忘了換校驗碼」）
  *   4. app/、server/ 裡除了 shared/downloads.ts 之外，不得出現 `r2.dev`（擋網址又被抄成第二份）
  *
  * 🔴 本護欄驗不了「sha256 真的是那個檔案的雜湊」—— 那只能整顆下載回來實算，見 shared/downloads.ts 檔頭。
@@ -31,7 +31,9 @@ const SRC_ROOT = path.resolve(import.meta.dirname, '..')
 const CHANGELOG_DIR = path.join(SRC_ROOT, 'content', 'changelog')
 const LOCALES_DIR = path.join(SRC_ROOT, 'i18n', 'locales')
 const DOWNLOADS_TS = path.join(SRC_ROOT, 'shared', 'downloads.ts')
-const DOWNLOAD_PLATFORMS = ['win', 'win-zip', 'mac']
+// 🔴 'mac' 2026-09-18 起暫停（WL-006）：v3.10.0 沒有 mac build，downloads.ts 已拿掉那一組。
+//    重新上架時加回來 —— 否則 mac 的 href／sha256 沒有任何護欄在看。
+const DOWNLOAD_PLATFORMS = ['win', 'win-zip']
 const NO_R2_DIRS = ['app', 'server']
 
 const LOCALES = ['zh-TW', 'en', 'ja']
@@ -254,5 +256,5 @@ if (offences.length > 0) {
 console.log(`✔ check:release —— 全站最新版號一致：${latestVersion}`)
 console.log(`  - 3 語系 download.json 已同步`)
 console.log(`  - 3 語系 changelog.json 已同步`)
-console.log(`  - shared/downloads.ts 三組下載目標已指向 ${latestVersion}，校驗碼格式正確且互不相同`)
+console.log(`  - shared/downloads.ts ${DOWNLOAD_PLATFORMS.length} 組下載目標（${DOWNLOAD_PLATFORMS.join('／')}）已指向 ${latestVersion}，校驗碼格式正確且互不相同`)
 console.log(`  - app/、server/ 沒有第二份 R2 網址\n`)

@@ -55,11 +55,11 @@
       },
       "i2": {
         "title": "Encrypted at rest, keys held by the OS",
-        "body": "The whole database is page-encrypted with SQLCipher, with the key held by Windows DPAPI or the macOS Keychain. Secret cards add a second layer of scrypt + AES-256-GCM covering the card's content and its variable names and default values, and an AI tool only receives their contents after a human presses allow. The boundary belongs in the same breath: card names and descriptions are not covered by the card password — anyone who can open the app can read them, so avoid putting hints about a card's purpose into the title or the description. On ordinary cards with no password set, variable default values are stored as plaintext."
+        "body": "The whole database is encrypted with SQLite + ChaCha20, with the key held by Windows DPAPI or the macOS Keychain. Secret cards add a second layer of scrypt + AES-256-GCM covering the card's content and its variable names and default values, and an AI tool only receives their contents after a human presses allow. The boundary belongs in the same breath: card names and descriptions are not covered by the card password — anyone who can open the app can read them, so avoid putting hints about a card's purpose into the title or the description. On ordinary cards with no password set, variable default values are stored as plaintext."
       },
       "i3": {
         "title": "The data stays on each employee's own machine",
-        "body": "No server, no accounts, no tenancy. We do not operate any service that holds your prompts or your keys, so there is no \"our side\" that can leak them. The flip side is that backups and lost devices are your own IT process to handle."
+        "body": "No server, no accounts, no tenancy. We do not operate any service that holds your prompts or your keys, so there is no \"our side\" that can leak them. The flip side is that backups and lost devices are your own IT process to handle. When backing up, copy the whole folder (%APPDATA%\\EYChen\\Vault): vault.db and keystore.bin on their own cannot be decrypted. A restore is only confirmed to work under the same Windows account; whether it opens on a different machine has not been verified yet."
       },
       "i4": {
         "title": "No time bomb",

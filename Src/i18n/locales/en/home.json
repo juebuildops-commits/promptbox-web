@@ -2,13 +2,13 @@
   "home": {
     "meta": {
       "title": "PromptBox — free your mind, your own AI prompt vault",
-      "description": "PromptBox is a local-first prompt manager built for the AI era. SQLCipher encryption, variable templates, card chaining, MCP integration for your IDE — core features free forever."
+      "description": "PromptBox is a local-first prompt manager built for the AI era. SQLite + ChaCha20 encryption, variable templates, card chaining, MCP integration for your IDE — core features free forever."
     },
     "hero": {
       "titleLead": "Your private",
       "titleAccent": "AI prompt vault",
       "lead": "Turn every successful AI conversation into reusable, production-ready templates.",
-      "body": "Protected by dual-layer SQLCipher & AES-256 encryption. Your context stays on your machine—usable by any AI, accessible to no vendor.",
+      "body": "Protected by dual-layer encryption: SQLite + ChaCha20 and AES-256. Your context stays on your machine—usable by any AI, accessible to no vendor.",
       "imageAlt": "The PromptBox main window: folders and tags on the left, prompt cards on the right",
       "floatTag": "Local-first AI prompt manager"
     },
@@ -16,7 +16,7 @@
       "aria": "Feature summary",
       "local": "Stored locally",
       "localSub": " · Works offline",
-      "encryption": "SQLCipher encryption at rest",
+      "encryption": "SQLite + ChaCha20 encryption at rest",
       "free": "Core features free forever",
       "platforms": "Windows · macOS (Apple Silicon)"
     },
@@ -25,7 +25,7 @@
       "subtitle": "Your prompts belong to you",
       "item1": {
         "title": "Two layers of encryption",
-        "body": "The whole database is encrypted at rest with SQLCipher; secret cards get a second layer of AES-256-GCM on top. Keys are held by the OS keychain (Windows DPAPI / macOS Keychain)."
+        "body": "The whole database is encrypted at rest with SQLite + ChaCha20; secret cards get a second layer of AES-256-GCM on top. Keys are held by the OS keychain (Windows DPAPI / macOS Keychain)."
       },
       "item2": {
         "title": "Released only with your consent",
@@ -59,7 +59,7 @@
         "title": "Secret cards: AI can't take what you don't give",
         "imageAria": "PromptBox secret cards and their locked state",
         "imageAlt": "A PromptBox secret card: its locked state and the visible-to-AI toggle",
-        "b1": "Whole-database encryption at rest (SQLCipher + OS keychain)",
+        "b1": "Whole-database encryption at rest (SQLite + ChaCha20 + OS keychain)",
         "b2": "AES-256-GCM encryption per card",
         "b3": "\"Hide from AI\" in one click: with the eye off, the AI does not even know the card exists"
       },
@@ -91,7 +91,7 @@
         "f3": "Of those, up to {secretCards} secret cards",
         "f4": "Of those, up to {chainCards} cards in a chain folder",
         "f5": "Up to {mcpTokens} named MCP tokens",
-        "f6": "Whole-database SQLCipher encryption at rest: free forever, never capped",
+        "f6": "Whole-database SQLite + ChaCha20 encryption at rest: free forever, never capped",
         "f7": "Variable templates and substitution, complete and uncapped",
         "f8": "Unlimited folders, tags, global search, light and dark themes"
       },
@@ -135,11 +135,11 @@
     "faq": {
       "title": "FAQ",
       "q1": "Are my prompts uploaded to the cloud?",
-      "a1": "Never. Since v3.3.1 PromptBox is 100% offline (zero outbound). Every update check and telemetry hook has been removed from the app, and fonts ship with the binary instead of loading from a CDN. All data is encrypted at rest with SQLCipher (AES-256) on your own disk, with the key held by your operating system's secure keychain (Keychain / DPAPI). No third party can reach it. The one networked component is the built-in MCP server: it listens on 127.0.0.1 only, so the IDEs on your own machine can connect to it, and it never reaches outward.",
+      "a1": "Never. Since v3.3.1 PromptBox is 100% offline (zero outbound). Every update check and telemetry hook has been removed from the app, and fonts ship with the binary instead of loading from a CDN. All data is encrypted at rest with SQLite + ChaCha20 on your own disk, with the key held by your operating system's secure keychain (Keychain / DPAPI). No third party can reach it. The one networked component is the built-in MCP server: it listens on 127.0.0.1 only, so the IDEs on your own machine can connect to it, and it never reaches outward.",
       "q2": "Are secret cards safe? Can the AI read them?",
       "a2": "Secret cards use per-card scrypt + AES-256-GCM encryption and need your own password to unlock in the GUI. Password protection and visibility to AI are two independent axes: when a card is visible to AI, the AI sees only its name, description and ID; the content is released only after you hit allow in the consent dialog and type your password — every single time. You can tick “don’t ask again for 10 minutes”, which stops repeat prompts for that card in that window (held in memory only, never the password, and dropped instantly on lock screen or manual revocation). The boundary worth stating plainly: the password protects the card's content and its variables — content, variable names and variable default values are all encrypted under that one password. What it does not cover is the card's name and description: anyone who can open the app can read them, so avoid putting hints about the card's purpose into the title or the description. On ordinary cards with no password set, variable default values are stored as plaintext — a permanent boundary, not a to-do: no password means no key.",
       "q3": "Is installing safe? Could I lose data?",
-      "a3": "Installers are published directly from this site, each with a SHA-256 checksum so you can verify the file’s integrity. We have not bought a code signing certificate yet, so Windows may show an “unrecognised app” prompt, and the macOS build is not yet notarized by Apple, so macOS blocks it the first time you open it — the download page and the manual explain why and how to check for yourself. The encrypted SQLCipher database is created on first launch, with the key held by your operating system’s keychain. The app never performs a silent background upgrade: new versions are announced by email and installed manually over the old one. The install path doesn’t change and your data stays exactly where it is (on macOS this has not been tested on a Mac yet).",
+      "a3": "Installers are published directly from this site, each with a SHA-256 checksum so you can verify the file’s integrity. We have not bought a code signing certificate yet, so Windows may show an “unrecognised app” prompt, and the macOS build is not yet notarized by Apple, so macOS blocks it the first time you open it — the download page and the manual explain why and how to check for yourself. The encrypted database (SQLite + ChaCha20) is created on first launch, with the key held by your operating system’s keychain. The app never performs a silent background upgrade: new versions are announced by email and installed manually over the old one. The install path doesn’t change and your data stays exactly where it is (on macOS this has not been tested on a Mac yet).",
       "q4": "Which platforms are supported?",
       "a4": "Windows 10 / 11 (64-bit, with both an installer and a portable build), and Apple Silicon Macs (M1 and later) on macOS 12 Monterey or newer — Intel Macs are not supported yet. The macOS build is not notarized by Apple, so macOS blocks it the first time you open it; the download page and the manual explain this. The built-in MCP server connects locally to Cursor, VS Code, Claude Desktop, Windsurf, Claude Code, Cline and other mainstream AI tools.",
       "q5": "Is it really free? What are the limits?",

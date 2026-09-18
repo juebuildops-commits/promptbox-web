@@ -2,10 +2,10 @@
   "download": {
     "meta": {
       "title": "下載 PromptBox — Windows / macOS",
-      "description": "免費下載 PromptBox v3.9.4，支援 Windows 10 / 11 與 macOS 12 以上（Apple Silicon）。提供 Windows 安裝版、免安裝便攜版與 macOS 映像檔，本地加密儲存、100% 不連網。"
+      "description": "免費下載 PromptBox v3.10.0，支援 Windows 10 / 11 與 macOS 12 以上（Apple Silicon）。提供 Windows 安裝版、免安裝便攜版與 macOS 映像檔，本地加密儲存、100% 不連網。"
     },
     "hero": {
-      "badge": "✨ 最新版本 v3.9.4",
+      "badge": "✨ 最新版本 v3.10.0",
       "titleLead": "下載",
       "lead": "免費開始使用。安裝檔由官網直接發布並附 SHA-256 校驗碼，本地安全加密、100% 完全不連網。"
     },
@@ -44,6 +44,7 @@
         "f2": "僅支援 Apple Silicon（arm64），Intel Mac 無法執行",
         "f3": "金鑰由 macOS Keychain 保管",
         "cta": "下載 macOS 版 (Apple Silicon)",
+        "ctaPaused": "macOS 版準備中",
         "soonBadge": "即將推出",
         "ctaSoon": "macOS 版釋出時通知我",
         "soonNote": "macOS 版正在準備中。留下 email，釋出當天第一時間通知你。"
@@ -67,7 +68,7 @@
       },
       "s2": {
         "title": "首次啟動",
-        "body": "PromptBox 自動建立 SQLCipher 加密資料庫並載入內建範例教學卡片，安全摸索不怕出錯。"
+        "body": "PromptBox 自動建立 SQLite + ChaCha20 加密資料庫並載入內建範例教學卡片，安全摸索不怕出錯。"
       },
       "s3": {
         "title": "複製第一條 Prompt",
@@ -83,7 +84,7 @@
       },
       "n2": {
         "title": "本機資料加密",
-        "body": "首次啟動即建立 SQLCipher 頁級加密資料庫，金鑰由作業系統安全金鑰庫（Windows DPAPI / macOS Keychain）保護，不以明文存盤。"
+        "body": "首次啟動即建立 SQLite + ChaCha20 整庫加密資料庫，金鑰由作業系統安全金鑰庫（Windows DPAPI / macOS Keychain）保護，不以明文存盤。"
       },
       "n4": {
         "title": "Windows 可能顯示「無法辨識的應用程式」",

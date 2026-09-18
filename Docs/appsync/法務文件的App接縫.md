@@ -72,6 +72,11 @@ MIT / BSD / Apache-2.0 幾乎都要求**散布時保留著作權聲明與授權�
 
 ### 2.3 🔴 SQLCipher 那條待辦：實查結果與 BRD 的擔心不同
 
+> 📌 **2026-09-18 補**：App 實際使用的加密方案是 SQLite3MultipleCiphers 的 **`chacha20`**，**不是 SQLCipher 方案**
+> （App `electron/platform/dbCipher.cjs` 明設；以 `sqlcipher` 方案重開同一檔會失敗。創辦人同日查核確認，官網全站已改口，見 [WL-006 §2-5](../Wishlist/006.WL_mac暫停下載與Windows換新版.md)）。
+> ⇒「擔心的方向可能錯了」多一個佐證。🔴 **但本節仍未結案**：血緣問的是**編進去的整個函式庫**有沒有引用 Zetetic 的程式碼，
+> 而不是「用了哪一個方案」—— SQLCipher 相容的實作照樣在 binary 裡。T2 照原流程查。
+
 [BRD-02 §9](../refer/BRD/BRD-02_商業模式與定價.md) 有一條躺著沒動的待辦：
 「依賴授權盤點（**特別是 SQLCipher 的商用條款**）」。
 

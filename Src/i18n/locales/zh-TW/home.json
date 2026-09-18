@@ -2,13 +2,13 @@
   "home": {
     "meta": {
       "title": "PromptBox — 解放腦力，你的專屬 AI 提示詞大腦",
-      "description": "PromptBox 是專為 AI 時代打造的本地端提示詞管理器。SQLCipher 加密、變數樣板、卡片串聯、MCP IDE 整合，核心功能永久免費。"
+      "description": "PromptBox 是專為 AI 時代打造的本地端提示詞管理器。SQLite + ChaCha20 加密、變數樣板、卡片串聯、MCP IDE 整合，核心功能永久免費。"
     },
     "hero": {
       "titleLead": "專屬你的",
       "titleAccent": "AI 指令保險庫",
       "lead": "將每一次成功的 AI 溝通，轉化為隨時可用的專屬樣板。",
-      "body": "採用 SQLCipher 與 AES-256 雙層加密技術。你的 Context 存在你自己的電腦，任何廠商都拿不走。",
+      "body": "採用 SQLite + ChaCha20 與 AES-256 雙層加密技術。你的 Context 存在你自己的電腦，任何廠商都拿不走。",
       "imageAlt": "PromptBox 應用程式主畫面：左側為資料夾與標籤，右側為提示詞卡片列表",
       "floatTag": "本地端 AI ・ Prompt 管理工具"
     },
@@ -16,7 +16,7 @@
       "aria": "產品特色摘要",
       "local": "本地儲存",
       "localSub": " ・ 離線可用",
-      "encryption": "SQLCipher 靜態加密",
+      "encryption": "SQLite + ChaCha20 靜態加密",
       "free": "核心功能永久免費",
       "platforms": "Windows・macOS（Apple Silicon）"
     },
@@ -25,7 +25,7 @@
       "subtitle": "你的 Prompt，只屬於你",
       "item1": {
         "title": "雙層加密",
-        "body": "整庫 SQLCipher 靜態加密，機密卡片再加一層 AES-256-GCM，金鑰交由 OS Keychain（Windows DPAPI / macOS Keychain）保管。"
+        "body": "整庫 SQLite + ChaCha20 靜態加密，機密卡片再加一層 AES-256-GCM，金鑰交由 OS Keychain（Windows DPAPI / macOS Keychain）保管。"
       },
       "item2": {
         "title": "當次授權釋放",
@@ -59,7 +59,7 @@
         "title": "機密卡片，AI 拿不走你的秘密",
         "imageAria": "PromptBox 機密卡片與鎖定狀態畫面",
         "imageAlt": "PromptBox 的機密卡片畫面：卡片顯示鎖定狀態與對 AI 的可見性切換",
-        "b1": "資料庫整庫靜態加密（SQLCipher + OS Keychain）",
+        "b1": "資料庫整庫靜態加密（SQLite + ChaCha20 + OS Keychain）",
         "b2": "AES-256-GCM 卡片級加密",
         "b3": "一鍵「對 AI 隱藏」：關掉眼睛後，AI 連這張卡存在都不知道"
       },
@@ -91,7 +91,7 @@
         "f3": "其中機密卡片最多 {secretCards} 張",
         "f4": "其中串聯資料夾最多 {chainCards} 張",
         "f5": "MCP 具名 Token 最多 {mcpTokens} 組",
-        "f6": "全庫 SQLCipher 靜態加密：永久免費、不設限",
+        "f6": "全庫 SQLite + ChaCha20 靜態加密：永久免費、不設限",
         "f7": "變數樣板與變數替換，完整不限量",
         "f8": "資料夾無限、標籤、全局搜尋、深淺主題"
       },
@@ -135,11 +135,11 @@
     "faq": {
       "title": "FAQ",
       "q1": "我的 Prompt 會被上傳到雲端嗎？",
-      "a1": "完全不會。PromptBox 自 v3.3.1 起達成 100% 完全不連網（Zero Outbound）。App 內移除所有更新檢查與遙測機制，字型隨本機打包不走 CDN。所有資料均以 SQLCipher（AES-256）靜態加密儲存於本機硬碟，金鑰由作業系統安全保險庫（Keychain / DPAPI）保護，任何第三方廠商都無法取得。唯一的網路元件是內建的 MCP 伺服器：它只監聽 127.0.0.1，供你自己電腦上的 IDE 連進來，不對外連線。",
+      "a1": "完全不會。PromptBox 自 v3.3.1 起達成 100% 完全不連網（Zero Outbound）。App 內移除所有更新檢查與遙測機制，字型隨本機打包不走 CDN。所有資料均以 SQLite + ChaCha20 靜態加密儲存於本機硬碟，金鑰由作業系統安全保險庫（Keychain / DPAPI）保護，任何第三方廠商都無法取得。唯一的網路元件是內建的 MCP 伺服器：它只監聽 127.0.0.1，供你自己電腦上的 IDE 連進來，不對外連線。",
       "q2": "機密卡片安全嗎？AI 會讀到嗎？",
       "a2": "機密卡片採用卡片級 scrypt + AES-256-GCM 加密，GUI 需自訂密碼解鎖。「密碼保護」與「對 AI 可見」是兩條獨立的軸：卡片對 AI 可見時，AI 只會看到卡片的名稱、說明與 ID；內容必須由你在授權窗按下允許並輸入密碼才會釋放，一次都不能少。授權時可勾選「10 分鐘內不再問我」，該期間內同一張卡不再重複詢問（純記憶體快取，不快取密碼，鎖屏或手動撤銷立即失效）。要說清楚的邊界：密碼保護的是卡片內容與變數 —— 卡片內容、變數的名稱與預設值都用同一組密碼加密；不受保護的是卡片的名稱與說明，任何能打開 App 的人都看得到，命名時請避免把用途線索寫進標題與說明。沒有設密碼的一般卡片，變數的預設值以明文儲存，那是永久的邊界 —— 沒有密碼就沒有金鑰。",
       "q3": "安裝安全嗎？資料會不會弄丟？",
-      "a3": "安裝檔由官網直接發布，並附 SHA-256 校驗碼供您自行核對檔案完整性。目前尚未購買程式碼簽章憑證，Windows 可能顯示「無法辨識的應用程式」提示；macOS 版也還沒有經過 Apple 公證，第一次開啟會被系統擋下。原因與查證方式見下載頁與操作手冊。首次啟動即建立 SQLCipher 加密資料庫，金鑰由作業系統金鑰庫保管。App 不做任何無聲背景升級，新版本以 email 通知或至官網手動下載安裝，安裝路徑不變且資料原地完整保留（macOS 版的這一點還沒在 Mac 上實測過）。",
+      "a3": "安裝檔由官網直接發布，並附 SHA-256 校驗碼供您自行核對檔案完整性。目前尚未購買程式碼簽章憑證，Windows 可能顯示「無法辨識的應用程式」提示；macOS 版也還沒有經過 Apple 公證，第一次開啟會被系統擋下。原因與查證方式見下載頁與操作手冊。首次啟動即建立 SQLite + ChaCha20 加密資料庫，金鑰由作業系統金鑰庫保管。App 不做任何無聲背景升級，新版本以 email 通知或至官網手動下載安裝，安裝路徑不變且資料原地完整保留（macOS 版的這一點還沒在 Mac 上實測過）。",
       "q4": "支援哪些平台？",
       "a4": "目前支援 Windows 10 / 11（64 位元，提供安裝版與免安裝便攜版），以及 macOS 12（Monterey）以上的 Apple Silicon Mac（M1 以後的晶片；Intel Mac 暫不支援）。macOS 版沒有經過 Apple 公證，第一次開啟會被系統擋下，下載頁與操作手冊有說明。內建 MCP 伺服器支援 Cursor、VS Code、Claude Desktop、Windsurf、Claude Code、Cline 等主流 AI 工具本機安全連線。",
       "q5": "真的免費嗎？有什麼限制？",

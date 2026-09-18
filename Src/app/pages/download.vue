@@ -14,16 +14,16 @@ const { available: memberLoginAvailable } = useMemberLogin()
  */
 const WIN_EXE = DOWNLOADS['win']
 const WIN_ZIP = DOWNLOADS['win-zip']
-const MAC_DMG = DOWNLOADS['mac']
 
 /**
- * macOS（Apple Silicon）build 自 2026-09-14 起提供（v3.9.4 `.dmg`），2026-09-15 創辦人裁示維持上架供測試人員跑完整流程。
- * 🔴 它**沒有 Apple 開發者簽章、沒有公證**（前置鏈 P4 未啟動）⇒ 第一次開啟會被 Gatekeeper 擋下，
- *    這件事由 `notes.n5` 與手冊第 9 節揭露；mac 上的資料延續（`app.setName` 對 Keychain 的保護）也還沒實機驗證過。
- * 設回 `false` ⇒ mac 訪客改導到訂閱表單並顯示「即將推出」（下載不到東西的按鈕，比誠實說做不到傷害大）。
- * ⚠️ 設回 false 時，首頁 CTA、`home.trust.platforms`／`faq.a3`／`faq.a4`、下載頁 meta 與 `notes.n5` 要一起改口。
+ * macOS（Apple Silicon）build 自 2026-09-14 起提供（v3.9.4 `.dmg`）。
+ * 🔴 **2026-09-18 起暫停**（WL-006）：官網換上 v3.10.0，而 v3.10.0 還沒有 mac build；v3.9.4 的 dmg 停在已過期的 Electron 40。
+ *    `shared/downloads.ts` 已拿掉 `mac` 那一組 ⇒ 本頁 mac 卡的按鈕是停用鈕、校驗碼區沒有 dmg 那一列，`/dl/mac` 自動導回本頁。
+ * 設成 `false` ⇒ mac 訪客的 hero 改導到訂閱表單並顯示「即將推出」、`notes.n5` 隱藏（下載不到東西的按鈕，比誠實說做不到傷害大）。
+ * ⚠️ 創辦人裁示「簡單做」：首頁 CTA、`home.trust.platforms`／`faq.a3`／`faq.a4`、下載頁 meta 與 mac 卡文案**暫停期間刻意不改**，
+ *    清單在 WL-006 §2-1。mac 重新上架時照 WL-006 §2-3 一次收回來，並把最低需求改成 macOS 13。
  */
-const MAC_READY: boolean = true
+const MAC_READY: boolean = false
 
 /**
  * 窄視窗不給下載鈕（2026-09-10 創辦人裁示）。
@@ -50,7 +50,6 @@ const MAC_READY: boolean = true
 const macSoon = computed(() => !MAC_READY && os.value === 'mac')
 const heroHref = computed(() => {
   if (macSoon.value) return '#subscribe'
-  if (os.value === 'mac') return MAC_DMG.href
   return WIN_EXE.href
 })
 const heroLabel = computed(() => {
@@ -267,29 +266,19 @@ useHead({
           </div>
 
           <div class="pt-8 flex flex-col items-center gap-3">
-            <!-- ≥1024px：macOS 下載連結 -->
-            <a
-              class="hidden lg:inline-flex items-center justify-center gap-2 w-full py-4 px-6 rounded-md bg-brand hover:bg-brand-hover text-white font-sans font-bold text-base transition shadow-btn"
-              :href="MAC_DMG.href"
-            >
-              <span class="icon icon--apple" />
-              <span>{{ $t('download.platforms.mac.cta') }}</span>
-              <span class="font-normal text-white/75">({{ MAC_DMG.size }})</span>
-            </a>
-
             <!--
-              <1024px：換成停用鈕 + 一句為什麼。
+              2026-09-18 起暫停（WL-006）：所有寬度都是一顆真的停用鈕，DOM 裡沒有任何 dmg 網址。
+              不用 CSS `pointer-events: none` 擋 —— 理由同 script 裡窄視窗那一段（鍵盤照樣按得下去、網址留在原始碼裡）。
+              重新上架時換回 ≥1024px 的 <a> ＋ <1024px 的 desktopOnly 停用鈕（見 git 歷史）。
             -->
             <button
               type="button"
               disabled
-              class="inline-flex lg:hidden items-center justify-center gap-2 w-full py-4 px-6 rounded-md bg-surface-muted border border-line-300 text-ink-500 font-sans font-bold text-base cursor-not-allowed"
+              class="inline-flex items-center justify-center gap-2 w-full py-4 px-6 rounded-md bg-surface-muted border border-line-300 text-ink-500 font-sans font-bold text-base cursor-not-allowed"
             >
               <span class="icon icon--apple" aria-hidden="true" />
-              <span>{{ $t('download.desktopOnly.cta') }}</span>
-              <span class="font-normal">({{ MAC_DMG.size }})</span>
+              <span>{{ $t('download.platforms.mac.ctaPaused') }}</span>
             </button>
-            <span class="lg:hidden text-sm text-ink-500 text-center">{{ $t('download.desktopOnly.cardNote') }}</span>
           </div>
         </div>
 
@@ -307,7 +296,6 @@ useHead({
           <div
             v-for="f in [
               { label: $t('download.checksum.exeLabel'), hash: WIN_EXE.sha256 },
-              { label: $t('download.checksum.dmgLabel'), hash: MAC_DMG.sha256 },
               { label: $t('download.checksum.zipLabel'), hash: WIN_ZIP.sha256 },
             ]"
             :key="f.hash"
@@ -321,12 +309,10 @@ useHead({
         <div class="flex flex-col gap-2 text-xs text-ink-500 border-t border-line-200 pt-4">
           <p>
             <span class="font-sans font-bold text-ink-700">{{ $t('download.checksum.verifyWin') }}</span>
-            <code class="select-all ml-2">Get-FileHash .\{{ downloadFilename(WIN_EXE) }} -Algorithm SHA256</code>
+            <!-- 檔名加引號：v3.10.0 起安裝檔名含空白（`PromptBox Setup 3.10.0.exe`），不加引號 PowerShell 會拆成三個參數 -->
+            <code class="select-all ml-2">Get-FileHash ".\{{ downloadFilename(WIN_EXE) }}" -Algorithm SHA256</code>
           </p>
-          <p>
-            <span class="font-sans font-bold text-ink-700">{{ $t('download.checksum.verifyUnix') }}</span>
-            <code class="select-all ml-2">shasum -a 256 {{ downloadFilename(MAC_DMG) }}</code>
-          </p>
+          <!-- macOS / Linux 的 shasum 範例隨 mac 暫停一起拿掉（WL-006），重新上架時加回 -->
         </div>
       </div>
 

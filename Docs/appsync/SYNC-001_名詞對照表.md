@@ -111,7 +111,7 @@
 | **userData 路徑** | App 的資料目錄；DB、設定、Token 全在裡面 | `{appData}/PromptBox`（**推導**）→ **`{appData}/EYChen/Vault`（寫死）** | [凍結清單 A-2](身分字串凍結清單.md) | ✅ | ✅ |
 | **`productName`** | 安裝目錄名 + 捷徑顯示名 | 🔴 **2026-08-31 起不再是身分字串**，隨品牌走。<br>⚠️ **但要等 userData 路徑真的寫死才自由**（v3.7.2 未出貨），在那之前照舊一個字都不能動 | [App 事實依據 §一 B5](App事實依據.md) | ✅ | ✅ |
 | **`app.setName()`** | 🔴 **唯一會出現在使用者眼前的身分字串** —— macOS 鑰匙圈對話框顯示的名字 | 無 → **未拍板**（`Vault` vs `EYChen Vault`），**必須在第一個 mac build 之前決定** | [官網側回覆 §3.2](官網側回覆.md) | ⚠️ | ⚠️ |
-| **加密 DB 檔名** | SQLCipher 資料庫的檔名 | `promptbox.db` → **`vault.db`** | [凍結清單 A-4](身分字串凍結清單.md) | ✅ | ✅ |
+| **加密 DB 檔名** | 加密資料庫（SQLite + ChaCha20）的檔名 | `promptbox.db` → **`vault.db`** | [凍結清單 A-4](身分字串凍結清單.md) | ✅ | ✅ |
 | **v2 明文備份** | v2 → v3 升級時留下的明文備份檔 | `promptbox.db.plain.bak` → **`vault.db.plain.bak`** | [凍結清單 A-4](身分字串凍結清單.md) | ✅ | ✅ |
 | **MCP server name** | MCP 伺服器對外宣告的名字 | `PromptBox` → **`vault`** | [凍結清單 A-5](身分字串凍結清單.md) | ✅ | ✅ |
 | **MCP 設定鍵名** | 使用者 IDE 設定檔裡的 server 鍵 | App 現值 `mcpServers.PromptBox`<br>⚠️ **官網文件寫的是 `mcpServers.promptbox`（小寫），本來就對不上**<br>→ 凍結 **`mcpServers.vault`**（改的時候一併修掉大小寫） | [凍結清單 A-5](身分字串凍結清單.md) | ✅ | ⚠️ |
@@ -161,8 +161,8 @@
 | **entitlement 接縫** | 判定 tier 與配額的那組函式 | 🔴 [ADR-008 §七](ADR-008_授權憑證格式與離線驗證契約.md) 寫的 `isPro()` / `isEntitled()` **不存在**。<br>實際是 `getTier` / `getLimits` / `getFeatures` @ `electron/platform/limits.cjs` | App repo `electron/platform/limits.cjs` | ✅ | ⚠️ |
 | **五個攔截點** | v3.4.0 在 main process 設的配額硬閘門 | `quota.cjs`；renderer **永不可信**（G3 gate 兩層） | [BRD-03 §1 G3](../refer/BRD/BRD-03_授權與Free-Pro邊界.md) | ✅ | ✅ |
 | **「無上限」** | Pro 解除配額後的表示法 | 🔴 定死為 `null`；**禁止** `Infinity` / `-1` / `0` | [App 側回覆 §四 X1](App側回覆.md) | ✅ | ✅ |
-| **`safeStorage`** | Electron 的 OS 金鑰庫封裝，用來保護 DB 金鑰 | ⚠️ 實際是**混合式**：外面包一層自管檔 `keystore.bin`，**不是二選一**。Windows 走 DPAPI（**不綁名字**），macOS 走 Keychain（綁 `getName()`） | [App 側回覆 §3.1](App側回覆.md) | ✅ | ✅ |
-| **`settings` 表** | SQLCipher DB 裡的 KV 表；授權憑證存這裡 | 鍵 `license.entitlement`。**不用 OS Keychain**（憑證不是秘密，是帶簽章的公開聲明） | [ADR-008 §六](ADR-008_授權憑證格式與離線驗證契約.md) | ✅ | ✅ |
+| **`safeStorage`** | Electron 的 OS 金鑰庫封裝，用來保護 DB 金鑰 | ⚠️ 實際是**混合式**：外面包一層自管檔 `keystore.bin`，**不是二選一**。Windows 走 DPAPI（**不綁名字**；但不只綁帳戶，還依賴 userData 裡的 `Local State` —— 只帶 `keystore.bin` 解不開，2026-09-18 實測），macOS 走 Keychain（綁 `getName()`） | [App 側回覆 §3.1](App側回覆.md)、[App 側回覆 3 §三](App側回覆-3.md) | ✅ | ✅ |
+| **`settings` 表** | 加密 DB 裡的 KV 表；授權憑證存這裡 | 鍵 `license.entitlement`。**不用 OS Keychain**（憑證不是秘密，是帶簽章的公開聲明） | [ADR-008 §六](ADR-008_授權憑證格式與離線驗證契約.md) | ✅ | ✅ |
 | **`entitlements_issued`** | 「我簽過什麼」的帳本，**只增不改** | 🌐 官網 Supabase 表 | [金流接縫 §5](官網金流與授權發放接縫.md) | ➖ | ✅ |
 | **`update_rights`** | 更新權到期日，**這張表可以改**（退款、續訂都改這裡） | 🌐 官網 Supabase 表；主鍵是 **email 不是 user_id** | [金流接縫 §5](官網金流與授權發放接縫.md) | ➖ | ✅ |
 | **冪等表** | 擋 webhook 重送用的 `webhook_events` | 🌐 冪等鍵用 Polar 的 **event id**，不是 order id | [金流接縫 §4](官網金流與授權發放接縫.md) | ➖ | ✅ |

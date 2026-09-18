@@ -2,10 +2,10 @@
   "download": {
     "meta": {
       "title": "PromptBox をダウンロード — Windows / macOS",
-      "description": "PromptBox v3.9.4 を無料ダウンロード。Windows 10 / 11 と macOS 12 以降（Apple Silicon）に対応。Windows のインストーラー版・ポータブル版と macOS のディスクイメージをご用意。ローカルで暗号化保存、100% 完全オフライン。"
+      "description": "PromptBox v3.10.0 を無料ダウンロード。Windows 10 / 11 と macOS 12 以降（Apple Silicon）に対応。Windows のインストーラー版・ポータブル版と macOS のディスクイメージをご用意。ローカルで暗号化保存、100% 完全オフライン。"
     },
     "hero": {
-      "badge": "✨ 最新バージョン v3.9.4",
+      "badge": "✨ 最新バージョン v3.10.0",
       "titleLead": "ダウンロード",
       "lead": "無料ではじめられます。インストーラーは公式サイトから直接配布し、SHA-256 チェックサムを添えています。ローカルで安全に暗号化、100% 完全オフラインです。"
     },
@@ -44,6 +44,7 @@
         "f2": "Apple Silicon（arm64）専用 —— Intel Mac では動作しません",
         "f3": "鍵は macOS Keychain が保管します",
         "cta": "macOS 版をダウンロード (Apple Silicon)",
+        "ctaPaused": "macOS 版は準備中です",
         "soonBadge": "近日公開",
         "ctaSoon": "macOS 版が公開されたら通知する",
         "soonNote": "macOS 版は準備中です。メールアドレスをお預けいただければ、公開当日にいちはやくお知らせします。"
@@ -67,7 +68,7 @@
       },
       "s2": {
         "title": "はじめての起動",
-        "body": "PromptBox が SQLCipher の暗号化データベースを自動で作成し、チュートリアル用のサンプルカードを読み込みます。壊す心配なく試せます。"
+        "body": "PromptBox が暗号化データベース（SQLite + ChaCha20）を自動で作成し、チュートリアル用のサンプルカードを読み込みます。壊す心配なく試せます。"
       },
       "s3": {
         "title": "最初のプロンプトをコピー",
@@ -83,7 +84,7 @@
       },
       "n2": {
         "title": "ローカルデータの暗号化",
-        "body": "初回起動時に、SQLCipher のページ単位で暗号化されたデータベースを作成します。鍵は OS のセキュアなキーストア（Windows DPAPI / macOS Keychain）が保護し、平文でディスクに書き出されることはありません。"
+        "body": "初回起動時に、データベース全体を SQLite + ChaCha20 で暗号化して作成します。鍵は OS のセキュアなキーストア（Windows DPAPI / macOS Keychain）が保護し、平文でディスクに書き出されることはありません。"
       },
       "n4": {
         "title": "Windows が「認識されないアプリ」と表示することがあります",

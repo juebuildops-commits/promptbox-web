@@ -2,7 +2,7 @@
   "changelog": {
     "meta": {
       "title": "Changelog — PromptBox release history",
-      "description": "The PromptBox changelog: every feature and every release from v1.0 through v3.9.4."
+      "description": "The PromptBox changelog: every feature and every release from v1.0 through v3.10.0."
     },
     "hero": {
       "badge": "📜 Release history and feature updates",
@@ -16,7 +16,7 @@
     "legacyHeading": "Earlier releases",
     "cta": {
       "title": "Get the latest release",
-      "body": "v3.9.4 is out now — fast, secure, and 100% offline prompt management."
+      "body": "v3.10.0 is out now — fast, secure, and 100% offline prompt management."
     }
   }
 }

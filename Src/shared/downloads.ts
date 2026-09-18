@@ -16,13 +16,15 @@
  * 🔴 `href` 與 `sha256` **必須成對更新** —— 校驗碼是印在頁面上的對外承諾
  *    （`download.checksum.*`），對不上比沒有更糟。
  *    2026-09-10（v3.9.2）起，每一組都是**整顆下載回來實算 SHA-256** 與下面的常數比對過的；
- *    現行這組是 2026-09-12（v3.9.4），由創辦人實算比對。
+ *    現行這組是 2026-09-18（v3.10.0）：由 Claude 整顆下載 R2 上的檔案實算，並與 App repo 的建置產物交叉比對；
+ *    ⏳ **尚待創辦人自己實算比對**（WL-006）。
  *    ⚠️ 不要退回只比 ETag：ETag 是 MD5，與頁面上印的 SHA-256 是**兩種雜湊**，
  *    ETag 相符證明得了「線上檔案 = 本機產物」，證明不了「印出去的校驗碼是對的」。
  *
  * 🔴 檔名與路徑**推導不出來，只能照建置產物逐字抄**：
  *    R2 路徑自 v3.9.2 起多一層版本資料夾（`/V3.9.2/`），而檔案的命名規則還不一致
- *    （`PromptBox-Setup-3.9.2.exe` 對 `PromptBox-3.9.2-win.zip`；v3.7.1 時的 zip 又叫 `promptbox-v3.7.1.zip`）。
+ *    （`PromptBox-Setup-3.9.2.exe` 對 `PromptBox-3.9.2-win.zip`；v3.7.1 時的 zip 又叫 `promptbox-v3.7.1.zip`；
+ *    v3.10.0 的 exe 變成**含空白**的 `PromptBox Setup 3.10.0.exe` —— App 沒設 `nsis.artifactName`，網址裡要寫 `%20`）。
  *    ⇒ ⛔ 不要為了「乾淨」用 `DOWNLOAD_VERSION` 組字串 —— 那會讓下一個人只改版號、而 `sha256` 停在舊值，
  *    正是這條紅線要擋的事。`DOWNLOAD_VERSION` 只給畫面顯示，`check:release` 會檢查三個 `href` 都含這個版號。
  *
@@ -39,28 +41,34 @@ export interface DownloadTarget {
 }
 
 /** 目前發佈的版號（不含 `v`）。只用於顯示，不得拿來組 `href`。 */
-export const DOWNLOAD_VERSION = '3.9.4'
+export const DOWNLOAD_VERSION = '3.10.0'
 
-/** 鍵名就是 `/dl/[platform]` 的路徑參數。 */
+/**
+ * 鍵名就是 `/dl/[platform]` 的路徑參數。
+ *
+ * 🔴 **`mac` 2026-09-18 起暫停**（WL-006）：v3.10.0 沒有 mac build，而 v3.9.4 的 dmg 停在已過期的 Electron 40。
+ *    拿掉這一組 ⇒ `/dl/mac` 自動導回 `/download`；下載頁的 mac 卡改停用鈕、會員專區拿掉 mac 卡、`check:release` 不再要求 `mac`。
+ *    重新上架時三處一起加回（WL-006 §2-3）。舊的 href／sha256 在 git 歷史裡。
+ */
 export const DOWNLOADS = {
   'win': {
-    href: `${R2}/V3.9.4/PromptBox-Setup-3.9.4.exe`,
-    size: '116.6 MB',
-    sha256: 'beaf83fd32b8520c8ea5f5017730d23e5f34f6453d473d22355a6f99c096b2b1',
+    href: `${R2}/V3.10.0/PromptBox%20Setup%203.10.0.exe`,
+    size: '134.6 MB',
+    sha256: 'cf0e80a59240500d241855062e5814c9bb6fc0cfcf488dca681c1f60fc9939d4',
   },
   'win-zip': {
-    href: `${R2}/V3.9.4/PromptBox-3.9.4-win.zip`,
-    size: '160.7 MB',
-    sha256: 'a12ba94ff8499672c42671bfcde2aaa5b0dac87113bf8849a1dfd86fe2d23ede',
-  },
-  'mac': {
-    href: `${R2}/V3.9.4/PromptBox-3.9.4-arm64.dmg`,
-    size: '126.8 MB',
-    sha256: '04a44b63095d05c1052c1934089f83b5e04feba04f97875fcb554c62d7aa1a86',
+    href: `${R2}/V3.10.0/PromptBox-3.10.0-win.zip`,
+    size: '178.4 MB',
+    sha256: 'fabfc2e7d53647e016dbc5c0a4b3614c51c37cfdbc66c44ebd70207539f1a269',
   },
 } as const satisfies Record<string, DownloadTarget>
 
 export type DownloadPlatform = keyof typeof DOWNLOADS
 
-/** 檔名取自 `href` 的最後一段，不另外手寫一份。 */
-export const downloadFilename = (target: DownloadTarget) => target.href.slice(target.href.lastIndexOf('/') + 1)
+/**
+ * 檔名取自 `href` 的最後一段，不另外手寫一份。
+ * 要解碼：網址裡的 `%20` 在使用者硬碟上是空白（v3.10.0 起 exe 檔名含空白），
+ * 印在校驗指令裡的必須是**真正的檔名**，否則照抄會找不到檔案。
+ */
+export const downloadFilename = (target: DownloadTarget) =>
+  decodeURIComponent(target.href.slice(target.href.lastIndexOf('/') + 1))

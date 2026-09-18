@@ -14,7 +14,7 @@
       "title": "First, the important part: the app and this website are two different things",
       "bodyPre": "The PromptBox desktop application has been 100% offline (zero outbound) since v3.3.1 — no update checks, no telemetry, and fonts bundled with the binary rather than fetched from a CDN. It sends us nothing at all, so ",
       "bodyStrong": "this policy does not apply to the app",
-      "bodyPost": ". Your prompts, secret cards and variable values stay on your own disk, encrypted at rest with SQLCipher, with the key held by your operating system's keychain. The one networked component is the built-in MCP server: it listens on 127.0.0.1 only, so the IDEs on your own machine can connect to it, and it never reaches outward.",
+      "bodyPost": ". Your prompts, secret cards and variable values stay on your own disk, encrypted at rest with SQLite + ChaCha20, with the key held by your operating system's keychain. The one networked component is the built-in MCP server: it listens on 127.0.0.1 only, so the IDEs on your own machine can connect to it, and it never reaches outward.",
       "notePre": "Everything below is only about the ",
       "noteStrong": "website",
       "notePost": " you are reading right now."

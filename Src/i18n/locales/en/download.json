@@ -2,10 +2,10 @@
   "download": {
     "meta": {
       "title": "Download PromptBox — Windows / macOS",
-      "description": "Download PromptBox v3.9.4 free for Windows 10/11 and macOS 12+ (Apple Silicon). Windows installer and portable builds plus a macOS disk image, encrypted local storage, 100% offline."
+      "description": "Download PromptBox v3.10.0 free for Windows 10/11 and macOS 12+ (Apple Silicon). Windows installer and portable builds plus a macOS disk image, encrypted local storage, 100% offline."
     },
     "hero": {
-      "badge": "✨ Latest release v3.9.4",
+      "badge": "✨ Latest release v3.10.0",
       "titleLead": "Download",
       "lead": "Free to start. Every installer is published here on this site with a SHA-256 checksum you can verify yourself — encrypted locally, 100% offline."
     },
@@ -44,6 +44,7 @@
         "f2": "Apple Silicon (arm64) only — will not run on Intel Macs",
         "f3": "Key held by the macOS Keychain",
         "cta": "Download for macOS (Apple Silicon)",
+        "ctaPaused": "macOS build in preparation",
         "soonBadge": "Coming soon",
         "ctaSoon": "Notify me when macOS ships",
         "soonNote": "The macOS build is in preparation. Leave your email and we’ll tell you the day it ships."
@@ -67,7 +68,7 @@
       },
       "s2": {
         "title": "First launch",
-        "body": "PromptBox creates the SQLCipher-encrypted database and loads a set of example cards, so you can explore without breaking anything."
+        "body": "PromptBox creates the encrypted database (SQLite + ChaCha20) and loads a set of example cards, so you can explore without breaking anything."
       },
       "s3": {
         "title": "Copy your first prompt",
@@ -83,7 +84,7 @@
       },
       "n2": {
         "title": "Local data encryption",
-        "body": "A page-level SQLCipher-encrypted database is created on first launch. The key is held by your operating system's secure keychain (Windows DPAPI / macOS Keychain) and never written to disk in plaintext."
+        "body": "A database encrypted as a whole with SQLite + ChaCha20 is created on first launch. The key is held by your operating system's secure keychain (Windows DPAPI / macOS Keychain) and never written to disk in plaintext."
       },
       "n4": {
         "title": "Windows may show an “unrecognised app” prompt",

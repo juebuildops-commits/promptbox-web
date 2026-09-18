@@ -2,7 +2,7 @@
 
 > **性質**：官網發版與更新日誌作業的唯一標準手冊（單一真相來源）。  
 > **核心原則**：本檔為**完全閉環的作業清單**。執行發版任務時，歷史版本視為不可變之凍結狀態，**嚴禁沿超連結向外遞迴追溯無關之歷史文件（Max Depth = 1）**。  
-> **最後更新**：2026-09-15（下載目標搬到 `Src/shared/downloads.ts`）  
+> **最後更新**：2026-09-18（macOS 暫停期間只有兩組下載目標；安裝檔名可能含空白）  
 
 ---
 
@@ -23,7 +23,7 @@
 | **1** | **日誌 Markdown 正文** | `Src/content/changelog/vX.X.X.md` | 一版一檔。最新版由 `date` 與 SemVer 數字動態推導，**不手動標記 `latest`**。撰寫風格遵循 [§3 規範](#3-changelog-內容撰寫規範-style-guide)。 |
 | **2** | **日誌頁三語 Meta** | `Src/i18n/locales/{zh-TW,en,ja}/changelog.json` | 同步 `meta.description`（例：「從 v1.0 到 vX.X.X…」）與 `cta.body`（例：「vX.X.X 現已推出…」）。 |
 | **3** | **下載頁三語 Meta** | `Src/i18n/locales/{zh-TW,en,ja}/download.json` | 同步 `meta.description`（免費下載版號）與 `hero.badge`（「✨ 最新版本 vX.X.X」）。 |
-| **4** | **下載安裝檔與校驗碼** | `Src/shared/downloads.ts` | 🔴 **紅線 5**：`win`／`win-zip`／`mac` 三組的 `href` 與實算 `sha256` 必須成對更新，`DOWNLOAD_VERSION` 一併改（確認 Cloudflare R2 已上架）。下載頁、會員專區、`/dl` 端點都讀這一份，**不要在別處另寫網址**（`check:release` 會擋）。若手冊第 9 章校驗範例含版號亦連動。 |
+| **4** | **下載安裝檔與校驗碼** | `Src/shared/downloads.ts` | 🔴 **紅線 5**：`win`／`win-zip`／`mac` 三組（⏸ **2026-09-18 起 mac 暫停，只有前兩組**，見 [WL-006](Wishlist/006.WL_mac暫停下載與Windows換新版.md)）的 `href` 與實算 `sha256` 必須成對更新，`DOWNLOAD_VERSION` 一併改（確認 Cloudflare R2 已上架）。下載頁、會員專區、`/dl` 端點都讀這一份，**不要在別處另寫網址**（`check:release` 會擋）。若手冊第 9 章校驗範例含版號亦連動。⚠️ **`href` 照 R2 上的檔名逐字抄**：v3.10.0 起 exe 檔名含空白，網址要寫 `%20`（頁面上印的檔名由 `downloadFilename()` 解碼，手冊範例要加引號）。 |
 | **5** | **規格文件鏡像回寫** | `Docs/webspec/PageDescription/05_changelog.md`<br>`Docs/webspec/PageDescription/02_download.md` | 回寫「當前發行版本」表格與最新版聲明。若涉及產品能力或重要名詞更動，回寫 `Docs/webspec/主張與依據.md`。 |
 
 ---
@@ -115,7 +115,7 @@ major: true # 若為重大版本（版號進位或重大架構躍進）才加上
 ```markdown
 - [ ] 1. 新增 `Src/content/changelog/vX.X.X.md`（無裸露 {{ }}、採使用者視角、動詞開頭）
 - [ ] 2. 更新 `Src/i18n/locales/zh-TW/changelog.json` 與 `download.json`
-- [ ] 3. 確認 R2 安裝檔可下載（HEAD 200），並更新 `shared/downloads.ts` 三組的 href 與 sha256、`DOWNLOAD_VERSION`
+- [ ] 3. 確認 R2 安裝檔可下載（HEAD 200），並更新 `shared/downloads.ts` 每一組（mac 暫停期間為兩組）的 href 與 sha256、`DOWNLOAD_VERSION`
 - [ ] 4. 人工審查繁中文案與版號（Phase 1 定稿關卡）
 - [ ] 5. 同步翻譯 `en` 與 `ja` 的 `changelog.json` 與 `download.json`（Phase 2）
 - [ ] 6. 回寫 `Docs/webspec/PageDescription/05_changelog.md` 與 `02_download.md`
