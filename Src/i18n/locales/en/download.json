@@ -2,7 +2,7 @@
   "download": {
     "meta": {
       "title": "Download PromptBox — Windows / macOS",
-      "description": "Download PromptBox v3.10.0 free for Windows 10/11 and macOS 12+ (Apple Silicon). Windows installer and portable builds plus a macOS disk image, encrypted local storage, 100% offline."
+      "description": "Download PromptBox v3.10.0 free for Windows 10/11 and macOS 13+ (Apple Silicon). Windows installer and portable builds plus a macOS disk image, encrypted local storage, 100% offline."
     },
     "hero": {
       "badge": "✨ Latest release v3.10.0",
@@ -37,14 +37,13 @@
         "ctaPortable": "Portable build (.zip)"
       },
       "mac": {
-        "requirement": "macOS 12 (Monterey)+ / Apple Silicon",
+        "requirement": "macOS 13 (Ventura)+ / Apple Silicon",
         "body": "Native build for Apple Silicon (M1 and later), with the database key held by the macOS Keychain. There is no Intel Mac build yet.",
         "f1pre": "Native macOS disk image (",
         "f1post": ")",
         "f2": "Apple Silicon (arm64) only — will not run on Intel Macs",
         "f3": "Key held by the macOS Keychain",
         "cta": "Download for macOS (Apple Silicon)",
-        "ctaPaused": "macOS build in preparation",
         "soonBadge": "Coming soon",
         "ctaSoon": "Notify me when macOS ships",
         "soonNote": "The macOS build is in preparation. Leave your email and we’ll tell you the day it ships."

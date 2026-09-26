@@ -31,9 +31,9 @@ const SRC_ROOT = path.resolve(import.meta.dirname, '..')
 const CHANGELOG_DIR = path.join(SRC_ROOT, 'content', 'changelog')
 const LOCALES_DIR = path.join(SRC_ROOT, 'i18n', 'locales')
 const DOWNLOADS_TS = path.join(SRC_ROOT, 'shared', 'downloads.ts')
-// 🔴 'mac' 2026-09-18 起暫停（WL-006）：v3.10.0 沒有 mac build，downloads.ts 已拿掉那一組。
-//    重新上架時加回來 —— 否則 mac 的 href／sha256 沒有任何護欄在看。
-const DOWNLOAD_PLATFORMS = ['win', 'win-zip']
+// 🔴 這份要與 downloads.ts 的 DOWNLOADS 鍵完全一致 —— 少一個，那一組的 href／sha256 就沒有任何護欄在看。
+//    ('mac' 2026-09-18～09-27 曾因沒有 mac build 暫時拿掉，v3.10.0 的 dmg 發佈後加回，WL-006 §2-3。)
+const DOWNLOAD_PLATFORMS = ['win', 'win-zip', 'mac']
 const NO_R2_DIRS = ['app', 'server']
 
 const LOCALES = ['zh-TW', 'en', 'ja']

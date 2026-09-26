@@ -16,8 +16,10 @@
  * 🔴 `href` 與 `sha256` **必須成對更新** —— 校驗碼是印在頁面上的對外承諾
  *    （`download.checksum.*`），對不上比沒有更糟。
  *    2026-09-10（v3.9.2）起，每一組都是**整顆下載回來實算 SHA-256** 與下面的常數比對過的；
- *    現行這組是 2026-09-18（v3.10.0）：由 Claude 整顆下載 R2 上的檔案實算，並與 App repo 的建置產物交叉比對；
- *    ⏳ **尚待創辦人自己實算比對**（WL-006）。
+ *    現行這組是 2026-09-18（v3.10.0 win）：由 Claude 整顆下載 R2 上的檔案實算，並與 App repo 的建置產物交叉比對；
+ *    `mac` 是 2026-09-27 加回的，同樣整顆下載實算 —— 但 **App repo 的 `dist_electron/` 裡沒有 dmg**（mac build 不在這台機器上做），
+ *    交叉比對改用 R2 的 ETag：下載檔的 MD5 ＝ `98658eaf…02da7` ＝ R2 回的 ETag ⇒ 證明實算的是「使用者真的會拿到的那個位元組序列」。
+ *    ⏳ **三組都尚待創辦人自己實算比對**（WL-006）。
  *    ⚠️ 不要退回只比 ETag：ETag 是 MD5，與頁面上印的 SHA-256 是**兩種雜湊**，
  *    ETag 相符證明得了「線上檔案 = 本機產物」，證明不了「印出去的校驗碼是對的」。
  *
@@ -46,9 +48,15 @@ export const DOWNLOAD_VERSION = '3.10.0'
 /**
  * 鍵名就是 `/dl/[platform]` 的路徑參數。
  *
- * 🔴 **`mac` 2026-09-18 起暫停**（WL-006）：v3.10.0 沒有 mac build，而 v3.9.4 的 dmg 停在已過期的 Electron 40。
- *    拿掉這一組 ⇒ `/dl/mac` 自動導回 `/download`；下載頁的 mac 卡改停用鈕、會員專區拿掉 mac 卡、`check:release` 不再要求 `mac`。
- *    重新上架時三處一起加回（WL-006 §2-3）。舊的 href／sha256 在 git 歷史裡。
+ * 📌 `mac` 2026-09-18 因為 v3.10.0 沒有 mac build 而暫停，**2026-09-27 隨 v3.10.0 的 dmg 加回**（WL-006 §2-3）。
+ *    加回時同一批動的還有：`check-release.mjs` 的 `DOWNLOAD_PLATFORMS`、`account.vue` 的下載卡、
+ *    `download.vue` 的 `MAC_DMG`／`MAC_READY`／校驗碼列，以及**最低需求 macOS 12 → 13**（見下）。
+ *
+ * 🔴 **最低需求是 macOS 13 (Ventura)，不是 12。** 取自這顆 dmg 自己的
+ *    `PromptBox.app/Contents/Info.plist`：`LSMinimumSystemVersion = 13.0`（2026-09-27 解開檔案讀出來的）。
+ *    成因是 App 用 Electron 44，而 Electron 44 起不支援 macOS 12（App 側回覆 3 §二 W7）。
+ *    ⚠️ App 的 `package.json` **沒有設 `build.mac.minimumSystemVersion`**（W8 未做）⇒ 這個值是 Electron 的預設值，
+ *    會**隨 Electron 大版無聲改變**，而 `check:release` 只看版號、不看系統需求。升級 Electron 後要重讀 Info.plist。
  */
 export const DOWNLOADS = {
   'win': {
@@ -60,6 +68,11 @@ export const DOWNLOADS = {
     href: `${R2}/V3.10.0/PromptBox-3.10.0-win.zip`,
     size: '178.4 MB',
     sha256: 'fabfc2e7d53647e016dbc5c0a4b3614c51c37cfdbc66c44ebd70207539f1a269',
+  },
+  'mac': {
+    href: `${R2}/V3.10.0/PromptBox-3.10.0-arm64.dmg`,
+    size: '154.8 MB',
+    sha256: '7a3549b568d948915240683bf98387c1ee079138520d7bc97c5480909e3bfcf3',
   },
 } as const satisfies Record<string, DownloadTarget>
 

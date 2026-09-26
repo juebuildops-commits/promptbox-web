@@ -77,11 +77,13 @@ const email = computed(() => user.value?.email || '—')
 const avatarUrl = computed(() => user.value?.user_metadata?.avatar_url || null)
 
 // ── 下載卡片（FR-27C） ─────────────────────────────────────────────
-// 🔴 mac 那張 2026-09-18 起暫停（WL-006）：`shared/downloads.ts` 已沒有 `mac`，留著這一列頁面會在讀 `.size` 時壞掉。
-//    重新上架時加回 `{ platform: 'mac', labelKey: 'account.downloads.macDmg', icon: 'icon--apple' }`，並把下方 grid 改回 3 欄。
+// 🔴 這裡每一列的 `platform` 都必須是 `shared/downloads.ts` 的鍵 —— 下方模板直接讀 `DOWNLOADS[card.platform].size`，
+//    多一列不存在的平台，整頁會在執行期壞掉（mac 2026-09-18 暫停時就是這樣收的，2026-09-27 加回，WL-006 §2-3）。
+//    增減平台時 grid 的欄數要跟著改。
 const DOWNLOAD_CARDS = [
   { platform: 'win', labelKey: 'account.downloads.winExe', icon: 'icon--computer' },
   { platform: 'win-zip', labelKey: 'account.downloads.winZip', icon: 'icon--computer' },
+  { platform: 'mac', labelKey: 'account.downloads.macDmg', icon: 'icon--apple' },
 ] as const
 </script>
 
@@ -212,7 +214,7 @@ const DOWNLOAD_CARDS = [
             </p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <a
               v-for="card in DOWNLOAD_CARDS"
               :key="card.platform"

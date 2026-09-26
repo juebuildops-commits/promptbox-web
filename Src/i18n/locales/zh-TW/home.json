@@ -141,7 +141,7 @@
       "q3": "安裝安全嗎？資料會不會弄丟？",
       "a3": "安裝檔由官網直接發布，並附 SHA-256 校驗碼供您自行核對檔案完整性。目前尚未購買程式碼簽章憑證，Windows 可能顯示「無法辨識的應用程式」提示；macOS 版也還沒有經過 Apple 公證，第一次開啟會被系統擋下。原因與查證方式見下載頁與操作手冊。首次啟動即建立 SQLite + ChaCha20 加密資料庫，金鑰由作業系統金鑰庫保管。App 不做任何無聲背景升級，新版本以 email 通知或至官網手動下載安裝，安裝路徑不變且資料原地完整保留（macOS 版的這一點還沒在 Mac 上實測過）。",
       "q4": "支援哪些平台？",
-      "a4": "目前支援 Windows 10 / 11（64 位元，提供安裝版與免安裝便攜版），以及 macOS 12（Monterey）以上的 Apple Silicon Mac（M1 以後的晶片；Intel Mac 暫不支援）。macOS 版沒有經過 Apple 公證，第一次開啟會被系統擋下，下載頁與操作手冊有說明。內建 MCP 伺服器支援 Cursor、VS Code、Claude Desktop、Windsurf、Claude Code、Cline 等主流 AI 工具本機安全連線。",
+      "a4": "目前支援 Windows 10 / 11（64 位元，提供安裝版與免安裝便攜版），以及 macOS 13（Ventura）以上的 Apple Silicon Mac（M1 以後的晶片；Intel Mac 暫不支援）。macOS 版沒有經過 Apple 公證，第一次開啟會被系統擋下，下載頁與操作手冊有說明。內建 MCP 伺服器支援 Cursor、VS Code、Claude Desktop、Windsurf、Claude Code、Cline 等主流 AI 工具本機安全連線。",
       "q5": "真的免費嗎？有什麼限制？",
       "a5": "核心工作流永久免費：Prompt 管理、資料夾分類、標籤、全局搜尋、一鍵複製、Markdown 預覽、深淺色主題都不用錢（免費版配額：卡片總數上限 {cards} 張 —— 機密卡與串聯卡都算在這個總數裡，其中機密卡最多 {secretCards} 張、串聯資料夾最多 {chainCards} 張；MCP Token {mcpTokens} 組。配額只擋新增，既有資料一張不掉）。進階功能採「買斷 + 更新權」機制：個人版 Pro 早鳥優惠 ${proEarly} USD / 年（永久鎖價，含當前版本永久可用 + {updateMonths} 個月更新權；不續訂依然永久可用當前版本）、或商業授權 ${commercial} USD / 人 / 年。"
     },

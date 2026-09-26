@@ -2,7 +2,7 @@
   "download": {
     "meta": {
       "title": "PromptBox をダウンロード — Windows / macOS",
-      "description": "PromptBox v3.10.0 を無料ダウンロード。Windows 10 / 11 と macOS 12 以降（Apple Silicon）に対応。Windows のインストーラー版・ポータブル版と macOS のディスクイメージをご用意。ローカルで暗号化保存、100% 完全オフライン。"
+      "description": "PromptBox v3.10.0 を無料ダウンロード。Windows 10 / 11 と macOS 13 以降（Apple Silicon）に対応。Windows のインストーラー版・ポータブル版と macOS のディスクイメージをご用意。ローカルで暗号化保存、100% 完全オフライン。"
     },
     "hero": {
       "badge": "✨ 最新バージョン v3.10.0",
@@ -37,14 +37,13 @@
         "ctaPortable": "ポータブル版（.zip）"
       },
       "mac": {
-        "requirement": "macOS 12 (Monterey)+ / Apple Silicon",
+        "requirement": "macOS 13 (Ventura)+ / Apple Silicon",
         "body": "Apple Silicon（M1 以降）ネイティブ版で、データベースの鍵は macOS Keychain が保管します。Intel Mac 版はまだありません。",
         "f1pre": "macOS ネイティブのディスクイメージ（",
         "f1post": "）",
         "f2": "Apple Silicon（arm64）専用 —— Intel Mac では動作しません",
         "f3": "鍵は macOS Keychain が保管します",
         "cta": "macOS 版をダウンロード (Apple Silicon)",
-        "ctaPaused": "macOS 版は準備中です",
         "soonBadge": "近日公開",
         "ctaSoon": "macOS 版が公開されたら通知する",
         "soonNote": "macOS 版は準備中です。メールアドレスをお預けいただければ、公開当日にいちはやくお知らせします。"
